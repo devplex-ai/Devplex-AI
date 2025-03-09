@@ -34,7 +34,7 @@ const Navbar = () => {
 
       {/* Desktop Navigation */}
       <ul className="hidden md:flex items-center space-x-6 text-gray-400 text-sm">
-        {["Home", "Pricing", "Community", "Docs", "Manifesto", "Careers"].map((item, index) => (
+        {["Home", "Services", "Docs", "About"].map((item, index) => (
           <li key={index} className="hover:text-white transition cursor-pointer">
             {item}
           </li>
@@ -63,7 +63,7 @@ const Navbar = () => {
           className="absolute top-14 left-0 w-full bg-black border border-white/10 rounded-lg p-4 md:hidden"
         >
           <ul className="flex flex-col space-y-4 text-gray-300">
-            {["Home", "Pricing", "Community", "Docs", "Manifesto", "Careers"].map((item, index) => (
+            {["Home", "Services", "Docs", "About"].map((item, index) => (
               <li 
                 key={index} 
                 className="hover:text-white transition cursor-pointer"
