@@ -1,11 +1,16 @@
-import React from 'react'
+import React from "react";
+import Home from "./pages/Home";
+import Navbar from "./pages/Navbar";
 
 const App = () => {
   return (
     <>
-    <h1 className='text-xl'>Hello</h1>
-    </>
-  )
-}
+    <Navbar/>
+     <Home/>
+     
 
-export default App
+    </>
+  );
+};
+
+export default App;
