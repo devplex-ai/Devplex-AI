@@ -6,7 +6,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  // Close menu when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -24,8 +24,7 @@ const Navbar = () => {
   }, [isOpen]);
 
   return (
-    <nav className="w-full bg-black text-white py-4 px-6 flex items-center justify-between border border-white/10 rounded-lg relative">
-      
+    <nav className="w-full bg-black text-white py-4 px-40 flex items-center justify-between border border-white/10 rounded-lg relative">
       {/* Logo + Name */}
       <div className="flex items-center gap-3">
         <img src="/logo-3.png" alt="Devplex AI Logo" className="h-8 w-auto" />
@@ -34,8 +33,11 @@ const Navbar = () => {
 
       {/* Desktop Navigation */}
       <ul className="hidden md:flex items-center space-x-6 text-gray-400 text-sm">
-        {["Home", "Services", "Docs", "About"].map((item, index) => (
-          <li key={index} className="hover:text-white transition cursor-pointer">
+        {["Home", "Services", "Docs", "About", "Pricing"].map((item, index) => (
+          <li
+            key={index}
+            className="hover:text-white transition cursor-pointer"
+          >
             {item}
           </li>
         ))}
@@ -43,12 +45,18 @@ const Navbar = () => {
 
       {/* Right Section */}
       <div className="flex items-center gap-4">
-        <button className="bg-gray-800 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition">
+        <button className=" text-white bg-gray-900  px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-800 cursor-pointer transition">
+          Sign in
+        </button>
+        <button className="bg-blue-500 px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition">
           Get Started
         </button>
 
         {/* Mobile Menu Toggle */}
-        <button className="md:hidden focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
+        <button
+          className="md:hidden focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -64,8 +72,8 @@ const Navbar = () => {
         >
           <ul className="flex flex-col space-y-4 text-gray-300">
             {["Home", "Services", "Docs", "About"].map((item, index) => (
-              <li 
-                key={index} 
+              <li
+                key={index}
                 className="hover:text-white transition cursor-pointer"
                 onClick={() => setIsOpen(false)} // Close menu when clicking a link
               >

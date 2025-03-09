@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React from 'react'
 
-const Home = () => {
-  const [prompt, setPrompt] = useState("");
-
+const Hero = () => {
   return (
     <div className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center px-6 bg-black text-white">
-      
       {/* Background Glow Effect */}
-      <div className="absolute w-[2400px] h-[1000px] rounded-[50%] left-1/2 -translate-x-1/2 
-      bg-[radial-gradient(closest-side,#000_85%,#249974)] top-[450px] border-[1px] border-[#8CD6DE]/30"></div>
+      <div
+        className="absolute w-[2400px] h-[1000px] rounded-[50%] left-1/2 -translate-x-1/2 
+      bg-[radial-gradient(closest-side,#000_85%,#249974)] top-[450px] border-[1px] border-[#8CD6DE]/30"
+      ></div>
 
       {/* Hero Section */}
       <motion.h1
@@ -18,7 +16,8 @@ const Home = () => {
         transition={{ duration: 1 }}
         className="text-5xl md:text-7xl font-extrabold leading-tight bg-gradient-to-r from-[#A78AF7] via-[#64FFDA] to-[#A78AF7] text-transparent bg-clip-text"
       >
-        Build Your Startup’s MVP in <span className="text-[#64FFDA]">1 Minute</span> with AI 🚀
+        Build Your Startup’s MVP in{" "}
+        <span className="text-[#64FFDA]">1 Minute</span> with AI 🚀
       </motion.h1>
 
       <motion.p
@@ -27,8 +26,12 @@ const Home = () => {
         transition={{ delay: 0.3, duration: 1 }}
         className="mt-4 text-lg md:text-xl max-w-3xl text-gray-300"
       >
-        Devplex AI automates product development, letting founders and teams instantly generate high-quality MVPs. 
-        <span className="text-[#64FFDA]"> Focus on growth, let AI handle the code.</span>
+        Devplex AI automates product development, letting founders and teams
+        instantly generate high-quality MVPs.
+        <span className="text-[#64FFDA]">
+          {" "}
+          Focus on growth, let AI handle the code.
+        </span>
       </motion.p>
 
       {/* Input Section */}
@@ -52,6 +55,6 @@ const Home = () => {
       </motion.div>
     </div>
   );
-};
+}
 
-export default Home;
+export default Hero
