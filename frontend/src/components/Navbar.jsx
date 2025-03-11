@@ -101,14 +101,14 @@
 // export default Navbar;
 import React, { useState, useEffect, useRef } from "react";
 import { X, Menu } from "lucide-react";
-import LoginPage from "../pages/LoginPage";
+import { useNavigate } from "react-router-dom";
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
-  const [isLoginModal, setIsLoginModal] = useState(false);
-  const openLoginModal = () => setIsLoginModal(true);
-  const closeLoginModal = () => setIsLoginModal(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -130,9 +130,11 @@ const Navbar = () => {
     <>
       <nav className="w-full bg-black text-white py-4 px-40 flex items-center justify-between border border-white/10 rounded-lg relative">
         {/* Logo + Name */}
-        <div className="flex items-center gap-3">
+        <div onClick={() =>{
+          navigate("/");
+        }} className="flex cursor-pointer items-center gap-3">
           <img
-            src="/assets/logo-3.png"
+            src="/assets/logo.png"
             alt="Devplex AI Logo"
             className="h-8 w-auto"
           />
@@ -156,7 +158,9 @@ const Navbar = () => {
         {/* Right Section */}
         <div className="flex items-center gap-4">
           <button
-            onClick={() => setIsLoginModal(true)}
+            onClick={() => {
+              navigate("/login");
+            }}
             className="text-white bg-gray-900 px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-800 cursor-pointer transition"
           >
             Sign in
@@ -196,7 +200,7 @@ const Navbar = () => {
       </nav>
 
       {/* Login Modal */}
-      {isLoginModal && <LoginPage onClose={() => setIsLoginModal(false)} />}
+ 
     </>
   );
 };
