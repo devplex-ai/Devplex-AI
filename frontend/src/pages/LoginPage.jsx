@@ -19,6 +19,7 @@ const LoginPage = ({ onClose = () => {} }) => {
   const handleGoogleLogin = () => {
     setIsSocialLoading(true);
     window.location.href = "http://localhost:5000/auth/google";
+   
   };
 
   const handleGitHubLogin = () => {
@@ -48,10 +49,11 @@ const LoginPage = ({ onClose = () => {} }) => {
         email,
         password,
       });
-      toast.success("Login successful!");
-      localStorage.setItem("token", response.data.token);
-      onClose();
-      navigate("/");
+      const { token, userId } = response.data;
+     toast.success("Login successful!");
+     localStorage.setItem("token", token);
+     localStorage.setItem("userId", userId); 
+    
     } catch (error) {
       setError(
         error.response?.data?.message ||

@@ -7,29 +7,52 @@ require("../services/pasport.js")
 
 const router = express.Router();
 
-// Google OAuth
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+// React OAuth/Google
+router.post("/google-login", async (req, res) => {
+  const { sub, name, email, picture } = req.body;
 
-router.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  async (req, res) => {
-    const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
+  try {
+  
+    let user = await User.findOne({ email });
+
+    if (!user) {
+  
+      user = new User({
+        googleId: sub,
+        name,
+        email,
+        avatar: picture,
+      });
+      await user.save();
+    } else if (!user.googleId) {
+  
+      user.googleId = sub;
+      await user.save();
+    }
+
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
-    res.redirect(`${process.env.CLIENT_URL}/`);
+
+ 
+ res.status(200).json({
+   message: "Login successful",
+   user,
+   token,
+ });
+
+
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(500).json({ message: "Server error" });
   }
-);
+});
+
 
 // GitHub OAuth
+
+
 router.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] })
@@ -39,17 +62,32 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
-    const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
-    res.redirect(`${process.env.CLIENT_URL}/`);
+    try {
+      const user = req.user; 
+
+     
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+     
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      });
+
+      // Redirect user to frontend with user data in URL
+      res.redirect(
+        `${process.env.CLIENT_URL}/auth-success?token=${token}&userId=${user.id}&name=${user.name}&email=${user.email}&avatar=${user.avatar}`
+      );
+    } catch (error) {
+      console.error("GitHub login error:", error);
+      res.redirect(`${process.env.CLIENT_URL}/login`);
+    }
   }
 );
+
 
 // Local sign-up
 router.post("/sign-up", async (req, res) => {
@@ -83,11 +121,15 @@ router.post("/sign-in", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
-    res.json({ message: "Login successful" });
+    res.json({ message: "Login successful", token, userId: user.id });
   } catch (error) {
     console.error("Error during sign-in:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+router.post("/logout", (req, res) => {
+  return res.status(200).json({ message: "Logged out successfully" });
 });
 
 module.exports = router;

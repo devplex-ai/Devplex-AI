@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { FaRocket, FaBrain, FaServer } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { UserDetailContext } from "../context/UserDetailContext";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [prompt, setPrompt] = useState("");
@@ -9,27 +12,41 @@ const Home = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleGenerate = () => {
-    if (!prompt.trim()) {
-      setError("Please describe your idea.");
-      return;
-    }
+  const navigate = useNavigate();
 
-    if (prompt.length > 500) {
-      setError("Idea description should be less than 500 characters.");
-      return;
-    }
+  const { user } = useSelector((state) => state.auth);
 
-    setError("");
-    setLoading(true);
+const handleGenerate = () => {
 
-    // Simulate an API call
-    setTimeout(() => {
-      setLoading(false);
-      setSuccess("Your MVP has been generated successfully!");
-      setPrompt(""); // Clear input
-    }, 3000);
-  };
+
+
+
+  if (!user) {
+ 
+    navigate("/login");
+    return;
+  }
+
+  if (!prompt.trim()) {
+    setError("Please describe your idea.");
+    return;
+  }
+
+  if (prompt.length > 500) {
+    setError("Idea description should be less than 500 characters.");
+    return;
+  }
+
+  setError("");
+  setLoading(true);
+
+  // Simulate an API call
+  setTimeout(() => {
+    setLoading(false);
+    setPrompt(""); // Clear input
+    navigate("/workspace");
+  }, 2000);
+};
 
   return (
     <div className="bg-black min-h-screen">
@@ -105,7 +122,9 @@ const Home = () => {
 
           {/* Generate Button */}
           <button
-            onClick={handleGenerate}
+            onClick={() => {
+              handleGenerate();
+            }}
             disabled={loading}
             className="mt-4 w-full px-6 py-3 text-lg font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
