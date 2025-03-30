@@ -5,6 +5,7 @@ const cors = require('cors');
 const session =require ("express-session");
 const passport = require("passport");
 const authRoute = require("./routes/auth")
+const chatRoute = require("./routes/Chat");
 
 
 const app = express()
@@ -23,7 +24,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/auth",authRoute );
+app.use("/auth", authRoute);
+app.use("/api", chatRoute);
 
 
 app.get('/', (req, res) => {

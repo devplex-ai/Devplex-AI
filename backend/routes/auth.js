@@ -3,6 +3,9 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User.js");
+const Chat = require("../models/ChatSchema.js");
+const Project = require("../models/ProjectSchema.js");
+const authMiddleware = require("../middleWares/authMiddleware.js");
 require("../services/pasport.js")
 
 const router = express.Router();
@@ -131,5 +134,28 @@ router.post("/sign-in", async (req, res) => {
 router.post("/logout", (req, res) => {
   return res.status(200).json({ message: "Logged out successfully" });
 });
+
+router.get("/user", async (req, res) => {
+  try {
+    const id = req.headers["userid"];
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "User ID is required in headers" });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+
 
 module.exports = router;

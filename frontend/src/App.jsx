@@ -7,6 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import { ToastContainer } from "react-toastify";
 import AuthSuccess from "./components/AuthSuccess";
 import WorkspacePage from "./pages/WorkspacePage";
+import PricingPage from "./pages/PricingPage";
 
 const App = () => {
   return (
@@ -17,7 +18,8 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/oauth-success" element={<AuthSuccess />} />
-        <Route path="/workspace" element={<WorkspacePage />} />
+        <Route path="/workspace/:sessionId" element={<WorkspacePage />} />
+        <Route path="/pricing" element={<PricingPage />} />
       </Routes>
     </Router>
   );
