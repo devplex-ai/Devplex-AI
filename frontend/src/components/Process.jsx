@@ -35,7 +35,7 @@ function Process() {
 
 
     return (
-      <div className="bg-transparent">
+      <div className="  flex flex-col items-center w-full  bg-white/10 backdrop-blur-lg p-2 sm:p-6 rounded-xl border border-white/20 shadow-lg mx-2">
         <h1 className="text-2xl mb-6 sm:text-2xl md:text-3xl font-bold  bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
           How It Works
         </h1>
