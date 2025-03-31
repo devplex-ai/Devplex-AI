@@ -23,42 +23,6 @@ const Home = () => {
 
   const { user } = useSelector((state) => state.auth);
 
-// const handleGenerate = async () => {
-//   if (!user) {
-//     navigate("/login");
-//     return;
-//   }
-
-//   if (!prompt.trim()) {
-//     setError("Please describe your idea.");
-//     return;
-//   }
-
-  
-
-//   setError("");
-//   setLoading(true);
-
-//   try {
-//     const response = await axios.post(`${apiURL}/api/start-chat`, {
-//       userId: user._id,
-//       prompt,
-//     });
-
-//     if (response.data.sessionId) {
-//       setPrompt(""); 
-//       navigate(`/workspace/${response.data.sessionId}`);
-//     } else {
-//       setError("Failed to start session. Please try again.");
-//     }
-//   } catch (error) {
-//     console.error("Error starting chat:", error);
-//     setError("Something went wrong. Please try again.");
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
 const handleGenerate = async () => {
   if (!user) {
     navigate("/login");
@@ -70,30 +34,21 @@ const handleGenerate = async () => {
     return;
   }
 
+  
+
   setError("");
   setLoading(true);
 
   try {
-
-    const sessionId = uuidv4();
-
-   
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate(`/workspace/${sessionId}`);
-    }, 1000);
-
-    return () => clearTimeout(timer); 
-  }, []);
-
-    // Send the session ID to the backend to create the project
     const response = await axios.post(`${apiURL}/api/start-chat`, {
       userId: user._id,
       prompt,
-      sessionId, // Send the generated session ID
     });
 
-    if (!response.data.success) {
+    if (response.data.sessionId) {
+      setPrompt(""); 
+      navigate(`/workspace/${response.data.sessionId}`);
+    } else {
       setError("Failed to start session. Please try again.");
     }
   } catch (error) {
@@ -103,6 +58,51 @@ const handleGenerate = async () => {
     setLoading(false);
   }
 };
+
+// const handleGenerate = async () => {
+//   if (!user) {
+//     navigate("/login");
+//     return;
+//   }
+
+//   if (!prompt.trim()) {
+//     setError("Please describe your idea.");
+//     return;
+//   }
+
+//   setError("");
+//   setLoading(true);
+
+//   try {
+
+//     const sessionId = uuidv4();
+
+   
+//   useEffect(() => {
+//     const timer = setTimeout(() => {
+//       navigate(`/workspace/${sessionId}`);
+//     }, 1000);
+
+//     return () => clearTimeout(timer); 
+//   }, []);
+
+//     // Send the session ID to the backend to create the project
+//     const response = await axios.post(`${apiURL}/api/start-chat`, {
+//       userId: user._id,
+//       prompt,
+//       sessionId, // Send the generated session ID
+//     });
+
+//     if (!response.data.success) {
+//       setError("Failed to start session. Please try again.");
+//     }
+//   } catch (error) {
+//     console.error("Error starting chat:", error);
+//     setError("Something went wrong. Please try again.");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
   return (
     <div className="bg-black h-full min-h-screen">
