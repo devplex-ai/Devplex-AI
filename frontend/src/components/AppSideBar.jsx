@@ -471,6 +471,7 @@ const AppSideBar = () => {
               );
               if (!response.ok) throw new Error("Error fetching chat");
               const data = await response.json();
+              console.log("Fetched chat data:", data); 
               return {
                 _id: chatId,
                 messages: data.messages,
