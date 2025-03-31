@@ -303,7 +303,9 @@ const generateCodeFromAI = async (userPrompt) => {
     };
   }
 
-  const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+  // const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+  const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
 
   // const CODE_GEN_PROMPT = dedent`
   //   User Additional Context: ${userPrompt || "No additional context provided"}
