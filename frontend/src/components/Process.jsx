@@ -34,41 +34,42 @@ function Process() {
  ];
 
 
-  return (
-    <div className=" bg-transparent text-white p-8">
-      <h1 className="text-2xl mb-6 sm:text-4xl md:text-5xl font-bold  bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-        How It Works
-      </h1>
-      <div className="max-w-7xl mx-auto mt-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
-            <div
-              key={step.number}
-              className="relative flex flex-col items-center text-center"
-            >
-              <div className="absolute -top-6 border-white/10 left-1/2 -translate-x-1/2 bg-gradient-to-br from-zinc-800 to-zinc-900 w-12 h-12 rounded-lg flex items-center justify-center shadow-xl ring-1 ring-white/10">
-                <span className="text-xl font-semibold bg-gradient-to-br from-white to-zinc-400 bg-clip-text text-transparent">
-                  {step.number}
-                </span>
-             
+    return (
+      <div className="bg-transparent">
+        <h1 className="text-2xl mb-6 sm:text-4xl md:text-5xl font-bold  bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          How It Works
+        </h1>
+        <div className=" bg-transparent text-white p-8">
+          <div className="max-w-7xl mx-auto mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {steps.map((step, index) => (
+                <div
+                  key={step.number}
+                  className="relative flex flex-col items-center text-center"
+                >
+                  <div className="absolute -top-6 border-white/10 left-1/2 -translate-x-1/2 bg-gradient-to-br from-zinc-800 to-zinc-900 w-12 h-12 rounded-lg flex items-center justify-center shadow-xl ring-1 ring-white/10">
+                    <span className="text-xl font-semibold bg-gradient-to-br from-white to-zinc-400 bg-clip-text text-transparent">
+                      {step.number}
+                    </span>
+                    {index < steps.length - 1 && (
+                      <div className="hidden md:block absolute top-6 left-[calc(50%+1.5rem)] w-[calc(100%-3rem)] h-[1px] bg-zinc-800" />
+                    )}{" "}
+                  </div>
 
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-6 left-[calc(50%+1.5rem)] w-[calc(100%-3rem)] h-[1px] bg-zinc-800" />
-              )} </div>
-
-              <div className="space-y-4 flex flex-col items-center">
-                <div className="text-white">{step.icon}</div>
-                <h3 className="text-xl font-medium leading-tight">
-                  {step.title}
-                </h3>
-                <p className="text-zinc-400 text-sm">{step.description}</p>
-              </div>
+                  <div className="space-y-4 flex flex-col items-center">
+                    <div className="text-white">{step.icon}</div>
+                    <h3 className="text-xl font-medium leading-tight">
+                      {step.title}
+                    </h3>
+                    <p className="text-zinc-400 text-sm">{step.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default Process;
