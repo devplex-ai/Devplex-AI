@@ -35,7 +35,7 @@ useEffect(() => {
             if (!response.ok) throw new Error(`Error fetching chat ${chatId}`);
 
             const data = await response.json();
-            console.log(`Chat ID: ${chatId}, API Response:`, data); // ✅ Debugging response
+            console.log(`Chat ID: ${chatId}, API Response:`, data); 
 
             return {
               _id: chatId,
