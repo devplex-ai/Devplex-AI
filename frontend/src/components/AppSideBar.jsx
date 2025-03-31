@@ -471,7 +471,11 @@ const AppSideBar = () => {
               );
               if (!response.ok) throw new Error("Error fetching chat");
               const data = await response.json();
-              return { _id: chatId, messages: data.messages };
+              return {
+                _id: chatId,
+                messages: data.messages,
+                sessionId: data.sessionId,
+              };
             })
           );
 
