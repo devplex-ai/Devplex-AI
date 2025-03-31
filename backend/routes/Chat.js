@@ -365,63 +365,63 @@ router.get("/chats/:sessionId", async (req, res) => {
 //     res.status(500).json({ error: "Internal Server Error" });
 //   }
 // });
-// router.get("/chatHistory/:id", async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     console.log(`Fetching chat history with chatId: ${id}`);
-
-//     const chat = await Chat.findOne({ _id: id });
-
-//     if (!chat) {
-//       return res.status(404).json({ error: "Chat not found" });
-//     }
-
-//     console.log("Fetched Chat Data:", chat); // ✅ Debugging
-
-//     res.json({ messages: chat.messages, sessionId: chat.sessionId });
-//   } catch (error) {
-//     console.error("Error fetching chat history:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
 router.get("/chatHistory/:id", async (req, res) => {
   try {
     const id = req.params.id;
-
-    // Validate ID format first to avoid unnecessary DB queries
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      return res.status(400).json({ error: "Invalid chat ID format" });
-    }
-
     console.log(`Fetching chat history with chatId: ${id}`);
 
-    // Use lean() for better performance when you only need JSON data
-    // Select only the fields you need
-    const chat = await Chat.findById(id).select("messages sessionId").lean();
+    const chat = await Chat.findOne({ _id: id });
 
     if (!chat) {
-      console.log(`Chat with ID ${id} not found`);
       return res.status(404).json({ error: "Chat not found" });
     }
 
-    console.log(`Successfully retrieved chat with ID: ${id}`);
+    console.log("Fetched Chat Data:", chat); // ✅ Debugging
 
-    res.json({
-      messages: chat.messages,
-      sessionId: chat.sessionId,
-    });
+    res.json({ messages: chat.messages, sessionId: chat.sessionId });
   } catch (error) {
     console.error("Error fetching chat history:", error);
-
-    // More specific error handling
-    if (error.name === "CastError") {
-      return res.status(400).json({ error: "Invalid chat ID format" });
-    }
-
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// router.get("/chatHistory/:id", async (req, res) => {
+//   try {
+//     const id = req.params.id;
+
+//     // Validate ID format first to avoid unnecessary DB queries
+//     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+//       return res.status(400).json({ error: "Invalid chat ID format" });
+//     }
+
+//     console.log(`Fetching chat history with chatId: ${id}`);
+
+//     // Use lean() for better performance when you only need JSON data
+//     // Select only the fields you need
+//     const chat = await Chat.findById(id).select("messages sessionId").lean();
+
+//     if (!chat) {
+//       console.log(`Chat with ID ${id} not found`);
+//       return res.status(404).json({ error: "Chat not found" });
+//     }
+
+//     console.log(`Successfully retrieved chat with ID: ${id}`);
+
+//     res.json({
+//       messages: chat.messages,
+//       sessionId: chat.sessionId,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching chat history:", error);
+
+//     // More specific error handling
+//     if (error.name === "CastError") {
+//       return res.status(400).json({ error: "Invalid chat ID format" });
+//     }
+
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 
 
 router.get("/projects/:sessionId", async (req, res) => {

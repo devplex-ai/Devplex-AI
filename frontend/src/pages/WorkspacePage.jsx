@@ -177,6 +177,7 @@ import CodeEditor from "../components/CodeEditor";
 import AppSideBar from "../components/AppSideBar";
 import { FolderGit2, FolderInput, Rocket } from "lucide-react";
 import { Check } from "lucide-react";
+import axios from "axios";
 
 const WorkspacePage = () => {
   const { sessionId } = useParams();
@@ -190,11 +191,11 @@ const WorkspacePage = () => {
   // Fetch Chat History
   const fetchChatHistory = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${apiURL}/api/chats/${sessionId}`
       );
       const data = await response.json();
-
+      console.log(data);
       if (!response.ok) {
         console.error("Error fetching chat:", data.error);
         return;
