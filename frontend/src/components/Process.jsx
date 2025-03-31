@@ -36,7 +36,7 @@ function Process() {
 
     return (
       <div className="bg-transparent">
-        <h1 className="text-2xl mb-6 sm:text-4xl md:text-5xl font-bold  bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        <h1 className="text-2xl mb-6 sm:text-2xl md:text-3xl font-bold  bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
           How It Works
         </h1>
         <div className=" bg-transparent text-white p-8">
