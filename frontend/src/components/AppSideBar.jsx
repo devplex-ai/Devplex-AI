@@ -228,7 +228,7 @@ const AppSideBar = () => {
         setIsLoading(true);
         try {
           // Fetch all user chats in a single request
-          const response = await fetch(`${apiURL}/api/chats/user/${user._id}`);
+          const response = await fetch(`${apiURL}/api/chatHistory/${user._id}`);
 
           if (!response.ok) {
             throw new Error("Failed to fetch chat history");
