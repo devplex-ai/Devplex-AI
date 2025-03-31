@@ -96,7 +96,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="fixed  top-0 left-0 h-screen w-fit bg-gray-800 rounded-tr-3xl rounded-br-3xl transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-40">
+      <div className="fixed top-0 left-0 h-screen w-fit bg-gray-800 rounded-tr-3xl rounded-br-3xl transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <div className="w-82 h-screen bg-black border-r-2 border-gray-400 rounded-tr-3xl rounded-br-3xl flex flex-col">
           <div
             onClick={() => navigate("/")}

@@ -74,7 +74,7 @@ const handleGenerate = async () => {
  top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
         ></div>
 
-        {/* Hero Section */}
+       
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
