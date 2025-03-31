@@ -134,7 +134,7 @@ const LoginPage = ({ onClose = () => {} }) => {
 
           <div className="flex gap-3 mb-6">
             <button
-              onClick={handleGoogleLogin}
+              onClick={googleLogin}
               disabled={isSocialLoading}
               aria-label="Sign in with Google"
               className="flex-1 gap-1 bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"
