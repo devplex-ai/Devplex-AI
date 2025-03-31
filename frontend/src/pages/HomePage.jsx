@@ -196,10 +196,10 @@ const VideoModal = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div className="bg-white/10 p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
-        <h2 className="text-xl font-semibold mb-3">Generating...</h2>
+        <h2 className="text-xl font-semibold mb-3 text-white">Generating...</h2>
 
-        <video autoPlay loop muted className="w-full rounded-lg">
-          <source src="/assets/codevideo.mp4" type="video/mp4" />
+        <video autoPlay loop muted className="w-40 rounded-full ">
+          <source src="/assets/codevideo.mp4" type="video/mp4"  />
           Your browser does not support the video tag.
         </video>
 
