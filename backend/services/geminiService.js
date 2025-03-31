@@ -570,11 +570,12 @@ const responses = [
 const CODE_GEN_PROMPT = `
 # Two-Phase Response System
 
-## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
-Respond conversationally to the user's request first, then proceed with the structured output.
-
-Example Response Format:
-"${randomResponse}  ${projectType}. This will include ${keyFeature1}, ${keyFeature2}, and ${keyFeature3}."
+ ## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
+  Respond conversationally to the user's request first, then proceed with the structured output.
+  
+  Example Response Format:
+  "${randomResponse} [Project Type]: [Brief 2-3 sentence explanation of the approach]. 
+  I'll generate a complete React project with [Key Features]."
 
 Provide step-by-step updates on file operations in a structured and natural format.
 Each update should mention the operation (Creating, Updating, Deleting) and the file name.
