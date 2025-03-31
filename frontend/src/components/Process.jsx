@@ -36,7 +36,9 @@ function Process() {
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="">How It Works</h1>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        How It Works
+      </h1>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {steps.map((step, index) => (
@@ -44,7 +46,7 @@ function Process() {
               key={step.number}
               className="relative flex flex-col items-center text-center"
             >
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gradient-to-br from-zinc-800 to-zinc-900 w-12 h-12 rounded-lg flex items-center justify-center shadow-xl ring-1 ring-white/10">
+              <div className="absolute -top-6 border-white/10 left-1/2 -translate-x-1/2 bg-gradient-to-br from-zinc-800 to-zinc-900 w-12 h-12 rounded-lg flex items-center justify-center shadow-xl ring-1 ring-white/10">
                 <span className="text-xl font-semibold bg-gradient-to-br from-white to-zinc-400 bg-clip-text text-transparent">
                   {step.number}
                 </span>
