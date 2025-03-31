@@ -475,7 +475,8 @@ const AppSideBar = () => {
             })
           );
 
-          setChatHistory(chatData); // ✅ Store all chats properly
+          setChatHistory(chatData);
+          console.log(chatData);// ✅ Store all chats properly
         } catch (error) {
           console.error("Error fetching chat history:", error);
         }
