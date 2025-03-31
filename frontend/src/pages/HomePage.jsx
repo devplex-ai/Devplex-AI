@@ -12,6 +12,7 @@ import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
 import { ArrowRight, Figma, Link } from "lucide-react";
+import Process from "../components/Process";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -138,11 +139,11 @@ const handleGenerate = async () => {
           <div className="flex justify-between items-center mt-2 w-full">
             {/* Group Import and Figma buttons together */}
             <div className="flex gap-2">
-              <h1 className="px-4 py-2 rounded-xl border flex items-center gap-2 border-white/10 ">
+              <h1 className="px-4 py-2 cursor-pointer rounded-xl border flex items-center gap-2 border-white/10 ">
                 <Link size={20}/>
                 Import
               </h1>
-              <h1 className="px-4 py-2 flex text-sm items-center gap-2 rounded-xl border border-white/10 ">
+              <h1 className="px-4 py-2 flex cursor-pointer text-sm items-center gap-2 rounded-xl border border-white/10 ">
                 <FaFigma size={20}/>
                 Figma
               </h1>
@@ -174,52 +175,7 @@ const handleGenerate = async () => {
           transition={{ delay: 1, duration: 1 }}
           className="mt-8 sm:mt-12  text-gray-300 z-20 w-full px-2"
         >
-          <h2 className="text-xl sm:text-2xl font-semibold">
-            Why Choose Devplex AI?
-          </h2>
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {/* Feature 1 */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="p-4 sm:p-6 bg-white/10 rounded-lg shadow-lg flex flex-col items-center text-center"
-            >
-              <FaRocket className="text-2xl sm:text-3xl text-[#64FFDA]" />
-              <h3 className="text-lg sm:text-xl font-semibold mt-2">
-                Fast Development
-              </h3>
-              <p className="mt-2 text-xs sm:text-sm">
-                Generate MVPs in minutes, not months.
-              </p>
-            </motion.div>
-
-            {/* Feature 2 */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="p-4 sm:p-6 bg-white/10 rounded-lg shadow-lg flex flex-col items-center text-center"
-            >
-              <FaBrain className="text-2xl sm:text-3xl text-[#64FFDA]" />
-              <h3 className="text-lg sm:text-xl font-semibold mt-2">
-                AI-Powered
-              </h3>
-              <p className="mt-2 text-xs sm:text-sm">
-                Leverage cutting-edge AI for high-quality code.
-              </p>
-            </motion.div>
-
-            {/* Feature 3 */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="p-4 sm:p-6 bg-white/10 rounded-lg shadow-lg flex flex-col items-center text-center"
-            >
-              <FaServer className="text-2xl sm:text-3xl text-[#64FFDA]" />
-              <h3 className="text-lg sm:text-xl font-semibold mt-2">
-                Scalable Solutions
-              </h3>
-              <p className="mt-2 text-xs sm:text-sm">
-                Build products that grow with your business.
-              </p>
-            </motion.div>
-          </div>
+          <Process/>
         </motion.div>
       </div>
       <Pricing />
