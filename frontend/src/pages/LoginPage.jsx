@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
 
 
 
@@ -16,6 +17,7 @@ const LoginPage = ({ onClose = () => {} }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
  const apiURL = import.meta.env.VITE_BASE_URL;
   const googleLogin = useGoogleLogin({
@@ -147,7 +149,7 @@ const LoginPage = ({ onClose = () => {} }) => {
               Google
             </button>
             <button
-              onClick={googleLogin}
+              onClick={handleGitHubLogin}
               disabled={isSocialLoading}
               aria-label="Sign in with GitHub"
               className="flex-1 gap-1  text-black bg-white font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"
