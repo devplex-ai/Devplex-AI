@@ -20,6 +20,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,6 +37,10 @@ const handleGenerate = async () => {
     return;
   }
 
+    setTimeout(() => {
+      setIsModalOpen(true);
+    }, 2000);
+
   
 
   setError("");
@@ -49,7 +54,10 @@ const handleGenerate = async () => {
 
     if (response.data.sessionId) {
       setPrompt(""); 
-      navigate(`/workspace/${response.data.sessionId}`);
+      setTimeout(() => {
+        setIsModalOpen(false); // Close modal after API call
+        navigate(`/workspace/${response.data.sessionId}`);
+      }, 500);
     } else {
       setError("Failed to start session. Please try again.");
     }
@@ -180,6 +188,25 @@ const handleGenerate = async () => {
       </div>
       <Pricing />
       <FAQ />
+    </div>
+  );
+};
+
+const VideoModal = () => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="bg-white/10 p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+        <h2 className="text-xl font-semibold mb-3">Generating...</h2>
+
+        <video autoPlay loop muted className="w-full rounded-lg">
+          <source src="/assets/codevideo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <p className="mt-2 text-gray-600">
+          Please wait while we process your request.
+        </p>
+      </div>
     </div>
   );
 };
