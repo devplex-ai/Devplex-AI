@@ -139,11 +139,11 @@ const handleGenerate = async () => {
             {/* Group Import and Figma buttons together */}
             <div className="flex gap-2">
               <h1 className="px-4 py-2 rounded-xl border flex items-center gap-2 border-white/10 ">
-                <Link size={40}/>
+                <Link size={20}/>
                 Import
               </h1>
               <h1 className="px-4 py-2 flex text-sm items-center gap-2 rounded-xl border border-white/10 ">
-                <FaFigma size={40}/>
+                <FaFigma size={20}/>
                 Figma
               </h1>
             </div>
