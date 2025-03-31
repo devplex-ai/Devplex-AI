@@ -325,23 +325,41 @@ router.post("/start-chat", async (req, res) => {
 //   }
 // });
 
-router.get("/chats/:sessionId", async (req, res) => { 
+// router.get("/chats/:sessionId", async (req, res) => { 
+//   try {
+//     const sessionId = req.params.sessionId;
+  
+//     const chat = await Chat.findOne({ sessionId });
+//     if (!chat) {
+//       console.log(`No chat found for sessionId: ${sessionId}`);
+//       return res.status(404).json({ error: "Chat not found" });
+//     }
+//     console.log(`Chat found. Number of messages: ${chat.messages.length}`);
+//     res.json({ messages: chat.messages });
+//   } catch (error) {
+//     console.error("Error fetching chat history:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+  
+//   }
+// })
+router.get("/chats/:sessionId", async (req, res) => {
   try {
     const sessionId = req.params.sessionId;
-  
+    console.log(`Fetching chat for sessionId: ${sessionId}`); // Debugging log
+
     const chat = await Chat.findOne({ sessionId });
     if (!chat) {
       console.log(`No chat found for sessionId: ${sessionId}`);
       return res.status(404).json({ error: "Chat not found" });
     }
+
     console.log(`Chat found. Number of messages: ${chat.messages.length}`);
     res.json({ messages: chat.messages });
   } catch (error) {
     console.error("Error fetching chat history:", error);
     res.status(500).json({ error: "Internal Server Error" });
-  
   }
-})
+});
 
 router.get("/chatHistory/:id", async (req, res) => {
   try {
