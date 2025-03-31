@@ -101,7 +101,7 @@ const handleGenerate = async () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-6 flex flex-col items-center w-full max-w-md sm:max-w-xl bg-white/10 backdrop-blur-lg p-4 sm:p-6 rounded-xl border border-white/20 shadow-lg mx-2"
+          className="mt-6 flex flex-col items-center w-full max-w-md sm:max-w-xl bg-white/10 backdrop-blur-lg p-2 sm:p-6 rounded-xl border border-white/20 shadow-lg mx-2"
         >
           {/* Input Field */}
           <textarea
@@ -154,7 +154,7 @@ const handleGenerate = async () => {
                 handleGenerate();
               }}
               disabled={loading}
-              className="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm sm:px-6 sm:py-3 font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 "Generating..."
