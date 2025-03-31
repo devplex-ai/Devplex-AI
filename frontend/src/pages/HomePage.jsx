@@ -135,21 +135,26 @@ const handleGenerate = async () => {
           )}
 
           {/* Generate Button */}
-          <div className="flex gap-2">
-            <h1 className="p-2 rounded border flex items-center gap-2 border-white/10 bg-white/20">
-              <Link />
-              Import
-            </h1>
-            <h1 className="p-2 flex items-center gap-2 rounded border border-white/10 bg-white/20">
-              <FaFigma />
-              Figma
-            </h1>
+          <div className="flex justify-between items-center w-full">
+            {/* Group Import and Figma buttons together */}
+            <div className="flex gap-2">
+              <h1 className="p-2 rounded border flex items-center gap-2 border-white/10 bg-white/20">
+                <Link />
+                Import
+              </h1>
+              <h1 className="p-2 flex items-center gap-2 rounded border border-white/10 bg-white/20">
+                <FaFigma />
+                Figma
+              </h1>
+            </div>
+
+            {/* Generate button */}
             <button
               onClick={() => {
                 handleGenerate();
               }}
               disabled={loading}
-              className="mt-4 w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Generating..." : "Generate"}
             </button>
