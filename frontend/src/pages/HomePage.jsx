@@ -63,7 +63,7 @@ const handleGenerate = async () => {
 
 
   return (
-    <div className="bg-black h-full min-h-screen">
+    <div className="bg-black h-full min-h-screen pl-8">
       <AppSideBar />
       <Navbar />
       <div className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black text-white">
