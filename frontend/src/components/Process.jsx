@@ -35,7 +35,7 @@ function Process() {
 
 
     return (
-        <div className="  flex flex-col items-center w-full  bg-white/3 backdrop-blur-lg p-2 sm:p-6 rounded-xl border border-white/20 shadow-lg mx-2">
+        <div className=" bg-transparent max-w-3xl">
           <div className="max-w-7xl mx-auto mt-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {steps.map((step, index) => (
