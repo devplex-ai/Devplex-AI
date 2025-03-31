@@ -460,36 +460,37 @@ const AppSideBar = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
   // ✅ Fetch all chat histories & update state properly
-  useEffect(() => {
-    if (user?.chats && user.chats.length > 0) {
-      const fetchAllChats = async () => {
-        try {
-          const chatData = await Promise.all(
-            user.chats.map(async (chatId) => {
-              const response = await fetch(
-                `${apiURL}/api/chatHistory/${chatId}`
-              );
-              if (!response.ok) throw new Error("Error fetching chat");
-              const data = await response.json();
-              console.log("Fetched chat data:", data); 
-              return {
-                _id: chatId,
-                messages: data.messages,
-                sessionId: data.sessionId,
-              };
-            })
-          );
+useEffect(() => {
+  if (user?.chats && user.chats.length > 0) {
+    const fetchAllChats = async () => {
+      try {
+        const chatData = await Promise.all(
+          user.chats.map(async (chatId) => {
+            const response = await fetch(`${apiURL}/api/chatHistory/${chatId}`);
+            if (!response.ok) throw new Error("Error fetching chat");
 
-          setChatHistory(chatData);
-          console.log(chatData);// ✅ Store all chats properly
-        } catch (error) {
-          console.error("Error fetching chat history:", error);
-        }
-      };
+            const data = await response.json();
+            console.log(`Chat ID: ${chatId}, API Response:`, data); // Debugging
 
-      fetchAllChats();
-    }
-  }, [user]); // ✅ Runs only when `user` changes
+            return {
+              _id: chatId,
+              messages: data.messages,
+              sessionId: data.sessionId || "Session ID Missing", // Ensure sessionId is accessed properly
+            };
+          })
+        );
+
+        setChatHistory(chatData);
+        console.log("Final Chat History:", chatData);
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+
+    fetchAllChats();
+  }
+}, [user]);
+ // ✅ Runs only when `user` changes
 
   const handleLogout = () => {
     localStorage.removeItem("token");
