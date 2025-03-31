@@ -97,15 +97,11 @@ export default {
 </html>`,
     },
 
-  
     "/App.css": {
       code: `@tailwind base;
 @tailwind components;
 @tailwind utilities;`,
     },
-   
-
-
 
     "/tailwind.config.js": {
       code: `/** @type {import('tailwindcss').Config} */
@@ -136,6 +132,7 @@ export default config;`,
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
     "react-scripts": "^5.0.1",
+    "prop-types": "^15.8.1",
     tailwindcss: "^3.4.1",
     autoprefixer: "^10.4.14",
     postcss: "^8.4.28",
