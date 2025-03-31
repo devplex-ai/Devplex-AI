@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaRocket, FaBrain, FaServer } from "react-icons/fa";
 import Navbar from "../components/Navbar";
@@ -10,7 +10,7 @@ import PricingPage from "./PricingPage";
 import Pricing from "../components/Pricing";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
-
+import { v4 as uuidv4 } from "uuid";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -23,6 +23,42 @@ const Home = () => {
 
   const { user } = useSelector((state) => state.auth);
 
+// const handleGenerate = async () => {
+//   if (!user) {
+//     navigate("/login");
+//     return;
+//   }
+
+//   if (!prompt.trim()) {
+//     setError("Please describe your idea.");
+//     return;
+//   }
+
+  
+
+//   setError("");
+//   setLoading(true);
+
+//   try {
+//     const response = await axios.post(`${apiURL}/api/start-chat`, {
+//       userId: user._id,
+//       prompt,
+//     });
+
+//     if (response.data.sessionId) {
+//       setPrompt(""); 
+//       navigate(`/workspace/${response.data.sessionId}`);
+//     } else {
+//       setError("Failed to start session. Please try again.");
+//     }
+//   } catch (error) {
+//     console.error("Error starting chat:", error);
+//     setError("Something went wrong. Please try again.");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
 const handleGenerate = async () => {
   if (!user) {
     navigate("/login");
@@ -34,21 +70,30 @@ const handleGenerate = async () => {
     return;
   }
 
-  
-
   setError("");
   setLoading(true);
 
   try {
+
+    const sessionId = uuidv4();
+
+   
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate(`/workspace/${sessionId}`);
+    }, 1000);
+
+    return () => clearTimeout(timer); 
+  }, []);
+
+    // Send the session ID to the backend to create the project
     const response = await axios.post(`${apiURL}/api/start-chat`, {
       userId: user._id,
       prompt,
+      sessionId, // Send the generated session ID
     });
 
-    if (response.data.sessionId) {
-      setPrompt(""); 
-      navigate(`/workspace/${response.data.sessionId}`);
-    } else {
+    if (!response.data.success) {
       setError("Failed to start session. Please try again.");
     }
   } catch (error) {
@@ -58,7 +103,6 @@ const handleGenerate = async () => {
     setLoading(false);
   }
 };
-
 
   return (
     <div className="bg-black h-full min-h-screen">
