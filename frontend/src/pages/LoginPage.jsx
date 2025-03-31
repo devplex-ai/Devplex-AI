@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/authSlice";
 
 
 
