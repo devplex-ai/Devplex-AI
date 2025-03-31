@@ -199,7 +199,7 @@ router.get("/chatHistory/:id", async (req, res) => {
     }
 
  
-    res.json({ messages: chat.messages });
+    res.json({ messages: chat.messages, sessionId: chat.sessionId });
   } catch (error) {
     console.error("Error fetching chat history:", error);
     res.status(500).json({ error: "Internal Server Error" });
