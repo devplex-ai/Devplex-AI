@@ -82,7 +82,6 @@ const handleGenerate = async () => {
  top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
         ></div>
 
-       
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -148,11 +147,11 @@ const handleGenerate = async () => {
             {/* Group Import and Figma buttons together */}
             <div className="flex gap-2">
               <h1 className="px-4 py-2 cursor-pointer rounded-xl border flex items-center gap-2 border-white/10 ">
-                <Link size={20}/>
+                <Link size={20} />
                 Import
               </h1>
               <h1 className="px-4 py-2 flex cursor-pointer text-sm items-center gap-2 rounded-xl border border-white/10 ">
-                <FaFigma size={20}/>
+                <FaFigma size={20} />
                 Figma
               </h1>
             </div>
@@ -183,11 +182,12 @@ const handleGenerate = async () => {
           transition={{ delay: 1, duration: 1 }}
           className="mt-8 sm:mt-12  text-gray-300 z-20 w-full px-2"
         >
-          <Process/>
+          <Process />
         </motion.div>
       </div>
       <Pricing />
       <FAQ />
+      {isModalOpen && <VideoModal />}
     </div>
   );
 };
