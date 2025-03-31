@@ -26,7 +26,6 @@ const AppSideBar = () => {
 
 useEffect(() => {
   if (user?.chats && user.chats.length > 0) {
-    console.log("User chats before fetching:", user.chats); 
     const fetchAllChats = async () => {
       try {
         const chatData = await Promise.all(
@@ -35,8 +34,6 @@ useEffect(() => {
             if (!response.ok) throw new Error(`Error fetching chat ${chatId}`);
 
             const data = await response.json();
-            console.log(`Chat ID: ${chatId}, API Response:`, data); 
-
             return {
               _id: chatId,
               messages: data.messages,
@@ -45,8 +42,7 @@ useEffect(() => {
           })
         );
 
-        console.log("Final fetched chats:", chatData); // ✅ Check if all 17 chats are fetched
-        setChatHistory(chatData);
+        setChatHistory((prevChats) => [...chatData]); // Ensure full replacement
       } catch (error) {
         console.error("Error fetching chat history:", error);
       }
@@ -55,6 +51,7 @@ useEffect(() => {
     fetchAllChats();
   }
 }, [user]);
+
 
 
 
