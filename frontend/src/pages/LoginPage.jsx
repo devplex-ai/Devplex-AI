@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify"
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
+import { useGoogleLogin } from "@react-oauth/google";
 
 
 
@@ -17,11 +18,43 @@ const LoginPage = ({ onClose = () => {} }) => {
   const navigate = useNavigate();
 
  const apiURL = import.meta.env.VITE_BASE_URL;
-  const handleGoogleLogin = () => {
-    setIsSocialLoading(true);
-    window.location.href = `${apiURL}/auth/google`;
-   
-  };
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        // Fetch user info from Google API
+        const { data: userInfo } = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse?.access_token}`,
+            },
+          }
+        );
+
+        console.log(userInfo);
+
+        const { data: response } = await axios.post(
+          `${apiURL}/auth/google-login`,
+          userInfo,
+          { withCredentials: true }
+        );
+
+        if (response.token) {
+          // Dispatch to Redux store
+          dispatch(setUser({ user: response.user, token: response.token }));
+          toast.success("Google Login Successful!");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Google user info fetch failed:", error);
+        toast.error("Failed to fetch user info from Google.");
+      }
+    },
+    onError: (errorResponse) => {
+      console.log("Google Login Error:", errorResponse);
+      toast.error("Google login failed. Please try again.");
+    },
+  });
 
   const handleGitHubLogin = () => {
     setIsSocialLoading(true);
@@ -114,7 +147,7 @@ const LoginPage = ({ onClose = () => {} }) => {
               Google
             </button>
             <button
-              onClick={handleGitHubLogin}
+              onClick={googleLogin}
               disabled={isSocialLoading}
               aria-label="Sign in with GitHub"
               className="flex-1 gap-1  text-black bg-white font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"

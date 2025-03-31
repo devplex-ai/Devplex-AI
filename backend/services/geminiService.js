@@ -581,7 +581,7 @@ const responses = [
 
     const responseText =
       response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    console.log(responseText);
+  
 
     if (!responseText) {
       console.error("No response text found in API response");
