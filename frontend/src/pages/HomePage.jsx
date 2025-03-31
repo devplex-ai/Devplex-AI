@@ -11,7 +11,7 @@ import Pricing from "../components/Pricing";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
-import { Figma, Link } from "lucide-react";
+import { ArrowRight, Figma, Link } from "lucide-react";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -135,14 +135,14 @@ const handleGenerate = async () => {
           )}
 
           {/* Generate Button */}
-          <div className="flex justify-between items-center w-full">
+          <div className="flex justify-between items-center mt-2 w-full">
             {/* Group Import and Figma buttons together */}
             <div className="flex gap-2">
-              <h1 className="p-2 rounded border flex items-center gap-2 border-white/10 bg-white/20">
+              <h1 className="px-4 py-2 rounded-xl border flex items-center gap-2 border-white/10 ">
                 <Link />
                 Import
               </h1>
-              <h1 className="p-2 flex items-center gap-2 rounded border border-white/10 bg-white/20">
+              <h1 className="px-4 py-2 flex text-sm items-center gap-2 rounded-xl border border-white/10 ">
                 <FaFigma />
                 Figma
               </h1>
@@ -156,7 +156,13 @@ const handleGenerate = async () => {
               disabled={loading}
               className="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Generating..." : "Generate"}
+              {loading ? (
+                "Generating..."
+              ) : (
+                <>
+                  Generate <ArrowRight />
+                </>
+              )}
             </button>
           </div>
         </motion.div>
