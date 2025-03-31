@@ -35,11 +35,11 @@ function Process() {
 
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
+    <div className=" bg-black text-white p-8">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
         How It Works
       </h1>
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mt-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {steps.map((step, index) => (
             <div
@@ -50,11 +50,11 @@ function Process() {
                 <span className="text-xl font-semibold bg-gradient-to-br from-white to-zinc-400 bg-clip-text text-transparent">
                   {step.number}
                 </span>
-              </div>
+             
 
               {index < steps.length - 1 && (
                 <div className="hidden md:block absolute top-6 left-[calc(50%+1.5rem)] w-[calc(100%-3rem)] h-[1px] bg-zinc-800" />
-              )}
+              )} </div>
 
               <div className="space-y-4 flex flex-col items-center">
                 <div className="text-white">{step.icon}</div>
