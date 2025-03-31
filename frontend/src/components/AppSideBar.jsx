@@ -458,6 +458,7 @@ const AppSideBar = () => {
   const { user } = useSelector((state) => state.auth);
   const [chatHistory, setChatHistory] = useState([]);
 
+ const apiURL = import.meta.env.VITE_BASE_URL;
   // ✅ Fetch all chat histories & update state properly
   useEffect(() => {
     if (user?.chats && user.chats.length > 0) {
@@ -466,7 +467,7 @@ const AppSideBar = () => {
           const chatData = await Promise.all(
             user.chats.map(async (chatId) => {
               const response = await fetch(
-                `http://localhost:5000/api/chatHistory/${chatId}`
+                `${apiURL}/api/chatHistory/${chatId}`
               );
               if (!response.ok) throw new Error("Error fetching chat");
               const data = await response.json();

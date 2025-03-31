@@ -185,17 +185,13 @@ const WorkspacePage = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [userPromt, setUserPrompt] = useState("");
   const [userAvatar, setUserAvatar] = useState(user?.avatar);
-
-
-  
-
-
+ const apiURL = import.meta.env.VITE_BASE_URL;
 
   // Fetch Chat History
   const fetchChatHistory = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/chats/${sessionId}`
+        `${apiURL}/api/chats/${sessionId}`
       );
       const data = await response.json();
 

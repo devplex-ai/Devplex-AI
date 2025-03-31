@@ -252,7 +252,7 @@ const CodeEditor = ({sessionId}) => {
   const [isMaximized, setIsMaximized] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+ const apiURL = import.meta.env.VITE_BASE_URL;
 
 
 
@@ -268,9 +268,7 @@ const CodeEditor = ({sessionId}) => {
        setLoading(true);
        setError(null);
 
-       const response = await axios.get(
-         `http://localhost:5000/api/projects/${sessionId}`
-       );
+       const response = await axios.get(`${apiURL}/api/projects/${sessionId}`);
 
      
        const { files: responseFiles } = response.data;

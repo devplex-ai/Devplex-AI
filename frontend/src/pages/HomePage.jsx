@@ -13,6 +13,7 @@ import AppSideBar from "../components/AppSideBar";
 
 const Home = () => {
 
+ const apiURL = import.meta.env.VITE_BASE_URL;
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,8 +40,8 @@ const handleGenerate = async () => {
   setLoading(true);
 
   try {
-    const response = await axios.post("http://localhost:5000/api/start-chat", {
-      userId: user._id, 
+    const response = await axios.post(`${apiURL}/api/start-chat`, {
+      userId: user._id,
       prompt,
     });
 

@@ -317,11 +317,10 @@ const SignupPage = ({ onClose = () => {} }) => {
   const dispatch = useDispatch();
 
   const { userDetail, setUserDetail }=useContext(UserDetailContext);
-
-
+ const apiURL = import.meta.env.VITE_BASE_URL;
   const handleGitHubLogin = () => {
     setIsSocialLoading(true);
-    window.location.href = "http://localhost:5000/auth/github";
+    window.location.href = `${apiURL}/auth/github`;
   };
 
   const validateEmail = (email) => {
@@ -339,7 +338,7 @@ const SignupPage = ({ onClose = () => {} }) => {
     setError("");
 
     try {
-      const response = await axios.post(`http://localhost:5000/auth/sign-up`, {
+      const response = await axios.post(`${apiURL}/auth/sign-up`, {
         email,
         password,
       });
@@ -373,9 +372,9 @@ const SignupPage = ({ onClose = () => {} }) => {
 
           console.log(userInfo);
 
-          // Send user info to backend to save & get JWT
+       
           const { data: response } = await axios.post(
-            "http://localhost:5000/auth/google-login",
+            `${apiURL}/auth/google-login`,
             userInfo,
             { withCredentials: true }
           );

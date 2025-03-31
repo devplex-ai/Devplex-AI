@@ -1,12 +1,17 @@
 export const fetchUserData = async (token, userId, dispatch, setUser) => {
+
+  const apiURL = import.meta.env.VITE_BASE_URL;
   try {
-    const response = await fetch("http://localhost:5000/auth/user", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        "userid": userId,
-      },
-    });
+    const response = await fetch(
+      `${apiURL}/auth/user`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          userid: userId,
+        },
+      }
+    );
 
     const data = await response.json();
 

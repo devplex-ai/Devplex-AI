@@ -16,15 +16,16 @@ const LoginPage = ({ onClose = () => {} }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+ const apiURL = import.meta.env.VITE_BASE_URL;
   const handleGoogleLogin = () => {
     setIsSocialLoading(true);
-    window.location.href = "http://localhost:5000/auth/google";
+    window.location.href = `${apiURL}/auth/google`;
    
   };
 
   const handleGitHubLogin = () => {
     setIsSocialLoading(true);
-    window.location.href = "http://localhost:5000/auth/github";
+    window.location.href = `${apiURL}/auth/github`;
   };
 
   const validateEmail = (email) => {
@@ -45,7 +46,7 @@ const LoginPage = ({ onClose = () => {} }) => {
     setError("");
 
     try {
-      const response = await axios.post(`http://localhost:5000/auth/sign-in`, {
+      const response = await axios.post(`${apiURL}/auth/sign-in`, {
         email,
         password,
       });
