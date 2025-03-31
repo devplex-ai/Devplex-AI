@@ -13,15 +13,28 @@ connectDB();
 
 
 app.use(express.json());
+const allowedOrigins = [
+  "https://devplex-ai-sigma.vercel.app",
+  "https://www.devplex.in",
+  "https://devplex.in"
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // Allow only your frontend domain
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true, // Allow cookies and authentication headers
     methods: "GET, POST, PUT, DELETE, OPTIONS",
     allowedHeaders:
       "Origin, X-Requested-With, Content-Type, Accept, Authorization",
   })
 );
+
 app.use(
   session({
     secret: process.env.JWT_SECRET,
