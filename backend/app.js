@@ -13,7 +13,15 @@ connectDB();
 
 
 app.use(express.json());
-app.use(cors({ origin: process.env.CLIENT_URL}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL, // Allow only your frontend domain
+    credentials: true, // Allow cookies and authentication headers
+    methods: "GET, POST, PUT, DELETE, OPTIONS",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  })
+);
 app.use(
   session({
     secret: process.env.JWT_SECRET,
