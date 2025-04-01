@@ -141,8 +141,104 @@ RESPONSE FORMAT:
 
 
 `;
-  try {
+  // try {
 
+  //   const response = await axios.post(API_URL, {
+  //     contents: [
+  //       {
+  //         parts: [{ text: CODE_GEN_PROMPT }],
+  //       },
+  //     ],
+  //   });
+
+
+  //   const responseText =
+  //     response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  
+
+  //   if (!responseText) {
+  //     console.error("No response text found in API response");
+  //     return {
+  //       error: "No response text found",
+  //       details: "The API response did not contain the expected text",
+  //       fullResponse: response.data,
+  //     };
+  //   }
+
+
+  //   let jsonResponse;
+  //   try {
+      
+  //     const cleanedResponse = responseText
+  //       .replace(/^```(json)?\n/, "")
+  //       .replace(/```$/, "")
+  //       .replace(/`/g, "")
+  //       .trim();
+
+  //     jsonResponse = JSON.parse(cleanedResponse);
+  //   } catch (parseError) {
+  //     console.error("JSON Parsing Error:", parseError);
+
+
+  //     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+  //     if (jsonMatch) {
+  //       try {
+  //         jsonResponse = JSON.parse(jsonMatch[0]);
+  //       } catch (secondAttemptError) {
+  //         console.error("Secondary parsing failed:", secondAttemptError);
+  //         return {
+  //           error: "Invalid JSON response from AI",
+  //           details: secondAttemptError.message,
+  //           rawResponse: responseText,
+  //         };
+  //       }
+  //     } else {
+  //       return {
+  //         error: "No valid JSON found in response",
+  //         details: parseError.message,
+  //         rawResponse: responseText,
+  //       };
+  //     }
+  //   }
+
+  //   // Validate the response structure
+  //   if (!jsonResponse.files || typeof jsonResponse.files !== "object") {
+  //     return {
+  //       error: "Invalid project structure",
+  //       details: "Response missing required 'files' object",
+  //       response: jsonResponse,
+  //     };
+  //   }
+
+  //   // Process file contents to ensure proper formatting
+  //   const processedFiles = {};
+  //   for (const [path, file] of Object.entries(jsonResponse.files)) {
+  //     processedFiles[path] = {
+  //       code: file.code
+  //         ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"')
+  //         : "",
+  //     };
+  //   }
+
+  //   return {
+  //     ...jsonResponse,
+  //     files: processedFiles,
+  //   };
+  // } catch (error) {
+  //   console.error("AI Service Error:", {
+  //     message: error.message,
+  //     stack: error.stack,
+  //     response: error.response?.data,
+  //   });
+
+  //   return {
+  //     error: "Failed to process AI response",
+  //     details: error.message,
+  //     code: "AI_SERVICE_ERROR",
+  //   };
+  // }
+
+  try {
     const response = await axios.post(API_URL, {
       contents: [
         {
@@ -151,10 +247,8 @@ RESPONSE FORMAT:
       ],
     });
 
-
     const responseText =
       response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  
 
     if (!responseText) {
       console.error("No response text found in API response");
@@ -165,22 +259,23 @@ RESPONSE FORMAT:
       };
     }
 
+  
+    const cleanedResponse = responseText
+      .replace(/^```(json)?\n/, "")
+      .replace(/```$/, "")
+      .replace(/\\([^nrtbf"\\/])/g, "\\\\$1") 
+      .replace(/\\"/g, '"') 
+      .replace(/\\n/g, "\n") 
+      .trim();
 
     let jsonResponse;
     try {
-      
-      const cleanedResponse = responseText
-        .replace(/^```(json)?\n/, "")
-        .replace(/```$/, "")
-        .replace(/`/g, "")
-        .trim();
-
       jsonResponse = JSON.parse(cleanedResponse);
     } catch (parseError) {
-      console.error("JSON Parsing Error:", parseError);
+      console.error("JSON Parsing Error:", parseError.message);
 
-
-      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      // Attempt to extract JSON from a malformed response
+      const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         try {
           jsonResponse = JSON.parse(jsonMatch[0]);
@@ -189,28 +284,32 @@ RESPONSE FORMAT:
           return {
             error: "Invalid JSON response from AI",
             details: secondAttemptError.message,
-            rawResponse: responseText,
+            rawResponse: cleanedResponse,
           };
         }
       } else {
         return {
           error: "No valid JSON found in response",
           details: parseError.message,
-          rawResponse: responseText,
+          rawResponse: cleanedResponse,
         };
       }
     }
 
-    // Validate the response structure
-    if (!jsonResponse.files || typeof jsonResponse.files !== "object") {
+  
+    if (
+      !jsonResponse ||
+      typeof jsonResponse !== "object" ||
+      !jsonResponse.files
+    ) {
       return {
         error: "Invalid project structure",
-        details: "Response missing required 'files' object",
+        details: "Response is missing required 'files' object",
         response: jsonResponse,
       };
     }
 
-    // Process file contents to ensure proper formatting
+    // Process files correctly
     const processedFiles = {};
     for (const [path, file] of Object.entries(jsonResponse.files)) {
       processedFiles[path] = {
@@ -237,6 +336,7 @@ RESPONSE FORMAT:
       code: "AI_SERVICE_ERROR",
     };
   }
+
 };
 
 module.exports = generateCodeFromAI;
