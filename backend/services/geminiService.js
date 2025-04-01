@@ -104,7 +104,7 @@ TECHNICAL REQUIREMENTS:
    - Use Prettier-compatible formatting
    - Include all necessary imports at the top of each file
    - Avoid nested ternary operators
-   - Use pexel free stock images if necessary
+   - Use Pexels, Unsplash, Pixabay  free stock images dont do this  (import heroImage from '../assets/hero.jpg';) only use urls
    - Use date-fns for date formatting and react-chartjs-2 for charts/graphs if necessary
    - Include all required import statements for external libraries
    - Use lucide-react for icons with proper imports
