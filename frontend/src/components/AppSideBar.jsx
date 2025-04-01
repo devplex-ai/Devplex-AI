@@ -142,7 +142,7 @@ const AppSideBar = () => {
                           onClick={() =>
                             navigate(`/workspace/${chat.sessionId}`)
                           }
-                          className="w-full flex items-center gap-2 rounded-lg bg-gray-900 px-2 py-2 text-gray-300 hover:bg-gray-800 transition-colors"
+                          className="w-full cursor-pointer flex items-center gap-2 rounded-lg bg-gray-900 px-2 py-2 text-gray-300 hover:bg-gray-800 transition-colors"
                         >
                           <MessageSquare size={18} />
                           <span className="truncate max-w-[180px]">
@@ -163,7 +163,7 @@ const AppSideBar = () => {
                           onClick={() =>
                             navigate(`/workspace/${chat.sessionId}`)
                           }
-                          className="w-full flex items-center gap-2 rounded-lg bg-gray-900 px-2 py-2 text-gray-300 hover:bg-gray-800 transition-colors"
+                          className="w-full cursor-pointer flex items-center gap-2 rounded-lg bg-gray-900 px-2 py-2 text-gray-300 hover:bg-gray-800 transition-colors"
                         >
                           <MessageSquare size={18} />
                           <span className="truncate max-w-[180px]">
