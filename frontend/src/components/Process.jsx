@@ -35,7 +35,7 @@ function Process() {
 
 
     return (
-        <div className=" bg-transparent pt-4">
+        <div className=" bg-transparent pt-2">
           <div className="max-w-7xl mx-auto mt-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {steps.map((step, index) => (
