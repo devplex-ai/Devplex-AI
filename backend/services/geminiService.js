@@ -110,6 +110,14 @@ EXAMPLE OUTPUT:
 
 - Use Tailwind Classes for Adding styles to the elements.
 
+- If user want to develop the full website the create atleat 5 pages more than 5 components like(Navbar, Footer, HeroSection, Testimonials, Contact form ,etc.)
+
+- If there is no need to make a multiple page dont make it focus on functionality ok.
+
+- Make better UI/UX. Apply UI/UX principals.
+
+- For better readability, separate components and functions into their own files.
+
 - Proper use backticks inside JSX attributes, Dont make mistake fix it.  
 
 - Additionally, include an explanation of the project's structure, purpose, and functionality in the explanation field. Make the response concise and clear in one paragraph.
