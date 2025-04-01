@@ -303,6 +303,10 @@ const CodeEditor = ({sessionId}) => {
        const mergedFiles = { ...Lookup.DEFAULT_FILE, ...formattedFiles };
 
        setFiles(mergedFiles);
+           setTimeout(() => {
+             setActiveTab("preview");
+           }, 2000);
+
      } catch (err) {
        console.error("Fetch error:", err);
        setError(
