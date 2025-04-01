@@ -88,7 +88,7 @@ useEffect(() => {
           <Avatar
             src={user?.avatar}
             alt="User Avatar"
-            name={user.name}
+            name={user?.name}
             size={40}
             className="h-10 w-10 rounded-full"
           />
@@ -177,7 +177,7 @@ useEffect(() => {
             <div className="flex items-center gap-3">
               <Avatar
                 src={user?.avatar}
-                name={user.name}
+                name={user?.name}
                 alt="User Avatar"
                 size={40}
                 className="h-10 w-10 rounded-full"

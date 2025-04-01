@@ -20,12 +20,54 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
 
+// const handleGenerate = async () => {
+//   if (!user) {
+//     navigate("/login");
+//     return;
+//   }
+
+//   if (!prompt.trim()) {
+//     setError("Please describe your idea.");
+//     return;
+//   }
+
+//     setTimeout(() => {
+//       setIsModalOpen(true);
+//     }, 2000);
+
+  
+
+//   setError("");
+//   setLoading(true);
+
+//   try {
+//     const response = await axios.post(`${apiURL}/api/start-chat`, {
+//       userId: user._id,
+//       prompt,
+//     });
+
+//     if (response.data.sessionId) {
+//       setPrompt(""); 
+//       setTimeout(() => {
+//         setIsModalOpen(false); // Close modal after API call
+//         navigate(`/workspace/${response.data.sessionId}`);
+//       }, 500);
+//     } else {
+//       setError("Failed to start session. Please try again.");
+//     }
+//   } catch (error) {
+//     console.error("Error starting chat:", error);
+//     setError("Something went wrong. Please try again.");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 const handleGenerate = async () => {
   if (!user) {
     navigate("/login");
@@ -37,32 +79,41 @@ const handleGenerate = async () => {
     return;
   }
 
-    setTimeout(() => {
-      setIsModalOpen(true);
-    }, 2000);
-
-  
-
   setError("");
   setLoading(true);
+  setProgress(0); // Reset progress
+  setStatus("loading");
+  setIsModalOpen(true); // Open modal immediately
 
   try {
-    const response = await axios.post(`${apiURL}/api/start-chat`, {
-      userId: user._id,
-      prompt,
-    });
+    const response = await axios.post(
+      `${apiURL}/api/start-chat`,
+      { userId: user._id, prompt },
+      {
+        onDownloadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setProgress(percentCompleted);
+        },
+      }
+    );
 
     if (response.data.sessionId) {
-      setPrompt(""); 
+      setStatus("success");
+      setProgress(100);
+      setPrompt("");
+
       setTimeout(() => {
-        setIsModalOpen(false); // Close modal after API call
+        setIsModalOpen(false); // Close modal after success animation
         navigate(`/workspace/${response.data.sessionId}`);
-      }, 500);
+      }, 1000);
     } else {
-      setError("Failed to start session. Please try again.");
+      throw new Error("Failed to start session.");
     }
   } catch (error) {
     console.error("Error starting chat:", error);
+    setStatus("error");
     setError("Something went wrong. Please try again.");
   } finally {
     setLoading(false);
@@ -212,41 +263,109 @@ const messages = [
   "Launching project...",
 ];
 
-const VideoModal = () => {
-  const [currentMessage, setCurrentMessage] = useState(messages[0]);
-  const [index, setIndex] = useState(0);
+// const VideoModal = () => {
+//   const [currentMessage, setCurrentMessage] = useState(messages[0]);
+//   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prevIndex) => {
-        const newIndex = (prevIndex + 1) % messages.length;
-        setCurrentMessage(messages[newIndex]);
-        return newIndex;
-      });
-    }, 2000);
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setIndex((prevIndex) => {
+//         const newIndex = (prevIndex + 1) % messages.length;
+//         setCurrentMessage(messages[newIndex]);
+//         return newIndex;
+//       });
+//     }, 2000);
 
-    return () => clearInterval(interval);
-  }, []);
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   return (
+//     <>
+//       <div className="fixed inset-0 z-50 flex justify-center items-center">
+//         <div className="flex flex-col items-center gap-3 bg-black p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+//           <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
+//             {currentMessage}
+//           </h2>
+
+//           <video autoPlay loop muted className="w-40 rounded-full">
+//             <source src="/assets/codevideo.mp4" type="video/mp4" />
+//             Your browser does not support the video tag.
+//           </video>
+
+//           <p className="mt-2 text-white">
+//             Please wait while we process your request.
+//           </p>
+//         </div>
+//       </div>
+//       <div className="fixed inset-0 z-40 bg-gray-900 opacity-50"></div>
+//     </>
+//   );
+// };
+const VideoModal = ({ isOpen, progress, status, onClose }) => {
+  if (!isOpen) return null; // Don't render if modal is closed
 
   return (
     <>
+      {/* Background Overlay */}
+      <div className="fixed inset-0 z-40 bg-gray-900 bg-opacity-50 backdrop-blur-md"></div>
+
+      {/* Modal Container */}
       <div className="fixed inset-0 z-50 flex justify-center items-center">
-        <div className="flex flex-col items-center gap-3 bg-black p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+        <div className="relative flex flex-col items-center gap-3 bg-black/80 p-6 rounded-lg shadow-lg w-full max-w-lg text-center border border-gray-700">
+          {/* Close Button (Disable if still loading) */}
+          {status !== "loading" && (
+            <button
+              onClick={onClose}
+              className="absolute top-2 right-3 text-white hover:text-gray-400"
+            >
+              <X size={24} />
+            </button>
+          )}
+
+          {/* Dynamic Message */}
           <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
-            {currentMessage}
+            {status === "loading"
+              ? "Processing your request..."
+              : status === "success"
+              ? "Success!"
+              : "Error occurred!"}
           </h2>
 
-          <video autoPlay loop muted className="w-40 rounded-full">
-            <source src="/assets/codevideo.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          {/* Loading Video / Success Animation */}
+          {status === "loading" ? (
+            <video
+              autoPlay
+              loop
+              muted
+              className="w-40 rounded-full border-4 border-white/20"
+            >
+              <source src="/assets/codevideo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          ) : status === "success" ? (
+            <CheckCircle size={64} className="text-green-400 animate-bounce" />
+          ) : (
+            <AlertCircle size={64} className="text-red-400 animate-shake" />
+          )}
 
-          <p className="mt-2 text-white">
-            Please wait while we process your request.
+          {/* Progress Bar */}
+          <div className="w-full h-2 bg-gray-700 rounded-full mt-3">
+            <div
+              className="h-full bg-green-400 rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+
+          {/* Status Message */}
+          <p className="mt-2 text-white text-sm">
+            {status === "loading"
+              ? `Progress: ${progress}%`
+              : status === "success"
+              ? "Your project is ready!"
+              : "Something went wrong. Try again."}
           </p>
         </div>
       </div>
-      <div className="fixed inset-0 z-40 bg-gray-900 opacity-50"></div>
     </>
   );
 };
