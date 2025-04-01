@@ -296,7 +296,7 @@ const messages = [
 //     </>
 //   );
 // };
-const VideoModal = ({ isOpen, status, onClose }) => {
+const VideoModal = ({ isOpen,progress, status, onClose }) => {
 
   const [currentMessage, setCurrentMessage] = useState(messages[0]);
   const [index, setIndex] = useState(0);
