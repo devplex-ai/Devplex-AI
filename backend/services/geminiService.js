@@ -28,6 +28,8 @@ const responses = [
   const randomResponse =
     responses[Math.floor(Math.random() * responses.length)];
 
+  const winner = 'X';
+  const xIsNext = 'yes';
 
 const CODE_GEN_PROMPT = `
 # Two-Phase Response System
