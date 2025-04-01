@@ -337,109 +337,126 @@ RESPONSE FORMAT:
   //   };
   // }
   
-  try {
-    const response = await axios.post(API_URL, {
-      contents: [{ parts: [{ text: CODE_GEN_PROMPT }] }],
-    });
+ try {
+   const response = await axios.post(API_URL, {
+     contents: [{ parts: [{ text: CODE_GEN_PROMPT }] }],
+   });
 
-    const responseText =
-      response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+   const responseText =
+     response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (!responseText) {
-      return {
-        error: "No response text found",
-        details: "API response missing expected data",
-        rawResponse: response.data,
-      };
-    }
+   if (!responseText) {
+     return {
+       error: "No response text found",
+       details: "API response missing expected data",
+     };
+   }
 
-    // Improved JSON extraction with multiple fallback strategies
-    let jsonString = responseText.trim();
+   // Enhanced JSON extraction with multiple fallback strategies
+   let jsonString = responseText.trim();
 
-    // Strategy 1: Remove potential markdown code blocks
-    jsonString = jsonString
-      .replace(/^```(json)?/, "")
-      .replace(/```$/, "")
-      .trim();
+   // Strategy 1: Remove markdown code blocks if present
+   jsonString = jsonString
+     .replace(/^```(json)?/, "")
+     .replace(/```$/, "")
+     .trim();
 
-    // Strategy 2: Extract first JSON-like block
-    const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      jsonString = jsonMatch[0];
-    }
+   // Strategy 2: Handle unescaped backticks in code blocks
+   jsonString = jsonString.replace(/`/g, "\\`");
 
-    // Strategy 3: Fix common escaping issues
-    jsonString = jsonString
-      .replace(/\\n/g, "\n")
-      .replace(/\\"/g, '"')
-      .replace(/\\`/g, "`")
-      .replace(/\\'/g, "'");
+   // Strategy 3: Fix common JSON formatting issues
+   jsonString = jsonString
+     .replace(/(\w)\s*:\s*`/g, '$1: "') // Replace : ` with : "
+     .replace(/`\s*([,}])/g, '"$1') // Replace `, with ",
+     .replace(/\\n/g, "\n")
+     .replace(/\\"/g, '"');
 
-    let jsonResponse;
-    try {
-      jsonResponse = JSON.parse(jsonString);
-    } catch (parseError) {
-      console.error("Final JSON parsing failed:", parseError);
-      return {
-        error: "Failed to parse AI response as JSON",
-        details: parseError.message,
-        rawResponse: responseText,
-        cleanedResponse: jsonString,
-      };
-    }
+   // Strategy 4: Extract first valid JSON block
+   const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
+   if (jsonMatch) {
+     jsonString = jsonMatch[0];
+   }
 
-    // Validate the response structure
-    if (!jsonResponse || typeof jsonResponse !== "object") {
-      return {
-        error: "Invalid response structure",
-        details: "Response is not a valid object",
-        rawResponse: jsonResponse,
-      };
-    }
+   let jsonResponse;
+   try {
+     jsonResponse = JSON.parse(jsonString);
+   } catch (parseError) {
+     console.error(
+       "JSON parsing failed. Attempting manual repair...",
+       parseError
+     );
 
-    // Ensure required fields exist
-    if (!jsonResponse.files) {
-      jsonResponse.files = {};
-    }
-    if (!jsonResponse.updates) {
-      jsonResponse.updates = [];
-    }
+     // Final attempt: Manual JSON repair for common cases
+     try {
+       // Handle cases where code blocks break the JSON structure
+       const repaired = jsonString
+         .replace(/"code":\s*`([^`]*)`/g, (match, code) => {
+           return `"code": ${JSON.stringify(code)}`;
+         })
+         .replace(/"([^"]+)":\s*`([^`]*)`/g, '"$1": "$2"');
 
-    // Process file contents to ensure proper formatting
-    const processedFiles = {};
-    for (const [path, file] of Object.entries(jsonResponse.files)) {
-      processedFiles[path] = {
-        code: (file.code || "")
-          .replace(/\\n/g, "\n")
-          .replace(/\\"/g, '"')
-          .replace(/\\`/g, "`"),
-        styles: file.styles || "",
-      };
-    }
+       jsonResponse = JSON.parse(repaired);
+     } catch (finalError) {
+       console.error("Final JSON parsing failed:", {
+         error: finalError.message,
+         responseText: responseText,
+         cleanedResponse: jsonString,
+       });
 
-    return {
-      response: jsonResponse.response || "AI response received",
-      updates: jsonResponse.updates || [],
-      projectTitle: jsonResponse.projectTitle || "Untitled Project",
-      explanation: jsonResponse.explanation || "",
-      files: processedFiles,
-      setupInstructions:
-        jsonResponse.setupInstructions || "npm install && npm run dev",
-    };
-  } catch (error) {
-    console.error("AI Service Error:", {
-      message: error.message,
-      stack: error.stack,
-      response: error.response?.data,
-    });
+       return {
+         error: "Failed to parse AI response as JSON",
+         details: finalError.message,
+         rawResponse: responseText,
+         cleanedAttempt: jsonString,
+       };
+     }
+   }
 
-    return {
-      error: "Failed to process AI response",
-      details: error.message,
-      code: "AI_SERVICE_ERROR",
-      ...(error.response && { apiResponse: error.response.data }),
-    };
-  }
+   // Validate and normalize the response structure
+   if (!jsonResponse || typeof jsonResponse !== "object") {
+     return {
+       error: "Invalid response structure",
+       details: "Response is not a valid object",
+     };
+   }
+
+   // Ensure required fields with defaults
+   const result = {
+     response: jsonResponse.response || "AI response received",
+     updates: Array.isArray(jsonResponse.updates) ? jsonResponse.updates : [],
+     projectTitle: jsonResponse.projectTitle || "Untitled Project",
+     explanation: jsonResponse.explanation || "",
+     files: {},
+     setupInstructions:
+       jsonResponse.setupInstructions || "npm install && npm run dev",
+   };
+
+   // Process files with additional validation
+   if (jsonResponse.files && typeof jsonResponse.files === "object") {
+     for (const [path, file] of Object.entries(jsonResponse.files)) {
+       if (file && typeof file === "object") {
+         result.files[path] = {
+           code: (file.code || "").toString(),
+           styles: (file.styles || "").toString(),
+         };
+       }
+     }
+   }
+
+   return result;
+ } catch (error) {
+   console.error("AI Service Error:", {
+     message: error.message,
+     stack: error.stack,
+     response: error.response?.data,
+   });
+
+   return {
+     error: "Failed to process AI response",
+     details: error.message,
+     code: "AI_SERVICE_ERROR",
+   };
+ }
 
 };
 
