@@ -123,7 +123,7 @@ const AppSideBar = () => {
               <div className="p-4">
                 <button
                   onClick={() => navigate("/")}
-                  className="w-fit flex items-center gap-2 bg-blue-500 text-white px-6 py-4 rounded-xl hover:bg-blue-600 cursor-pointer transition-colors"
+                  className="w-fit flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 cursor-pointer transition-colors"
                 >
                   <MessageSquarePlus size={20} />
                   <span>New chat</span>
