@@ -77,7 +77,8 @@ useEffect(() => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-16 group z-30">
+    <>
+      {user && (<div className="fixed top-0 left-0 h-screen w-16 group z-30">
       <div className="w-16 h-full flex flex-col items-center justify-between bg-black bg-opacity-25 border border-gray-800 overflow-hidden">
         <img
           src="/assets/logo.png"
@@ -190,7 +191,8 @@ useEffect(() => {
           </div>
         </div>
       </div>
-    </div>
+    </div>)}
+    </>
   );
 };
 

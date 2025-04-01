@@ -17,12 +17,12 @@ const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
   const [prompt, setPrompt] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-const [progress, setProgress] = useState(0); // Track API progress
-const [status, setStatus] = useState("idle"); 
+  const [progress, setProgress] = useState(0); // Track API progress
+  const [status, setStatus] = useState("idel"); 
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
@@ -320,7 +320,7 @@ const VideoModal = ({ isOpen,progress, status, onClose }) => {
       <div className="fixed inset-0 z-40 bg-gray-900 opacity-50"></div>
 
       <div className="fixed inset-0 z-50 flex justify-center items-center">
-        <div className="relative flex flex-col items-center gap-3 bg-black p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+        <div className="relative flex flex-col items-center gap-3 bg-black border border-white/20 p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
    
           {status !== "loading" && (
             <button
@@ -357,14 +357,14 @@ const VideoModal = ({ isOpen,progress, status, onClose }) => {
             <AlertCircle size={64} className="text-red-400 animate-shake" />
           )}
 
-          <h2 className="text-lg font-semibold mb-3 text-white/20 ">
+          <h2 className="text-lg font-semibold mb-3 text-gray-400 ">
             {currentMessage}
           </h2>
 
-          {/* Status Message */}
-          <p className="mt-2 text-white text-sm">
+       
+          <p className="text-white text-sm">
             {status === "loading"
-              ? `Progress: ${progress}%`
+              ? `Developing...`
               : status === "success"
               ? "Your project is ready!"
               : "Something went wrong. Try again."}
