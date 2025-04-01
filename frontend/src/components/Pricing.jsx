@@ -10,7 +10,7 @@ function Pricing() {
       name: "Free",
       description: "For individual developers and non-tech founders.",
       price: 0,
-      perPerson: 0,
+      perPerson: "Basic",
       features: [
         "Basic Code Snippets",
         "1 Project Limit",
@@ -24,7 +24,7 @@ function Pricing() {
       name: "Starter",
       description: "For small startups & indie developers.",
       price: isAnnual ? 340 : 29,
-      perPerson: 20,
+      perPerson: "Recommended",
       features: [
         "AI Code Generation",
         "Multi-Language Support",
@@ -39,7 +39,7 @@ function Pricing() {
       name: "Business",
       description: "For growing startups & small businesses.",
       price: isAnnual ? 1150 : 99,
-      perPerson: 20,
+      perPerson: "Best Pack",
       features: [
         "Full-Stack Development",
         "Manage 20 Projects",
@@ -142,7 +142,7 @@ function Pricing() {
                   <div className="text-sm text-gray-400">
                     {plan.name === "Enterprise"
                       ? "Custom Pricing Available"
-                      : `+ $${plan.perPerson} /person per month`}
+                      : `${plan.perPerson}`}
                   </div>
                 </div>
 
