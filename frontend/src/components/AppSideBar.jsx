@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../../redux/authSlice";
+import axios from "axios";
 import {
   PanelLeftOpen,
   MessageSquarePlus,
