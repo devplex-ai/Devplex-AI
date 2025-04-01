@@ -1,8 +1,7 @@
 const axios = require("axios");
 
 const generateCodeFromAI = async (userPrompt) => {
-  const API_KEY =
-    "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";
+  const API_KEY = "sk-0445530dad0346388c2db62eea293bab";
 
   if (!API_KEY) {
     console.error("Error: Missing DEEPEEK_API_KEY in environment variables.");
@@ -182,7 +181,7 @@ The response must begin with { and end with } with properly escaped strings insi
     const response = await axios.post(
       API_URL,
       {
-        model: "deepseek-r1", // Specify the correct model if needed
+        model: "deepseek/deepseek-r1:free", // Specify the correct model if needed
         prompt: CODE_GEN_PROMPT,
         max_tokens: 4096,
         temperature: 0.7,
