@@ -1,7 +1,8 @@
 const axios = require("axios");
 
 const generateCodeFromAI = async (userPrompt) => {
-  const API_KEY = process.env.DEEPSEEK_API_KEY; // Use your DeepSeek API key
+  const API_KEY =
+    "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";
 
   if (!API_KEY) {
     console.error("Error: Missing DEEPEEK_API_KEY in environment variables.");
