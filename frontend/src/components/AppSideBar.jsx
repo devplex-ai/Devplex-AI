@@ -25,24 +25,11 @@ const AppSideBar = () => {
  const apiURL = import.meta.env.VITE_BASE_URL;
 
 useEffect(() => {
-  if (user?.chats && user.chats.length > 0) {
+  if (user?._id) {
     const fetchAllChats = async () => {
       try {
-        const chatData = await Promise.all(
-          user.chats.map(async (chatId) => {
-            const response = await fetch(`${apiURL}/api/chatHistory/${chatId}`);
-            if (!response.ok) throw new Error(`Error fetching chat ${chatId}`);
-
-            const data = await response.json();
-            return {
-              _id: chatId,
-              messages: data.messages,
-              sessionId: data.sessionId || "Session ID Missing",
-            };
-          })
-        );
-
-        setChatHistory((prevChats) => [...chatData]); // Ensure full replacement
+        const response = await axios.get(`${apiURL}/api/chatHistory/${user._id}`);
+        setChatHistory(response.data);
       } catch (error) {
         console.error("Error fetching chat history:", error);
       }
@@ -50,7 +37,7 @@ useEffect(() => {
 
     fetchAllChats();
   }
-}, [user]);
+}, [user, apiURL]);
 
 
 

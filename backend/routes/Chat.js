@@ -189,21 +189,16 @@ router.get("/chats/:sessionId", async (req, res) => {
 
 router.get("/chatHistory/:id", async (req, res) => {
   try {
-    const id = req.params.id;
-    console.log(`Fetching chat history with chatId: ${id}`);
+    const userId = req.params.id; // Fetch userId from request parameters
 
-    const chat = await Chat.findOne({ _id: id });
 
-    if (!chat) {
-      return res.status(404).json({ error: "Chat not found" });
+    const chats = await Chat.find({ userId }); // Fetch all chats matching the userId
+
+    if (!chats.length) {
+      return res.status(404).json({ error: "No chats found for this user" });
     }
 
-    // Log full chat object
-
-    res.json({
-      messages: chat.messages,
-      sessionId: chat.sessionId, // Ensure sessionId exists
-    });
+    res.json(chats);
   } catch (error) {
     console.error("Error fetching chat history:", error);
     res.status(500).json({ error: "Internal Server Error" });

@@ -116,6 +116,10 @@ EXAMPLE OUTPUT:
 
 - Make better UI/UX. Apply UI/UX principals.
 
+- Dont leave comment like this (Eg: //write logic for handel reset) please write full code logics etc.
+
+- If you adding conditional rendering using turnary operator so please use backticks inside css or any logic.
+
 - Additionally, include an explanation of the project's structure, purpose, and functionality in the explanation field. Make the response concise and clear in one paragraph.
 
 - When asked then only use this package to import, here are some packages available to import and use (date-fns,react-chartjs-2,"firebase","@google/generative-ai" ) only when it required
