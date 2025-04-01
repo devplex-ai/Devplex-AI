@@ -11,7 +11,7 @@ const generateCodeFromAI = async (userPrompt) => {
     };
   }
 
-  const API_URL = "https://api.deepseek.ai/v1/code-generate"; // Replace with actual API URL from DeepSeek
+  const API_URL = "https://openrouter.ai/api/v1/chat/completions"; // Replace with actual API URL from DeepSeek
 const responses = [
   "Alright! Here's how we'll create your",
   "Great! Let's build your",
