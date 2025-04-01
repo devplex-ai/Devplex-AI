@@ -6,6 +6,7 @@ import { logout, setUser } from "../../redux/authSlice";
 import Avatar from "react-avatar";
 import { toast } from "react-toastify";
 import { fetchUserData } from "../../redux/authActions";
+import { Link } from "react-router-dom";
 
 
 const Navbar = () => {
@@ -110,7 +111,7 @@ const Navbar = () => {
               key={index}
               className="hover:text-white transition cursor-pointer"
             >
-              <a href={item.link}>{item.name}</a>
+              <Link to={item.link}>{item.name}</Link>
             </li>
           ))}
         </ul>
