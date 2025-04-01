@@ -342,64 +342,103 @@ RESPONSE FORMAT:
       contents: [{ parts: [{ text: CODE_GEN_PROMPT }] }],
     });
 
-    const responseText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const responseText =
+      response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!responseText) {
-      return { error: "No response text found", details: "API response missing expected data" };
+      return {
+        error: "No response text found",
+        details: "API response missing expected data",
+        rawResponse: response.data,
+      };
     }
 
-    // **CLEAN & EXTRACT JSON RESPONSE**
-    let cleanedResponse = responseText
-      .replace(/^```(json)?\n/, "") // Remove Markdown JSON markers
-      .replace(/```$/, "") // Remove trailing Markdown markers
+    // Improved JSON extraction with multiple fallback strategies
+    let jsonString = responseText.trim();
+
+    // Strategy 1: Remove potential markdown code blocks
+    jsonString = jsonString
+      .replace(/^```(json)?/, "")
+      .replace(/```$/, "")
       .trim();
 
-    // **Attempt JSON Parsing**
+    // Strategy 2: Extract first JSON-like block
+    const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      jsonString = jsonMatch[0];
+    }
+
+    // Strategy 3: Fix common escaping issues
+    jsonString = jsonString
+      .replace(/\\n/g, "\n")
+      .replace(/\\"/g, '"')
+      .replace(/\\`/g, "`")
+      .replace(/\\'/g, "'");
+
     let jsonResponse;
     try {
-      jsonResponse = JSON.parse(cleanedResponse);
+      jsonResponse = JSON.parse(jsonString);
     } catch (parseError) {
-      console.error("JSON Parsing Error:", parseError);
-
-      // **Extract JSON block if parsing fails**
-      const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        try {
-          jsonResponse = JSON.parse(jsonMatch[0]);
-        } catch (secondAttemptError) {
-          return {
-            error: "Invalid JSON format from AI",
-            details: secondAttemptError.message,
-            rawResponse: cleanedResponse, // Log full AI response for debugging
-          };
-        }
-      } else {
-        return {
-          error: "No valid JSON found in AI response",
-          details: parseError.message,
-          rawResponse: cleanedResponse, // Log full AI response
-        };
-      }
+      console.error("Final JSON parsing failed:", parseError);
+      return {
+        error: "Failed to parse AI response as JSON",
+        details: parseError.message,
+        rawResponse: responseText,
+        cleanedResponse: jsonString,
+      };
     }
 
-    // **Validate JSON Structure**
-    if (!jsonResponse.files || typeof jsonResponse.files !== "object") {
-      return { error: "Invalid project structure", details: "Missing 'files' object", response: jsonResponse };
+    // Validate the response structure
+    if (!jsonResponse || typeof jsonResponse !== "object") {
+      return {
+        error: "Invalid response structure",
+        details: "Response is not a valid object",
+        rawResponse: jsonResponse,
+      };
     }
 
-    // **Process File Contents**
+    // Ensure required fields exist
+    if (!jsonResponse.files) {
+      jsonResponse.files = {};
+    }
+    if (!jsonResponse.updates) {
+      jsonResponse.updates = [];
+    }
+
+    // Process file contents to ensure proper formatting
     const processedFiles = {};
     for (const [path, file] of Object.entries(jsonResponse.files)) {
-      processedFiles[path] = { code: file.code?.replace(/\\n/g, "\n").replace(/\\"/g, '"') || "" };
+      processedFiles[path] = {
+        code: (file.code || "")
+          .replace(/\\n/g, "\n")
+          .replace(/\\"/g, '"')
+          .replace(/\\`/g, "`"),
+        styles: file.styles || "",
+      };
     }
 
-    return { ...jsonResponse, files: processedFiles };
+    return {
+      response: jsonResponse.response || "AI response received",
+      updates: jsonResponse.updates || [],
+      projectTitle: jsonResponse.projectTitle || "Untitled Project",
+      explanation: jsonResponse.explanation || "",
+      files: processedFiles,
+      setupInstructions:
+        jsonResponse.setupInstructions || "npm install && npm run dev",
+    };
   } catch (error) {
     console.error("AI Service Error:", {
       message: error.message,
       stack: error.stack,
       response: error.response?.data,
     });
+
+    return {
+      error: "Failed to process AI response",
+      details: error.message,
+      code: "AI_SERVICE_ERROR",
+      ...(error.response && { apiResponse: error.response.data }),
+    };
   }
 
 };
