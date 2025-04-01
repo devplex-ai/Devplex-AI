@@ -108,11 +108,17 @@ EXAMPLE OUTPUT:
   "setupInstructions": "npm install prop-types lucide-react && npm run dev"
 }
 
- - Additionally, include an explanation of the project's structure, purpose, and functionality in the explanation field. Make the response concise and clear in one paragraph.
+- Use Tailwind Classes for Adding styles to the elements.
+
+- Proper use backticks inside JSX attributes, Dont make mistake fix it.  
+
+- Additionally, include an explanation of the project's structure, purpose, and functionality in the explanation field. Make the response concise and clear in one paragraph.
+
 - When asked then only use this package to import, here are some packages available to import and use (date-fns,react-chartjs-2,"firebase","@google/generative-ai" ) only when it required
-  
-  -Add Emoji icons whenever needed to give good user experinence
-  - all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
+
+- Add Emoji icons whenever needed to give good user experinence
+
+- all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
 
 - By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
 
@@ -121,9 +127,9 @@ EXAMPLE OUTPUT:
 - Use stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.
 
 RESPONSE FORMAT:
-Your response must be valid JSON ONLY, beginning with { and ending with }.
-Do not wrap the response in markdown or add any extraneous text.
-All strings in JSON must be properly escaped with double quotes.
+- Your response must be valid JSON ONLY, beginning with { and ending with }.
+- Do not wrap the response in markdown or add any extraneous text.
+
 
 
 `;
