@@ -239,7 +239,7 @@ const handleGenerate = async () => {
           <Process />
         </motion.div>
       </div>
-      <Testimonials />
+      <Testimonials/>
      
       <FAQ />
       <Pricing />

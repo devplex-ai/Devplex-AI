@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 
 function Pricing() {
   const [isAnnual, setIsAnnual] = useState(false);

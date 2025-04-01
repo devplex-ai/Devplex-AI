@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import AuthSuccess from "./components/AuthSuccess";
 import WorkspacePage from "./pages/WorkspacePage";
 import PricingPage from "./pages/PricingPage";
+import Subscription from "./pages/Subscription";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/oauth-success" element={<AuthSuccess />} />
         <Route path="/workspace/:sessionId" element={<WorkspacePage />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/subscription" element={<Subscription/>}/>
       </Routes>
     </Router>
   );

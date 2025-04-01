@@ -78,7 +78,7 @@ const Navbar = () => {
   const menuItems = [
     { name: "Home", link: "/" },
     { name: "About", link: "/about" },
-    { name: "Pricing", link: "/pricing" },
+    { name: "Pricing", link: "/subscription" },
   ];
 
   return (
