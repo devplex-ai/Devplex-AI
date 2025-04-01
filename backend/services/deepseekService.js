@@ -184,7 +184,11 @@ The response must begin with { and end with } with properly escaped strings insi
       API_URL,
       {
         model: "deepseek-r1", // Specify the correct model if needed
-        prompt: CODE_GEN_PROMPT,
+        
+        messages: [
+          { role: "asistent", content: "You are a helpful assistant." },
+          { role: "user", content: CODE_GEN_PROMPT }, // Replace prompt with messages
+        ],
         max_tokens: 4096,
         temperature: 0.7,
       },

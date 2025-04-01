@@ -93,14 +93,14 @@ const Navbar = () => {
           onClick={() => {
             navigate("/");
           }}
-          className="flex cursor-pointer items-center gap-3"
+          className="flex cursor-pointer items-center gap-1"
         >
           <img
             src="/assets/logo.png"
             alt="Devplex AI Logo"
             className="h-8 w-auto"
           />
-          <span className="text-lg font-bold text-white">Devplex AI</span>
+          <span className="text-xl font-semibold text-white">Devplex</span>
         </div>
 
         {/* Desktop Navigation */}

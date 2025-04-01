@@ -13,6 +13,7 @@ import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
 import { AlertCircle, ArrowRight, CheckCircle, Figma, Link, X } from "lucide-react";
 import Process from "../components/Process";
+import Footer from "../components/Footer";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -239,6 +240,7 @@ const handleGenerate = async () => {
       </div>
       <Pricing />
       <FAQ />
+      <Footer/>
       {isModalOpen && (
         <VideoModal
           isOpen={isModalOpen}
