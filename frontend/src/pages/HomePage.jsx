@@ -11,7 +11,7 @@ import Pricing from "../components/Pricing";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
-import { ArrowRight, Figma, Link, X } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle, Figma, Link, X } from "lucide-react";
 import Process from "../components/Process";
 const Home = () => {
 
