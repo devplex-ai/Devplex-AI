@@ -162,6 +162,22 @@ EXAMPLE OUTPUT:
   "setupInstructions": "npm install prop-types lucide-react && npm run dev"
 }
 
+ERROR EXAMPLE:
+Dont do this-  if (winner) {
+    status = Winner: ${winner};
+  } else {
+    status = Next player: ${xIsNext ? "X" : "O"};
+  }
+
+Do this-
+  if (winner) {
+    status = \`Winner: ${winner}\`;
+  } else {
+    status = \`Next player: ${xIsNext ? "X" : "O"}\`;
+  }  
+
+The error occurs because you missing backticks (\`) around the template literals. Dont make error like this.
+
 IMPORTANT RULES:
 1. EVERY component must be fully complete and production-ready
 2. Include ALL necessary imports for EVERY component (React, hooks, PropTypes, external libraries)
