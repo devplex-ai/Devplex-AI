@@ -11,7 +11,7 @@ import Pricing from "../components/Pricing";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
-import { AlertCircle, ArrowRight, CheckCircle, Figma, Link, X } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle, CircleCheck, Figma, Link, X } from "lucide-react";
 import Process from "../components/Process";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonials";
@@ -345,7 +345,7 @@ const VideoModal = ({ isOpen,progress, status, onClose }) => {
               ? "Processing your request..."
               : status === "success"
               ? "Success!"
-              : "Error occurred!"}
+              : "Error! Please try again..."}
           </h2>
 
           {/* Loading Video / Success Animation */}
@@ -360,14 +360,18 @@ const VideoModal = ({ isOpen,progress, status, onClose }) => {
               Your browser does not support the video tag.
             </video>
           ) : status === "success" ? (
-            <CheckCircle size={64} className="text-green-400 animate-bounce" />
+            <CheckCircle size={72} className="text-green-400 animate-bounce" />
           ) : (
             <AlertCircle size={64} className="text-red-400 animate-shake" />
+               
           )}
-
-          <h2 className="text-lg font-semibold mb-3 text-gray-400 ">
+           
+          {status === "loading" && (
+            <h2 className="text-lg font-semibold mb-3 text-gray-400 ">
             {currentMessage}
           </h2>
+          )}
+          
 
        
           <p className="text-white text-sm">
