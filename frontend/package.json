@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.0.12",
     "axios": "^1.8.2",
     "boring-avatars": "^1.11.2",
+    "date-fns": "^4.1.0",
     "dedent": "^1.5.3",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.4.10",
