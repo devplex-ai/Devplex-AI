@@ -181,6 +181,17 @@ Do this-
 
 The error occurs because you missing backticks (\`) around the template literals. Dont make error like this.
 
+Dont do this-
+  const status = winner ? Winner: ${winner} : Next player: ${
+  xIsNext ? "X" : "O"
+};
+
+Do this-
+  const status = winner ? \`Winner: ${winner}\` : \`Next player: ${
+  xIsNext ? "X" : "O"
+}\`;
+
+
 IMPORTANT RULES:
 1. EVERY component must be fully complete and production-ready
 2. Include ALL necessary imports for EVERY component (React, hooks, PropTypes, external libraries)
