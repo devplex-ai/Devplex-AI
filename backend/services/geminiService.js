@@ -79,7 +79,7 @@ TECHNICAL REQUIREMENTS:
 3. Styling Requirements:
    - Use Tailwind CSS for all styling
    - Do NOT use backticks within Tailwind class strings
-   - Use className="text-blue-500" format (not className=\`text-blue-500\`)
+   - Use className="text-blue-500" also use this if you want to pass some props className=\`text-blue-500 ${winner}\`
    - Implement mobile-first responsive design
    - Use consistent spacing utilities (px-4, py-2, etc.)
    - Include responsive breakpoints (sm, md, lg, xl)
@@ -104,11 +104,12 @@ TECHNICAL REQUIREMENTS:
    - Use Prettier-compatible formatting
    - Include all necessary imports at the top of each file
    - Avoid nested ternary operators
-   
+   - Use pexel free stock images if necessary
    - Use date-fns for date formatting and react-chartjs-2 for charts/graphs if necessary
    - Include all required import statements for external libraries
    - Use lucide-react for icons with proper imports
    - Find and use high-quality, royalty-free images
+   - Write full logic for project dont leave comments (not //write logic here)
    - Make all designs production-worthy, not generic
 
 OUTPUT FORMAT REQUIREMENTS (strict JSON):
@@ -200,8 +201,7 @@ Your response must be valid JSON ONLY, beginning with { and ending with }.
 Do not wrap the response in markdown or add any extraneous text.
 All strings in JSON must be properly escaped with double quotes.
 
-IMPORTANT: Your response MUST be valid JSON ONLY. Do not wrap the response in markdown code blocks or backticks of any kind.
-The response must begin with { and end with } with properly escaped strings inside.
+
 `;
   try {
 
