@@ -229,22 +229,25 @@ const VideoModal = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-40  bg-gray-900  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 flex justify-center items-center">
-      <div className="flex flex-col items-center gap-3 bg-white/20 backdrop-blur-lg p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
-        <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
-          {currentMessage}
-        </h2>
+    <>
+      <div className="fixed inset-0 z-40 flex justify-center items-center">
+        <div className="flex flex-col items-center gap-3 bg-white/20 backdrop-blur-lg p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+          <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
+            {currentMessage}
+          </h2>
 
-        <video autoPlay loop muted className="w-40 rounded-full">
-          <source src="/assets/codevideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+          <video autoPlay loop muted className="w-40 rounded-full">
+            <source src="/assets/codevideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
 
-        <p className="mt-2 text-white">
-          Please wait while we process your request.
-        </p>
+          <p className="mt-2 text-white">
+            Please wait while we process your request.
+          </p>
+        </div>
       </div>
-    </div>
+      <div className="fixed inset-0 z-40 bg-gray-900 opacity-50"></div>
+    </>
   );
 };
 
