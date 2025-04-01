@@ -192,14 +192,42 @@ const handleGenerate = async () => {
   );
 };
 
-const VideoModal = () => {
-  return (
-    <div className="fixed inset-0 z-40 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className=" flex flex-col items-center gap-2 bg-white/10 p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
-        <h2 className="text-xl font-semibold mb-3 text-white">Generating...</h2>
+const messages = [
+  "Adding files...",
+  "Creating files...",
+  "Setting up the environment...",
+  "Installing dependencies...",
+  "Starting the server...",
+  "Generating components...",
+  "Optimizing performance...",
+  "Finalizing setup...",
+];
 
-        <video autoPlay loop muted className="w-40 rounded-full ">
-          <source src="/assets/codevideo.mp4" type="video/mp4"  />
+const VideoModal = () => {
+  const [currentMessage, setCurrentMessage] = useState(messages[0]);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % messages.length;
+        setCurrentMessage(messages[newIndex]);
+        return newIndex;
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-40 bg-black bg-opacity-60 flex justify-center items-center">
+      <div className="flex flex-col items-center gap-3 bg-white/20 backdrop-blur-lg p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+        <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
+          {currentMessage}
+        </h2>
+
+        <video autoPlay loop muted className="w-40 rounded-full">
+          <source src="/assets/codevideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
