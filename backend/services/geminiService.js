@@ -50,67 +50,10 @@ Example format:
 
 ---
 ## Phase 2: Structured Output (After conversational intro)
-Generate a COMPLETE production-ready React project with JavaScript and Tailwind CSS.
-The design should follow the latest UI/UX trends, ensuring a clean, professional, and visually appealing interface.
-The output must be a fully functional application with all necessary components, styles, and logic.
-
+Generate a programming code structure for a React project using Vite. Create multiple components, organizing them in separate folders with filenames using the .js extension, if needed. The output should use Tailwind CSS for styling, without any third-party dependencies or libraries, except for icons from the lucide-react library, which should only be used when necessary. Available icons include: Heart, Shield, Clock, Users, Play, Home, Search, Menu, User, Settings, Mail, Bell, Calendar, Star, Upload, Download, Trash, Edit, Plus, Minus, Check, X, and ArrowRight. For example, you can import an icon as import { Heart } from "lucide-react" and use it in JSX as <Heart className="" />.
 USER REQUIREMENTS:
 ${userPrompt || "No additional requirements provided"}
-
-TECHNICAL REQUIREMENTS:
-1. Project Structure:
-   - Use App.js as the main application file (NOT App.jsx)
-   - All components/pages must use .jsx extension (e.g., Navbar.jsx, Home.jsx)
-   - Use functional components with JavaScript only
-   - Follow React best practices with proper file organization
-   - Include proper JavaScript prop validation
-   - NO TypeScript - use JavaScript only
-   - Use modern React hooks (useState, useEffect, useContext, useRef, etc.)
-   
-
-2. Component Requirements:
-   - Minimum 5 meaningful components
-   - Each component must be fully self-contained with all necessary imports
-   - Include proper props validation using PropTypes
-   - Implement appropriate state management
-   - Complete JSX structure with no placeholders
-   - Use meaningful and descriptive component names
-
-3. Styling Requirements:
-   - Use Tailwind CSS for all styling
-   - Do NOT use backticks within Tailwind class strings
-   - Use className="text-blue-500" also use this if you want to pass some props className=\`text-blue-500 ${winner}\`
-   - Implement mobile-first responsive design
-   - Use consistent spacing utilities (px-4, py-2, etc.)
-   - Include responsive breakpoints (sm, md, lg, xl)
-   - Implement dark mode support with dark: prefix classes
-   - Add hover/focus states using hover: and focus: prefixes
-   - Include smooth transitions with transition classes
-   - Ensure accessible color contrast
-
-4. Accessibility:
-   - Use semantic HTML elements (header, nav, main, section, etc.)
-   - Include appropriate ARIA attributes
-   - Implement keyboard navigation support
-   - Ensure proper focus management
-   - Add screen reader support with sr-only classes when needed
-
-5. Code Quality:
-   - Implement proper error handling with try/catch blocks
-   - Add loading states for async operations
-   - Maintain clean code structure with consistent formatting
-   - Include JSDoc comments for functions and components
-   - Follow ESLint conventions
-   - Use Prettier-compatible formatting
-   - Include all necessary imports at the top of each file
-   - Avoid nested ternary operators
-   - Use Pexels, Unsplash, Pixabay  free stock images dont do this  (import heroImage from '../assets/hero.jpg';) only use urls
-   - Use date-fns for date formatting and react-chartjs-2 for charts/graphs if necessary
-   - Include all required import statements for external libraries
-   - Use lucide-react for icons with proper imports
-   - Find and use high-quality, royalty-free images
-   - Write full logic for project dont leave comments (not //write logic here)
-   - Make all designs production-worthy, not generic
+Return the response in JSON format with the following schema:
 
 OUTPUT FORMAT REQUIREMENTS (strict JSON):
 {
@@ -165,47 +108,17 @@ EXAMPLE OUTPUT:
   "setupInstructions": "npm install prop-types lucide-react && npm run dev"
 }
 
-ERROR EXAMPLE:
-Dont do this-  if (winner) {
-    status = Winner: ${winner};
-  } else {
-    status = Next player: ${xIsNext ? "X" : "O"};
-  }
+ - Additionally, include an explanation of the project's structure, purpose, and functionality in the explanation field. Make the response concise and clear in one paragraph.
+- When asked then only use this package to import, here are some packages available to import and use (date-fns,react-chartjs-2,"firebase","@google/generative-ai" ) only when it required
+  
+  -Add Emoji icons whenever needed to give good user experinence
+  - all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
 
-Do this-
-  if (winner) {
-    status = \`Winner: ${winner}\`;
-  } else {
-    status = \`Next player: ${xIsNext ? "X" : "O"}\`;
-  }  
+- By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
 
-The error occurs because you missing backticks (\`) around the template literals. Dont make error like this.
+- Use icons from lucide-react for logos.
 
-Dont do this-
-  const status = winner ? Winner: ${winner} : Next player: ${
-  xIsNext ? "X" : "O"
-};
-
-Do this-
-  const status = winner ? \`Winner: ${winner}\` : \`Next player: ${
-  xIsNext ? "X" : "O"
-}\`;
-
-
-IMPORTANT RULES:
-1. EVERY component must be fully complete and production-ready
-2. Include ALL necessary imports for EVERY component (React, hooks, PropTypes, external libraries)
-3. Use PropTypes for proper JavaScript prop validation
-4. Style EVERY visible element with Tailwind classes
-5. Include responsive design for all screen sizes
-6. Include NO placeholder comments - only actual working code
-7. Ensure all components are connected and work together properly
-8. Install and import PropTypes for all components with props
-9. Use JavaScript only - NO TypeScript
-10. Include ALL required imports at the top of each file
-11. Generate VALID, WELL-FORMED JSON output only
-
-
+- Use stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.
 
 RESPONSE FORMAT:
 Your response must be valid JSON ONLY, beginning with { and ending with }.
