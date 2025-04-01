@@ -238,103 +238,168 @@ RESPONSE FORMAT:
   //   };
   // }
 
-  try {
-    const response = await axios.post(API_URL, {
-      contents: [
-        {
-          parts: [{ text: CODE_GEN_PROMPT }],
-        },
-      ],
-    });
+  // try {
+  //   const response = await axios.post(API_URL, {
+  //     contents: [
+  //       {
+  //         parts: [{ text: CODE_GEN_PROMPT }],
+  //       },
+  //     ],
+  //   });
 
-    const responseText =
-      response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  //   const responseText =
+  //     response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (!responseText) {
-      console.error("No response text found in API response");
-      return {
-        error: "No response text found",
-        details: "The API response did not contain the expected text",
-        fullResponse: response.data,
-      };
-    }
+  //   if (!responseText) {
+  //     console.error("No response text found in API response");
+  //     return {
+  //       error: "No response text found",
+  //       details: "The API response did not contain the expected text",
+  //       fullResponse: response.data,
+  //     };
+  //   }
 
   
-    const cleanedResponse = responseText
-      .replace(/^```(json)?\n/, "")
-      .replace(/```$/, "")
-      .replace(/\\([^nrtbf"\\/])/g, "\\\\$1") 
-      .replace(/\\"/g, '"') 
-      .replace(/\\n/g, "\n") 
+  //   const cleanedResponse = responseText
+  //     .replace(/^```(json)?\n/, "")
+  //     .replace(/```$/, "")
+  //     .replace(/\\([^nrtbf"\\/])/g, "\\\\$1") 
+  //     .replace(/\\"/g, '"') 
+  //     .replace(/\\n/g, "\n") 
+  //     .trim();
+
+  //   let jsonResponse;
+  //   try {
+  //     jsonResponse = JSON.parse(cleanedResponse);
+  //   } catch (parseError) {
+  //     console.error("JSON Parsing Error:", parseError.message);
+
+  //     // Attempt to extract JSON from a malformed response
+  //     const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+  //     if (jsonMatch) {
+  //       try {
+  //         jsonResponse = JSON.parse(jsonMatch[0]);
+  //       } catch (secondAttemptError) {
+  //         console.error("Secondary parsing failed:", secondAttemptError);
+  //         return {
+  //           error: "Invalid JSON response from AI",
+  //           details: secondAttemptError.message,
+  //           rawResponse: cleanedResponse,
+  //         };
+  //       }
+  //     } else {
+  //       return {
+  //         error: "No valid JSON found in response",
+  //         details: parseError.message,
+  //         rawResponse: cleanedResponse,
+  //       };
+  //     }
+  //   }
+
+  
+  //   if (
+  //     !jsonResponse ||
+  //     typeof jsonResponse !== "object" ||
+  //     !jsonResponse.files
+  //   ) {
+  //     return {
+  //       error: "Invalid project structure",
+  //       details: "Response is missing required 'files' object",
+  //       response: jsonResponse,
+  //     };
+  //   }
+
+  //   // Process files correctly
+  //   const processedFiles = {};
+  //   for (const [path, file] of Object.entries(jsonResponse.files)) {
+  //     processedFiles[path] = {
+  //       code: file.code
+  //         ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"')
+  //         : "",
+  //     };
+  //   }
+
+  //   return {
+  //     ...jsonResponse,
+  //     files: processedFiles,
+  //   };
+  // } catch (error) {
+  //   console.error("AI Service Error:", {
+  //     message: error.message,
+  //     stack: error.stack,
+  //     response: error.response?.data,
+  //   });
+
+  //   return {
+  //     error: "Failed to process AI response",
+  //     details: error.message,
+  //     code: "AI_SERVICE_ERROR",
+  //   };
+  // }
+  
+  try {
+    const response = await axios.post(API_URL, {
+      contents: [{ parts: [{ text: CODE_GEN_PROMPT }] }],
+    });
+
+    const responseText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!responseText) {
+      return { error: "No response text found", details: "API response missing expected data" };
+    }
+
+    // **CLEAN & EXTRACT JSON RESPONSE**
+    let cleanedResponse = responseText
+      .replace(/^```(json)?\n/, "") // Remove Markdown JSON markers
+      .replace(/```$/, "") // Remove trailing Markdown markers
       .trim();
 
+    // **Attempt JSON Parsing**
     let jsonResponse;
     try {
       jsonResponse = JSON.parse(cleanedResponse);
     } catch (parseError) {
-      console.error("JSON Parsing Error:", parseError.message);
+      console.error("JSON Parsing Error:", parseError);
 
-      // Attempt to extract JSON from a malformed response
+      // **Extract JSON block if parsing fails**
       const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         try {
           jsonResponse = JSON.parse(jsonMatch[0]);
         } catch (secondAttemptError) {
-          console.error("Secondary parsing failed:", secondAttemptError);
           return {
-            error: "Invalid JSON response from AI",
+            error: "Invalid JSON format from AI",
             details: secondAttemptError.message,
-            rawResponse: cleanedResponse,
+            rawResponse: cleanedResponse, // Log full AI response for debugging
           };
         }
       } else {
         return {
-          error: "No valid JSON found in response",
+          error: "No valid JSON found in AI response",
           details: parseError.message,
-          rawResponse: cleanedResponse,
+          rawResponse: cleanedResponse, // Log full AI response
         };
       }
     }
 
-  
-    if (
-      !jsonResponse ||
-      typeof jsonResponse !== "object" ||
-      !jsonResponse.files
-    ) {
-      return {
-        error: "Invalid project structure",
-        details: "Response is missing required 'files' object",
-        response: jsonResponse,
-      };
+    // **Validate JSON Structure**
+    if (!jsonResponse.files || typeof jsonResponse.files !== "object") {
+      return { error: "Invalid project structure", details: "Missing 'files' object", response: jsonResponse };
     }
 
-    // Process files correctly
+    // **Process File Contents**
     const processedFiles = {};
     for (const [path, file] of Object.entries(jsonResponse.files)) {
-      processedFiles[path] = {
-        code: file.code
-          ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"')
-          : "",
-      };
+      processedFiles[path] = { code: file.code?.replace(/\\n/g, "\n").replace(/\\"/g, '"') || "" };
     }
 
-    return {
-      ...jsonResponse,
-      files: processedFiles,
-    };
+    return { ...jsonResponse, files: processedFiles };
   } catch (error) {
     console.error("AI Service Error:", {
       message: error.message,
       stack: error.stack,
       response: error.response?.data,
     });
-
-    return {
-      error: "Failed to process AI response",
-      details: error.message,
-      code: "AI_SERVICE_ERROR",
-    };
   }
 
 };
