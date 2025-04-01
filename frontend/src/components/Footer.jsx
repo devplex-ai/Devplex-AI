@@ -1,5 +1,6 @@
 import React from "react";
 import { Twitter, Linkedin } from "lucide-react";
+import {Link} from "react-router-dom"
 
 
 const Footer = () => {
@@ -8,19 +9,20 @@ const Footer = () => {
       <div className="container mx-auto px-6 md:px-20">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
           {/* Logo and Social Links */}
-                  <div className="col-span-2 flex flex-col justify-between">
-                      <div>
-            <div className="flex items-center gap-1 mb-6">
-              <img
-                src="/assets/logo.png"
-                alt="Devplex AI Logo"
-                className="h-10 w-auto"
-              />
-              <span className="text-xl font-semibold">Devplex</span>
+          <div className="col-span-2 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-1 mb-6">
+                <img
+                  src="/assets/logo.png"
+                  alt="Devplex AI Logo"
+                  className="h-10 w-auto"
+                />
+                <span className="text-xl font-semibold">Devplex</span>
+              </div>
+              <p className="text-md text-gray-300 mb-4">
+                Build AI-powered websites effortlessly.
+              </p>
             </div>
-            <p className="text-md text-gray-300 mb-4">
-              Build AI-powered websites effortlessly.
-            </p></div>
             <div className="flex gap-4">
               <a
                 href="#"
@@ -36,7 +38,6 @@ const Footer = () => {
               >
                 <Linkedin size={20} />
               </a>
-             
             </div>
           </div>
 
@@ -64,11 +65,18 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
-              {["About", "Blog", "Careers"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="hover:text-gray-400 transition-colors">
-                    {item}
-                  </a>
+              {[
+                { label: "Home", link: "/" },
+                { label: "About", link: "/about" },
+                { label: "Pricing", link: "/pricing" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    to={item.link}
+                    className="hover:text-gray-400 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -78,13 +86,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Resources</h3>
             <ul className="space-y-2">
-              {[
-                "Launched",
-                "Learn →",
-                "Support",
-                "Integrations",
-                "Builder Hall of Fame",
-              ].map((item) => (
+              {["Launched", "Docs", "Support"].map((item) => (
                 <li key={item}>
                   <a href="#" className="hover:text-gray-400 transition-colors">
                     {item}
@@ -98,18 +100,21 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
-              {["Privacy Policy", "Terms & Conditions", "Report Abuse"].map(
-                (item) => (
-                  <li key={item}>
-                    <a
-                      href="#"
-                      className="hover:text-gray-400 transition-colors"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
+              {[
+                { label: "Privacy Policy", link: "/privacy-policy" },
+                { label: "Terms & Conditions", link: "/terms-conditions" },
+                { label: "Report Abuse", link: "/report-abuse" },
+                { label: "Security", link: "/security" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    to={item.link}
+                    className="hover:text-gray-400 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

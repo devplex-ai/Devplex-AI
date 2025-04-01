@@ -166,7 +166,7 @@ IMPORTANT RULES:
 1. EVERY component must be fully complete and production-ready
 2. Include ALL necessary imports for EVERY component (React, hooks, PropTypes, external libraries)
 3. Use PropTypes for proper JavaScript prop validation
-4. Style EVERY visible element with Tailwind classes (NO backticks in className values)
+4. Style EVERY visible element with Tailwind classes
 5. Include responsive design for all screen sizes
 6. Include NO placeholder comments - only actual working code
 7. Ensure all components are connected and work together properly
@@ -174,6 +174,8 @@ IMPORTANT RULES:
 9. Use JavaScript only - NO TypeScript
 10. Include ALL required imports at the top of each file
 11. Generate VALID, WELL-FORMED JSON output only
+
+
 
 RESPONSE FORMAT:
 Your response must be valid JSON ONLY, beginning with { and ending with }.

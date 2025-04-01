@@ -23,7 +23,7 @@ function Pricing() {
     {
       name: "Starter",
       description: "For small startups & indie developers.",
-      price: isAnnual ? 340 : 29,
+      price:  2470,
       perPerson: "Recommended",
       features: [
         "AI Code Generation",
@@ -38,7 +38,7 @@ function Pricing() {
     {
       name: "Business",
       description: "For growing startups & small businesses.",
-      price: isAnnual ? 1150 : 99,
+      price:  8462,
       perPerson: "Best Pack",
       features: [
         "Full-Stack Development",
@@ -87,24 +87,7 @@ function Pricing() {
             </p>
 
             {/* Toggle */}
-            <div className="flex items-center justify-center gap-4">
-              <span className={`${!isAnnual ? "text-white" : "text-gray-400"}`}>
-                Monthly
-              </span>
-              <button
-                onClick={() => setIsAnnual(!isAnnual)}
-                className="w-16 h-8 rounded-full bg-gray-700 relative"
-              >
-                <div
-                  className={`w-6 h-6 rounded-full bg-blue-600 absolute top-1 transition-transform duration-200 ease-in-out ${
-                    isAnnual ? "translate-x-9" : "translate-x-1"
-                  }`}
-                />
-              </button>
-              <span className={`${isAnnual ? "text-white" : "text-gray-400"}`}>
-                Annually <span className="text-sm text-blue-600">20% off</span>
-              </span>
-            </div>
+        
           </div>
 
           {/* Pricing Cards */}
@@ -128,13 +111,11 @@ function Pricing() {
                     ) : (
                       <>
                         <span className="text-4xl font-bold">
-                          ${plan.price}
+                          ₹{plan.price}
                         </span>
-                        {isAnnual ? (
-                          <span className="text-gray-400 ml-2">/ year</span>
-                        ) : (
-                          <span className="text-gray-400 ml-2">/ month</span>
-                        )}
+                     
+                      <span className="text-gray-400 ml-2">/ month</span>
+                       
                       </>
                     )}
                   </div>

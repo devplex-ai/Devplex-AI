@@ -15,6 +15,7 @@ import { AlertCircle, ArrowRight, CheckCircle, Figma, Link, X } from "lucide-rea
 import Process from "../components/Process";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonials";
+import Hero from "../components/Hero";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -239,6 +240,7 @@ const handleGenerate = async () => {
           <Process />
         </motion.div>
       </div>
+      <Hero/>
       <Testimonials/>
      
       <FAQ />

@@ -8,6 +8,11 @@ import { ToastContainer } from "react-toastify";
 import AuthSuccess from "./components/AuthSuccess";
 import WorkspacePage from "./pages/WorkspacePage";
 import PricingPage from "./pages/PricingPage";
+import ReportAbuse from "./pages/ReportAbuse";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/T&C";
+import Security from "./pages/Security";
+import AboutUs from "./pages/AboutUs";
 
 
 const App = () => {
@@ -21,7 +26,11 @@ const App = () => {
         <Route path="/oauth-success" element={<AuthSuccess />} />
         <Route path="/workspace/:sessionId" element={<WorkspacePage />} />
         <Route path="/pricing" element={<PricingPage />} />
-     
+        <Route path="/report-abuse" element={<ReportAbuse />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/security" element={<Security />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
     </Router>
   );
