@@ -201,6 +201,15 @@ const messages = [
   "Generating components...",
   "Optimizing performance...",
   "Finalizing setup...",
+  "Configuring database...",
+  "Deploying assets...",
+  "Compiling source code...",
+  "Testing API endpoints...",
+  "Building UI elements...",
+  "Deploying application...",
+  "Cleaning up temporary files...",
+  "Initializing final checks...",
+  "Launching project...",
 ];
 
 const VideoModal = () => {
@@ -220,7 +229,7 @@ const VideoModal = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-40 bg-black bg-opacity-80 flex justify-center items-center">
+    <div className="fixed inset-0 z-40 bg-transparent flex justify-center items-center">
       <div className="flex flex-col items-center gap-3 bg-white/20 backdrop-blur-lg p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
         <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
           {currentMessage}
