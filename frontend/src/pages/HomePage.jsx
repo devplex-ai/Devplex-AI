@@ -21,7 +21,8 @@ const Home = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+const [progress, setProgress] = useState(0); // Track API progress
+const [status, setStatus] = useState("idle"); 
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
@@ -238,7 +239,14 @@ const handleGenerate = async () => {
       </div>
       <Pricing />
       <FAQ />
-      {isModalOpen && <VideoModal />}
+      {isModalOpen && (
+        <VideoModal
+          isOpen={isModalOpen}
+          progress={progress}
+          status={status}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
