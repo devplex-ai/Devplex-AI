@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const generateCodeFromAI = async (userPrompt) => {
-  const API_KEY = "sk-0445530dad0346388c2db62eea293bab";
+  const API_KEY = process.env.DEEPSEEK_API_URL;
 
   if (!API_KEY) {
     console.error("Error: Missing DEEPEEK_API_KEY in environment variables.");
@@ -11,18 +11,20 @@ const generateCodeFromAI = async (userPrompt) => {
     };
   }
 
-  const API_URL = "https://openrouter.ai/api/v1/chat/completions"; // Replace with actual API URL from DeepSeek
-const responses = [
-  "Alright! Here's how we'll create your",
-  "Great! Let's build your",
-  "Okay! Here's the plan for your",
-  "Let's enhance this feature! We'll create your",
-  "No problem! Here's how we'll approach your",
-  "Let's get started! We'll create your",
-];
-const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+  const API_URL = "https://api.deepseek.com/v1/chat/completions"; // Example, verify in documentation
 
-const CODE_GEN_PROMPT = `
+  const responses = [
+    "Alright! Here's how we'll create your",
+    "Great! Let's build your",
+    "Okay! Here's the plan for your",
+    "Let's enhance this feature! We'll create your",
+    "No problem! Here's how we'll approach your",
+    "Let's get started! We'll create your",
+  ];
+  const randomResponse =
+    responses[Math.floor(Math.random() * responses.length)];
+
+  const CODE_GEN_PROMPT = `
 # Two-Phase Response System
 
  ## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
@@ -181,7 +183,7 @@ The response must begin with { and end with } with properly escaped strings insi
     const response = await axios.post(
       API_URL,
       {
-        model: "deepseek/deepseek-r1:free", // Specify the correct model if needed
+        model: "deepseek-r1", // Specify the correct model if needed
         prompt: CODE_GEN_PROMPT,
         max_tokens: 4096,
         temperature: 0.7,
