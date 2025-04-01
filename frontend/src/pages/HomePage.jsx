@@ -272,20 +272,7 @@ const messages = [
 ];
 
 // const VideoModal = () => {
-//   const [currentMessage, setCurrentMessage] = useState(messages[0]);
-//   const [index, setIndex] = useState(0);
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setIndex((prevIndex) => {
-//         const newIndex = (prevIndex + 1) % messages.length;
-//         setCurrentMessage(messages[newIndex]);
-//         return newIndex;
-//       });
-//     }, 2000);
-
-//     return () => clearInterval(interval);
-//   }, []);
+  
 
 //   return (
 //     <>
@@ -309,18 +296,32 @@ const messages = [
 //     </>
 //   );
 // };
-const VideoModal = ({ isOpen, progress, status, onClose }) => {
+const VideoModal = ({ isOpen, status, onClose }) => {
+
+  const [currentMessage, setCurrentMessage] = useState(messages[0]);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % messages.length;
+        setCurrentMessage(messages[newIndex]);
+        return newIndex;
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
   if (!isOpen) return null; // Don't render if modal is closed
 
   return (
     <>
-      {/* Background Overlay */}
-      <div className="fixed inset-0 z-40 bg-gray-900 bg-opacity-50 backdrop-blur-md"></div>
+ 
+      <div className="fixed inset-0 z-40 bg-gray-900 opacity-50"></div>
 
-      {/* Modal Container */}
       <div className="fixed inset-0 z-50 flex justify-center items-center">
-        <div className="relative flex flex-col items-center gap-3 bg-black/80 p-6 rounded-lg shadow-lg w-full max-w-lg text-center border border-gray-700">
-          {/* Close Button (Disable if still loading) */}
+        <div className="relative flex flex-col items-center gap-3 bg-black p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
+   
           {status !== "loading" && (
             <button
               onClick={onClose}
@@ -356,13 +357,9 @@ const VideoModal = ({ isOpen, progress, status, onClose }) => {
             <AlertCircle size={64} className="text-red-400 animate-shake" />
           )}
 
-          {/* Progress Bar */}
-          <div className="w-full h-2 bg-gray-700 rounded-full mt-3">
-            <div
-              className="h-full bg-green-400 rounded-full transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
+          <h2 className="text-lg font-semibold mb-3 text-white/20 ">
+            {currentMessage}
+          </h2>
 
           {/* Status Message */}
           <p className="mt-2 text-white text-sm">
