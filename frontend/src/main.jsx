@@ -1,5 +1,6 @@
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 import "./index.css";
 import App from "./App.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -15,7 +16,10 @@ const Root = () => {
       <Provider store={store}>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-            <App />
+
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
           </UserDetailContext.Provider>
         </GoogleOAuthProvider>
       </Provider>
