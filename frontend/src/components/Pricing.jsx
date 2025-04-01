@@ -72,12 +72,11 @@ function Pricing() {
 
   return (
     <>
-
       <div className="min-h-screen bg-[#0A0B14] text-white py-16 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+            <h1 className="text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               Build Smarter,
               <br /> Pay Your Way – The AI Website <br /> Builder for Every Need
             </h1>

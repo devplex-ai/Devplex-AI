@@ -37,10 +37,15 @@ const testimonials = [
 function Testimonials() {
   return (
     <div className="min-h-screen bg-black text-white py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-          Creator Loves Devplex
-        </h2>
+      <div className="max-w-7xl mx-auto flex flex-col items-center gap-4">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+            Developer Love's Devplex
+          </h1>
+          <p className="text-gray-400 text-lg">
+            See what developers say about us
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
