@@ -175,8 +175,8 @@ maxTokens = 800,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          "HTTP-Referer": "YOUR_SITE_URL",
-          "X-Title": "YOUR_APP_NAME",
+          "HTTP-Referer": "https://www.devplex.in",
+          "X-Title": "Devplex AI",
         },
         timeout: 20000, 
       }
