@@ -207,7 +207,7 @@ const AppSideBar = () => {
                   />
                   <div>
                     <div className="text-gray-200">
-                      {user?.name || user?.email}
+                      {!user?.email ? user?.name : user?.email}
                     </div>
                     <div className="text-gray-400 text-sm">Personal Plan</div>
                   </div>
