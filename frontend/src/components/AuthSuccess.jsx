@@ -5,15 +5,20 @@ const AuthSuccess = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get URL parameters
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     const userId = params.get("userId");
-    const name = params.get("name");
-    const email = params.get("email");
-    const avatar = params.get("avatar");
+    const name = params.get("name")
+      ? decodeURIComponent(params.get("name"))
+      : "Unknown User";
+    const email = params.get("email")
+      ? decodeURIComponent(params.get("email"))
+      : "No Email";
+    const avatar = params.get("avatar")
+      ? decodeURIComponent(params.get("avatar"))
+      : "https://via.placeholder.com/150";
 
-    // Debug: Log received parameters
+    // Debugging logs
     console.log("Received token:", token);
     console.log("Received userId:", userId);
     console.log("Received name:", name);
@@ -22,26 +27,26 @@ const AuthSuccess = () => {
 
     if (token && userId) {
       try {
-        // Store data in localStorage
+        // Store token and user data (Consider using sessionStorage for security)
         localStorage.setItem("token", token);
         localStorage.setItem(
           "user",
           JSON.stringify({ id: userId, name, email, avatar })
         );
 
-        console.log("User data saved to localStorage");
+        console.log("User data saved successfully");
 
-        // Redirect user to dashboard
+        // Redirect user to dashboard/home
         setTimeout(() => {
-          navigate("/");
+          navigate("/", { replace: true }); // Prevents navigating back to login
         }, 500);
       } catch (error) {
-        console.error("Error saving authentication data:", error);
-        navigate("/login");
+        console.error("Error storing authentication data:", error);
+        navigate("/login", { replace: true });
       }
     } else {
       console.error("Missing authentication parameters");
-      navigate("/login");
+      navigate("/login", { replace: true });
     }
   }, [navigate]);
 
