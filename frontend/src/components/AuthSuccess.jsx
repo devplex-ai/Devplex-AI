@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/authSlice"; // Import the Redux action
 
 const AuthSuccess = () => {
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,14 +46,17 @@ const AuthSuccess = () => {
 
         // Redirect user to dashboard/home
         setTimeout(() => {
+          setLoading(false);
           navigate("/", { replace: true });
         }, 500);
       } catch (error) {
         console.error("Error storing authentication data:", error);
+        setLoading(false);
         navigate("/login", { replace: true });
       }
     } else {
       console.error("Missing authentication parameters");
+      setLoading(false);
       navigate("/login", { replace: true });
     }
   }, [navigate, dispatch]);
