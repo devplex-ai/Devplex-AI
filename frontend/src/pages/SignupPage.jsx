@@ -342,10 +342,10 @@ const SignupPage = ({ onClose = () => {} }) => {
         email,
         password,
       });
-      toast.success("Registration successful!");
+      toast.success("Registration successful! Please Login");
       localStorage.setItem("token", response.data.token);
       onClose();
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setError(
         error.response?.data?.message || "An error occurred. Please try again."
