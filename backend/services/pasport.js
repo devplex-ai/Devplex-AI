@@ -13,9 +13,9 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("GitHub Profile:", profile);
+        
 
-        // Fetch user's primary email manually
+       
         let email =
           profile.emails?.[0]?.value || `no-email-${profile.id}@example.com`;
         if (!profile.emails || profile.emails.length === 0) {
