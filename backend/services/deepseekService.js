@@ -244,6 +244,9 @@ const generateCodeFromAI = async (userPrompt) => {
           {
             role: "system",
             content: dedent`
+             User Requirements:
+             ${userPrompt}
+
               You are an expert React developer. Always respond with valid JSON in this exact structure:
               {
                 "response": "${randomResponse} [project name]...",
