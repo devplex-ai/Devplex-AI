@@ -96,7 +96,7 @@ const AppSideBar = () => {
               <Avatar
                 src={user?.avatar}
                 alt="User Avatar"
-                name={user?.name}
+                name={!user?.name ? user?.email : user?.name}
                 size={40}
                 className="h-10 w-10 rounded-full"
               />
