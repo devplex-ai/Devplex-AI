@@ -200,7 +200,7 @@ const AppSideBar = () => {
                 <div className="flex items-center gap-3">
                   <Avatar
                     src={user?.avatar}
-                    name={user?.name}
+                    name={!user?.name ? user?.email : user?.name}
                     alt="User Avatar"
                     size={40}
                     className="h-10 w-10 rounded-full"

@@ -265,7 +265,7 @@ const fetchChatHistory = async () => {
                   {chat.role === "user" && (
                     <Avatar
                       src={userAvatar}
-                      name={user.name}
+                      name={!user?.name ? user?.email : user?.name}
                       alt="User Avatar"
                       size={40}
                       className="h-10 w-10 rounded-full"
