@@ -192,6 +192,162 @@
 // };
 
 // module.exports = generateCodeFromAI;
+// const axios = require("axios");
+// const dedent = require("dedent");
+
+// const generateCodeFromAI = async (userPrompt) => {
+//   const API_KEY = process.env.DEEPSEEK_API;
+
+//   if (!API_KEY) {
+//     console.error("Error: Missing DEEPSEEK_API key in environment variables.");
+//     return {
+//       error: "API key is missing",
+//       details: "Please check your environment configuration",
+//     };
+//   }
+
+//   const API_URL = "https://api.deepseek.com/v1/chat/completions";
+
+//   const responses = [
+//     "Alright! Here's how we'll create your",
+//     "Great! Let's build your",
+//     "Okay! Here's the plan for your",
+//     "Let's enhance this feature! We'll create your",
+//     "No problem! Here's how we'll approach your",
+//     "Let's get started! We'll create your",
+//   ];
+//   const randomResponse =
+//     responses[Math.floor(Math.random() * responses.length)];
+
+//   // Fallback response in case of API failure
+//   const getFallbackResponse = () => ({
+//     response: `${randomResponse} React project. This is a fallback response.`,
+//     updates: [{ operation: "creating", file: "App.js" }],
+//     projectTitle: "React Project",
+//     explanation: "A basic React application with Tailwind CSS",
+//     files: {
+//       "/App.js": {
+//         code: `import React from 'react';\n\nexport default function App() {\n  return (\n    <div className=\"min-h-screen bg-gray-100 p-8\">\n      <h1 className=\"text-3xl font-bold text-blue-600\">Hello World</h1>\n    </div>\n  );\n}`,
+//         styles:
+//           "min-h-screen, bg-gray-100, p-8, text-3xl, font-bold, text-blue-600",
+//       },
+//     },
+//     setupInstructions: "npm install && npm run dev",
+//   });
+
+//   try {
+//     const response = await axios.post(
+//       API_URL,
+//       {
+//         model: "deepseek-chat",
+//         messages: [
+//           {
+//             role: "system",
+//             content: dedent`
+//              User Requirements:
+//              ${userPrompt}
+
+//               You are an expert React developer. Always respond with valid JSON in this exact structure:
+//               {
+//                 "response": "${randomResponse} [project name]...",
+//                 "updates": [{"operation":"creating","file":"filename"}],
+//                 "projectTitle": "Project Name",
+//                 "explanation": "Project description",
+//                 "files": {
+//                   "/App.js": {
+//                     "code": "Complete code",
+//                     "styles": "Tailwind classes"
+//                   },
+//                     "/components/Navbar.jsx": {
+//                     "code": "Complete code",
+//                     "styles": "Tailwind classes"
+//                   }
+//                 },
+//                 "setupInstructions": "npm commands"
+//               }
+              
+//               Rules:
+//               1. Use React with Tailwind CSS
+//               2. Only use lucide-react for icons
+//               3. Write complete code (no placeholders)
+//               4. Make production-ready designs
+//               5. For multi-page sites, create 5+ components
+//               6. Focus on functionality for single-page apps
+//             `,
+//           },
+//           {
+//             role: "user",
+//             content: userPrompt || "Create a React project with Tailwind CSS",
+//           },
+//         ],
+//         temperature: 0.7,
+//         max_tokens: 3000,
+//         response_format: "json",
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${API_KEY}`,
+//         },
+//         timeout: 10000,
+//       }
+//     );
+
+//     const extractJSON = (text) => {
+//       try {
+//         return JSON.parse(text);
+//       } catch {
+//         const jsonMatch = text.match(/\{(?:[^{}]|(?:\{(?:[^{}])*\})*)\}/);
+//         return jsonMatch ? JSON.parse(jsonMatch[0]) : null;
+//       }
+//     };
+
+//     const responseText = response.data?.choices?.[0]?.message?.content;
+//     if (!responseText) throw new Error("Empty response from API");
+
+//     const jsonResponse = extractJSON(responseText) || getFallbackResponse();
+
+//     if (!jsonResponse.files || !jsonResponse.response) {
+//       console.warn("Invalid response structure, using fallback");
+//       return getFallbackResponse();
+//     }
+
+//     const processedFiles = {};
+//     for (const [path, file] of Object.entries(jsonResponse.files)) {
+//       processedFiles[path] = {
+//         code: (file.code || "").replace(/\\n/g, "\n").replace(/\\"/g, '"'),
+//         styles: file.styles || "",
+//       };
+//     }
+
+//     return {
+//       ...jsonResponse,
+//       files: processedFiles,
+//     };
+//   } catch (error) {
+//     console.error("API Error:", {
+//       message: error.message,
+//       status: error.response?.status,
+//       data: error.response?.data,
+//     });
+
+//     if (error.response?.status === 402) {
+//       return {
+//         error: "API Limit Reached",
+//         details: "The free tier has been exceeded",
+//         ...getFallbackResponse(),
+//       };
+//     }
+
+//     return {
+//       error: "API Service Error",
+//       details: error.message,
+//       ...getFallbackResponse(),
+//     };
+//   }
+// };
+
+// module.exports = generateCodeFromAI;
 const axios = require("axios");
 const dedent = require("dedent");
 
@@ -199,37 +355,25 @@ const generateCodeFromAI = async (userPrompt) => {
   const API_KEY = process.env.DEEPSEEK_API;
 
   if (!API_KEY) {
-    console.error("Error: Missing DEEPSEEK_API key in environment variables.");
     return {
-      error: "API key is missing",
-      details: "Please check your environment configuration",
+      error: "API key missing",
+      details: "Set DEEPSEEK_API environment variable",
     };
   }
 
   const API_URL = "https://api.deepseek.com/v1/chat/completions";
 
-  const responses = [
-    "Alright! Here's how we'll create your",
-    "Great! Let's build your",
-    "Okay! Here's the plan for your",
-    "Let's enhance this feature! We'll create your",
-    "No problem! Here's how we'll approach your",
-    "Let's get started! We'll create your",
-  ];
-  const randomResponse =
-    responses[Math.floor(Math.random() * responses.length)];
-
-  // Fallback response in case of API failure
+  // Fallback response if API fails
   const getFallbackResponse = () => ({
-    response: `${randomResponse} React project. This is a fallback response.`,
+    response: "Here's a basic React starter template:",
     updates: [{ operation: "creating", file: "App.js" }],
-    projectTitle: "React Project",
-    explanation: "A basic React application with Tailwind CSS",
+    projectTitle: "React Starter",
+    explanation: "Default project with Tailwind CSS",
     files: {
       "/App.js": {
-        code: `import React from 'react';\n\nexport default function App() {\n  return (\n    <div className=\"min-h-screen bg-gray-100 p-8\">\n      <h1 className=\"text-3xl font-bold text-blue-600\">Hello World</h1>\n    </div>\n  );\n}`,
+        code: `import React from 'react';\n\nexport default function App() {\n  return (\n    <div className="min-h-screen bg-gray-50 p-8">\n      <h1 className="text-3xl font-bold text-blue-600">Hello World</h1>\n    </div>\n  );\n}`,
         styles:
-          "min-h-screen, bg-gray-100, p-8, text-3xl, font-bold, text-blue-600",
+          "min-h-screen, bg-gray-50, p-8, text-3xl, font-bold, text-blue-600",
       },
     },
     setupInstructions: "npm install && npm run dev",
@@ -239,108 +383,78 @@ const generateCodeFromAI = async (userPrompt) => {
     const response = await axios.post(
       API_URL,
       {
-        model: "deepseek-chat",
+        model: "deepseek-chat", // Free model
         messages: [
           {
             role: "system",
             content: dedent`
-             User Requirements:
-             ${userPrompt}
-
-              You are an expert React developer. Always respond with valid JSON in this exact structure:
+              Generate React code with:
+              1. Tailwind CSS styling
+              2. Only lucide-react icons
+              3. Valid JSON output format:
               {
-                "response": "${randomResponse} [project name]...",
-                "updates": [{"operation":"creating","file":"filename"}],
-                "projectTitle": "Project Name",
-                "explanation": "Project description",
+                "response": "...",
+                "updates": [],
+                "projectTitle": "...",
+                "explanation": "...",
                 "files": {
                   "/App.js": {
-                    "code": "Complete code",
-                    "styles": "Tailwind classes"
-                  },
-                    "/components/Navbar.jsx": {
-                    "code": "Complete code",
-                    "styles": "Tailwind classes"
+                    "code": "...",
+                   
+                  },    
+                  "/components/Navbar.jsx": {
+                    "code": "...",
+                   
                   }
                 },
-                "setupInstructions": "npm commands"
+                "setupInstructions": "..."
               }
-              
-              Rules:
-              1. Use React with Tailwind CSS
-              2. Only use lucide-react for icons
-              3. Write complete code (no placeholders)
-              4. Make production-ready designs
-              5. For multi-page sites, create 5+ components
-              6. Focus on functionality for single-page apps
             `,
           },
           {
             role: "user",
-            content: userPrompt || "Create a React project with Tailwind CSS",
+            content: userPrompt || "Create a simple React app",
           },
         ],
         temperature: 0.7,
-        max_tokens: 3000,
-        response_format: "json",
+        max_tokens: 2000, // Conservative limit for free tier
+        response_format: { type: "json_object" },
       },
       {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${API_KEY}`,
         },
-        timeout: 10000,
+        timeout: 8000, // 8-second timeout
       }
     );
 
-    const extractJSON = (text) => {
-      try {
-        return JSON.parse(text);
-      } catch {
-        const jsonMatch = text.match(/\{(?:[^{}]|(?:\{(?:[^{}])*\})*)\}/);
-        return jsonMatch ? JSON.parse(jsonMatch[0]) : null;
-      }
-    };
-
-    const responseText = response.data?.choices?.[0]?.message?.content;
-    if (!responseText) throw new Error("Empty response from API");
-
-    const jsonResponse = extractJSON(responseText) || getFallbackResponse();
-
-    if (!jsonResponse.files || !jsonResponse.response) {
-      console.warn("Invalid response structure, using fallback");
+    // Parse response
+    let responseData;
+    try {
+      const responseText = response.data.choices[0].message.content;
+      // Clean response (remove markdown code blocks if present)
+      const cleanedResponse = responseText
+        .replace(/^```json/, "")
+        .replace(/```$/, "")
+        .trim();
+      responseData = JSON.parse(cleanedResponse);
+    } catch (e) {
+      console.warn("Failed to parse response, using fallback");
       return getFallbackResponse();
     }
 
-    const processedFiles = {};
-    for (const [path, file] of Object.entries(jsonResponse.files)) {
-      processedFiles[path] = {
-        code: (file.code || "").replace(/\\n/g, "\n").replace(/\\"/g, '"'),
-        styles: file.styles || "",
-      };
+    // Validate response structure
+    if (!responseData.files || typeof responseData.files !== "object") {
+      console.warn("Invalid files structure, using fallback");
+      return getFallbackResponse();
     }
 
-    return {
-      ...jsonResponse,
-      files: processedFiles,
-    };
+    return responseData;
   } catch (error) {
-    console.error("API Error:", {
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data,
-    });
-
-    if (error.response?.status === 402) {
-      return {
-        error: "API Limit Reached",
-        details: "The free tier has been exceeded",
-        ...getFallbackResponse(),
-      };
-    }
-
+    console.error("API Error:", error.message);
     return {
-      error: "API Service Error",
+      error: "API request failed",
       details: error.message,
       ...getFallbackResponse(),
     };
