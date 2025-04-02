@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/authSlice"; // Import the Redux action
 
 const AuthSuccess = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -18,7 +21,6 @@ const AuthSuccess = () => {
       ? decodeURIComponent(params.get("avatar"))
       : "https://via.placeholder.com/150";
 
-    // Debugging logs
     console.log("Received token:", token);
     console.log("Received userId:", userId);
     console.log("Received name:", name);
@@ -27,18 +29,21 @@ const AuthSuccess = () => {
 
     if (token && userId) {
       try {
-        // Store token and user data (Consider using sessionStorage for security)
+        const userData = { _id: userId, name, email, avatar }; // Ensure _id matches Redux
+
+        // Store in localStorage
         localStorage.setItem("token", token);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ id: userId, name, email, avatar })
-        );
+        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("userId", userId);
+
+        // Dispatch to Redux
+        dispatch(setUser({ user: userData, token }));
 
         console.log("User data saved successfully");
 
         // Redirect user to dashboard/home
         setTimeout(() => {
-          navigate("/", { replace: true }); // Prevents navigating back to login
+          navigate("/", { replace: true });
         }, 500);
       } catch (error) {
         console.error("Error storing authentication data:", error);
@@ -48,7 +53,7 @@ const AuthSuccess = () => {
       console.error("Missing authentication parameters");
       navigate("/login", { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return <p>Logging in, please wait...</p>;
 };
