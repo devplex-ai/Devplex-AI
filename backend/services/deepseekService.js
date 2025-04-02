@@ -26,7 +26,7 @@ const generateCodeFromAI = async (userPrompt) => {
     responses[Math.floor(Math.random() * responses.length)];
 
   const CODE_GEN_PROMPT = {
-    model: "deepseek/deepseek-r1:free",
+    model: "deepseek-chat",
     messages: [
       {
         role: "system",
