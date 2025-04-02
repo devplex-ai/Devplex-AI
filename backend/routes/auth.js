@@ -124,7 +124,15 @@ router.post("/sign-in", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
-    res.json({ message: "Login successful", token, userId: user.id });
+      res.json({
+        message: "Login successful",
+        token,
+        userId: user.id,
+        user: {
+          _id: user.id,
+          email: user.email,
+        },
+      });
   } catch (error) {
     console.error("Error during sign-in:", error);
     res.status(500).json({ error: "Internal server error" });

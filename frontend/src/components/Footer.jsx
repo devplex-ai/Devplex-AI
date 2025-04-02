@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer className="bg-black text-white pt-8 px-10 border-t border-white/30">
       <div className="container mx-auto px-6 md:px-20">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Social Links */}
           <div className="col-span-2 flex flex-col justify-between">
             <div>
@@ -42,7 +42,7 @@ const Footer = () => {
           </div>
 
           {/* Product Links */}
-          <div>
+          {/* <div>
             <h3 className="text-lg font-semibold mb-4">Product</h3>
             <ul className="space-y-2">
               {[
@@ -59,7 +59,7 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Company Links */}
           <div>
@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
 
           {/* Resources Links */}
-          <div>
+          {/* <div>
             <h3 className="text-lg font-semibold mb-4">Resources</h3>
             <ul className="space-y-2">
               {["Launched", "Docs", "Support"].map((item) => (
@@ -94,7 +94,7 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Legal Links */}
           <div>
