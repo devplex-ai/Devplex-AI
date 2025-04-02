@@ -318,10 +318,16 @@ const SignupPage = ({ onClose = () => {} }) => {
 
   const { userDetail, setUserDetail }=useContext(UserDetailContext);
  const apiURL = import.meta.env.VITE_BASE_URL;
-  const handleGitHubLogin = () => {
-    setIsSocialLoading(true);
-    window.location.href = `${apiURL}/auth/github`;
-  };
+ const handleGitHubLogin = () => {
+   try {
+     setIsSocialLoading(true);
+     window.location.href = `${apiURL}/auth/github`; // Use environment variable for flexibility
+   } catch (error) {
+     console.error("GitHub Login Error:", error);
+     setIsSocialLoading(false);
+   }
+ };
+
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

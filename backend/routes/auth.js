@@ -61,36 +61,47 @@ router.get(
   passport.authenticate("github", { scope: ["user:email"] })
 );
 
-router.get(
-  "/github/callback",
-  passport.authenticate("github", { failureRedirect: "/" }),
-  async (req, res) => {
-    try {
-      const user = req.user; 
+// GitHub OAuth callback route
+router.get("/github/callback", async (req, res, next) => {
+  passport.authenticate(
+    "github",
+    { failureRedirect: `${process.env.CLIENT_URL}/login` },
+    async (err, user) => {
+      if (err || !user) {
+        console.error("GitHub login failed:", err);
+        return res.redirect(`${process.env.CLIENT_URL}/login`);
+      }
 
-     
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
+      try {
+        // Generate JWT Token
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
 
-     
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-      });
+        // Set token in HTTP-only cookie
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // Secure only in production
+          sameSite: "strict",
+        });
 
-      // Redirect user to frontend with user data in URL
-      res.redirect(
-        `${process.env.CLIENT_URL}/auth-success?token=${token}&userId=${user.id}&name=${user.name}&email=${user.email}&avatar=${user.avatar}`
-      );
-    } catch (error) {
-      console.error("GitHub login error:", error);
-      res.redirect(`${process.env.CLIENT_URL}/login`);
+        // Redirect user to frontend with encoded user data
+        const redirectUrl = `${
+          process.env.CLIENT_URL
+        }/auth-success?token=${token}&userId=${encodeURIComponent(
+          user.id
+        )}&name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(
+          user.email
+        )}&avatar=${encodeURIComponent(user.avatar)}`;
+
+        res.redirect(redirectUrl);
+      } catch (error) {
+        console.error("GitHub login error:", error);
+        res.redirect(`${process.env.CLIENT_URL}/login`);
+      }
     }
-  }
-);
-
+  )(req, res, next);
+});
 
 // Local sign-up
 router.post("/sign-up", async (req, res) => {

@@ -4,23 +4,24 @@ const GitHubStrategy = require("passport-github2").Strategy;
 const User = require("../models/User.js");
 require("dotenv").config();
 
-
 // GitHub Strategy
 passport.use(
   new GitHubStrategy(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.BACKEND_URL + "/auth/github/callback",
+      callbackURL: `${process.env.BACKEND_URL}/auth/github/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log("GitHub Profile:", profile); // Debugging
+
         let user = await User.findOne({ githubId: profile.id });
 
         if (!user) {
           user = new User({
             githubId: profile.id,
-            name: profile.displayName || "No Name",
+            name: profile.displayName?.trim() || `GitHub User ${profile.id}`,
             email:
               profile.emails?.[0]?.value ||
               `no-email-${profile.id}@example.com`,
@@ -32,21 +33,25 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
+        console.error("GitHub OAuth Error:", error);
         return done(error, null);
       }
     }
   )
 );
 
+// Serialize user
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
+// Deserialize user
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
     done(null, user);
   } catch (error) {
+    console.error("Deserialization Error:", error);
     done(error, null);
   }
 });
