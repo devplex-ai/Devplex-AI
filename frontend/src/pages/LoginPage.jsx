@@ -117,12 +117,19 @@ const handleSubmit = async (e) => {
     const response = await axios.post(
       `${apiURL}/auth/sign-in`,
       { email, password },
-      { withCredentials: true } // Needed for sending cookies
+      { withCredentials: true }
     );
 
-    const { token, userId, user } = response.data; 
+    console.log("API Response:", response.data); // Debugging line
 
-    dispatch(setUser({ user, token })); 
+    const { token, user } = response.data || {}; // Default to empty object
+
+    if (!user || !user._id) {
+      setError("Invalid user data received.");
+      return;
+    }
+
+    dispatch(setUser({ user, token }));
     navigate("/");
     toast.success("Login successful!");
   } catch (error) {
@@ -133,6 +140,7 @@ const handleSubmit = async (e) => {
     setIsLoading(false);
   }
 };
+
   return (
     <div className="fixed inset-0 z-50 bg-black">
       <Navbar />

@@ -48,15 +48,20 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
+      if (!action.payload?.user || !action.payload?.token) {
+        console.error("Invalid user payload received:", action.payload);
+        return;
+      }
+
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.userId = action.payload.user._id;
 
-      // Store user data in localStorage
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("userId", action.payload.user._id);
     },
+
     logout: (state) => {
       state.user = null;
       state.token = null;
