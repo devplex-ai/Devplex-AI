@@ -37,11 +37,11 @@
 //           Respond conversationally to the user's request first, then proceed with the structured output.
           
 //           Example Response Format:
-//           "${randomResponse} [Project Type]: [Brief 2-3 sentence explanation of the approach]. 
+//           "${randomResponse} [Project Type]: [Brief 2-3 sentence explanation of the approach].
 //           I'll generate a complete React project with [Key Features]."
 
 //           ## Phase 2: Structured Output (After conversational intro)
-//           Generate a programming code structure for a React project using Vite. Create multiple components, organizing them in separate folders with filenames using the .js extension. 
+//           Generate a programming code structure for a React project using Vite. Create multiple components, organizing them in separate folders with filenames using the .js extension.
 //           Use Tailwind CSS for styling, without any third-party dependencies or libraries, except for icons from the lucide-react library when necessary.
 
 //           USER REQUIREMENTS:
@@ -348,32 +348,150 @@
 // };
 
 // module.exports = generateCodeFromAI;
+
+
+// const axios = require("axios");
+// const dedent = require("dedent");
+
+// const generateCodeFromAI = async (userPrompt) => {
+//   const API_KEY = process.env.DEEPSEEK_API;
+
+//   if (!API_KEY) {
+//     return {
+//       error: "API key missing",
+//       details: "Set DEEPSEEK_API environment variable",
+//     };
+//   }
+
+//   const API_URL = "https://api.deepseek.com/v1/chat/completions";
+
+//   // Fallback response if API fails
+//   const getFallbackResponse = () => ({
+//     response: "Here's a basic React starter template:",
+//     updates: [{ operation: "creating", file: "App.js" }],
+//     projectTitle: "React Starter",
+//     explanation: "Default project with Tailwind CSS",
+//     files: {
+//       "/App.js": {
+//         code: `import React from 'react';\n\nexport default function App() {\n  return (\n    <div className="min-h-screen bg-gray-50 p-8">\n      <h1 className="text-3xl font-bold text-blue-600">Hello World</h1>\n    </div>\n  );\n}`,
+//         styles:
+//           "min-h-screen, bg-gray-50, p-8, text-3xl, font-bold, text-blue-600",
+//       },
+//     },
+//     setupInstructions: "npm install && npm run dev",
+//   });
+
+//   try {
+//     const response = await axios.post(
+//       API_URL,
+//       {
+//         model: "deepseek-chat", // Free model
+//         messages: [
+//           {
+//             role: "system",
+//             content: dedent`
+//               Generate React code with:
+//               1. Tailwind CSS styling
+//               2. Only lucide-react icons
+//               3. Valid JSON output format:
+//               {
+//                 "response": "...",
+//                 "updates": [],
+//                 "projectTitle": "...",
+//                 "explanation": "...",
+//                 "files": {
+//                   "/App.js": {
+//                     "code": "...",
+                   
+//                   },
+//                   "/components/Navbar.js": {
+//                     "code": "...",
+                   
+//                   }
+//                 },
+//                 "setupInstructions": "..."
+//               }
+//             `,
+//           },
+//           {
+//             role: "user",
+//             content: userPrompt || "Create a simple React app",
+//           },
+//         ],
+//         temperature: 0.7,
+//         max_tokens: 2000, // Conservative limit for free tier
+//         response_format: { type: "json_object" },
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${API_KEY}`,
+//         },
+//         timeout: 8000, // 8-second timeout
+//       }
+//     );
+
+//     // Parse response
+//     let responseData;
+//     try {
+//       const responseText = response.data.choices[0].message.content;
+//       // Clean response (remove markdown code blocks if present)
+//       const cleanedResponse = responseText
+//         .replace(/^```json/, "")
+//         .replace(/```$/, "")
+//         .trim();
+//       responseData = JSON.parse(cleanedResponse);
+//     } catch (e) {
+//       console.warn("Failed to parse response, using fallback");
+//       return getFallbackResponse();
+//     }
+
+//     // Validate response structure
+//     if (!responseData.files || typeof responseData.files !== "object") {
+//       console.warn("Invalid files structure, using fallback");
+//       return getFallbackResponse();
+//     }
+
+//     return responseData;
+//   } catch (error) {
+//     console.error("API Error:", error.message);
+//     return {
+//       error: "API request failed",
+//       details: error.message,
+//       ...getFallbackResponse(),
+//     };
+//   }
+// };
+
+// module.exports = generateCodeFromAI;
+
 const axios = require("axios");
 const dedent = require("dedent");
 
 const generateCodeFromAI = async (userPrompt) => {
-  const API_KEY = process.env.DEEPSEEK_API;
+  // Free tier configuration
+  const FREE_API_URL = "https://api.deepseek.com/v1/chat/completions";
+  const FREE_MODEL = "deepseek-chat";
+  const API_KEY = process.env.DEEPSEEK_API_FREE; // Different key for free tier
 
   if (!API_KEY) {
     return {
-      error: "API key missing",
-      details: "Set DEEPSEEK_API environment variable",
+      error: "Free tier API key missing",
+      details: "Set DEEPSEEK_API_FREE environment variable",
     };
   }
 
-  const API_URL = "https://api.deepseek.com/v1/chat/completions";
-
-  // Fallback response if API fails
+  // Fallback response generator
   const getFallbackResponse = () => ({
-    response: "Here's a basic React starter template:",
+    response: "Here's a basic React template (fallback):",
     updates: [{ operation: "creating", file: "App.js" }],
     projectTitle: "React Starter",
     explanation: "Default project with Tailwind CSS",
     files: {
       "/App.js": {
-        code: `import React from 'react';\n\nexport default function App() {\n  return (\n    <div className="min-h-screen bg-gray-50 p-8">\n      <h1 className="text-3xl font-bold text-blue-600">Hello World</h1>\n    </div>\n  );\n}`,
+        code: `import React from 'react';\n\nexport default function App() {\n  return (\n    <div className="min-h-screen bg-gray-50 p-4">\n      <h1 className="text-2xl font-bold text-blue-500">Welcome</h1>\n      <p className="mt-2 text-gray-600">Edit this to get started</p>\n    </div>\n  );\n}`,
         styles:
-          "min-h-screen, bg-gray-50, p-8, text-3xl, font-bold, text-blue-600",
+          "min-h-screen, bg-gray-50, p-4, text-2xl, font-bold, text-blue-500, mt-2, text-gray-600",
       },
     },
     setupInstructions: "npm install && npm run dev",
@@ -381,43 +499,35 @@ const generateCodeFromAI = async (userPrompt) => {
 
   try {
     const response = await axios.post(
-      API_URL,
+      FREE_API_URL,
       {
-        model: "deepseek-chat", // Free model
+        model: FREE_MODEL,
         messages: [
           {
             role: "system",
             content: dedent`
               Generate React code with:
-              1. Tailwind CSS styling
-              2. Only lucide-react icons
-              3. Valid JSON output format:
+              1. Tailwind CSS only
+              2. Simple components
+              3. Free-tier compatible features only
+              4. JSON format:
               {
                 "response": "...",
                 "updates": [],
                 "projectTitle": "...",
                 "explanation": "...",
-                "files": {
-                  "/App.js": {
-                    "code": "...",
-                   
-                  },    
-                  "/components/Navbar.jsx": {
-                    "code": "...",
-                   
-                  }
-                },
+                "files": { "/file.js": { "code": "...", "styles": "..." } },
                 "setupInstructions": "..."
               }
             `,
           },
           {
             role: "user",
-            content: userPrompt || "Create a simple React app",
+            content: userPrompt || "Create a simple React component",
           },
         ],
         temperature: 0.7,
-        max_tokens: 2000, // Conservative limit for free tier
+        max_tokens: 1500, // Lower limit for free tier
         response_format: { type: "json_object" },
       },
       {
@@ -425,37 +535,23 @@ const generateCodeFromAI = async (userPrompt) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${API_KEY}`,
         },
-        timeout: 8000, // 8-second timeout
+        timeout: 5000, // Shorter timeout for free tier
       }
     );
 
-    // Parse response
-    let responseData;
+    // Simplified response processing
     try {
-      const responseText = response.data.choices[0].message.content;
-      // Clean response (remove markdown code blocks if present)
-      const cleanedResponse = responseText
-        .replace(/^```json/, "")
-        .replace(/```$/, "")
-        .trim();
-      responseData = JSON.parse(cleanedResponse);
-    } catch (e) {
-      console.warn("Failed to parse response, using fallback");
+      const content = response.data.choices[0].message.content;
+      const cleanJSON = content.replace(/```json|```/g, "").trim();
+      return JSON.parse(cleanJSON);
+    } catch {
       return getFallbackResponse();
     }
-
-    // Validate response structure
-    if (!responseData.files || typeof responseData.files !== "object") {
-      console.warn("Invalid files structure, using fallback");
-      return getFallbackResponse();
-    }
-
-    return responseData;
   } catch (error) {
-    console.error("API Error:", error.message);
+    console.error("Free API Error:", error.message);
     return {
-      error: "API request failed",
-      details: error.message,
+      error: "Free tier limit reached",
+      details: "Try again later or upgrade your plan",
       ...getFallbackResponse(),
     };
   }
