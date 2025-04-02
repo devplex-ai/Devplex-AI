@@ -55,7 +55,39 @@ const AuthSuccess = () => {
     }
   }, [navigate, dispatch]);
 
-  return <p>Logging in, please wait...</p>;
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+      <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full text-center">
+        {loading ? (
+          <>
+            <Loader2 className="animate-spin mx-auto text-blue-500 w-10 h-10" />
+            <p className="mt-4 text-gray-600 text-lg">
+              Authenticating, please wait...
+            </p>
+          </>
+        ) : error ? (
+          <>
+            <p className="text-red-500 text-lg">{error}</p>
+          </>
+        ) : (
+          <>
+            <img
+              src={userData.avatar}
+              alt="User Avatar"
+              className="w-20 h-20 rounded-full mx-auto mb-4"
+            />
+            <h2 className="text-xl font-semibold text-gray-800">
+              Welcome, {userData.name}!
+            </h2>
+            <p className="text-gray-600">{userData.email}</p>
+            <p className="text-green-500 mt-4">
+              Authentication successful! Redirecting...
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default AuthSuccess;
