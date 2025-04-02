@@ -149,8 +149,9 @@ RESPONSE FORMAT:
 
 const generateCodeFromAI = async (
   userPrompt,
-  temperature = 0.7,
-  maxTokens = 1024
+temperature = 0.5, 
+maxTokens = 800,  
+
 ) => {
   try {
     const response = await axios.post(
@@ -177,24 +178,40 @@ const generateCodeFromAI = async (
           "HTTP-Referer": "YOUR_SITE_URL",
           "X-Title": "YOUR_APP_NAME",
         },
-        timeout: 10000,
+        timeout: 20000, 
       }
     );
 
     try {
       const content = response.data.choices[0]?.message?.content || "";
-      const cleanJSON = content.replace(/```json|```/g, "").trim();
+  const cleanJSON = content.replace(/```json|```/g, "").trim();
 
-      if (!cleanJSON)
-        throw new Error("Empty response received from OpenRouter.");
+  if (!cleanJSON) throw new Error("Empty response received from OpenRouter.");
 
-      const result = JSON.parse(cleanJSON);
+  let result;
+  try {
+    result = JSON.parse(cleanJSON);
+  } catch (jsonError) {
+    console.warn("⚠️ JSON parsing failed:", jsonError.message);
+    console.log("🚨 Raw API Response:", cleanJSON);
 
-      if (!result.files || typeof result.files !== "object") {
-        throw new Error("Invalid files structure in API response.");
-      }
 
-      return result;
+    const fixedJSON = cleanJSON.replace(/,\s*}/g, "}").replace(/,\s*]/g, "]");
+
+    try {
+      result = JSON.parse(fixedJSON);
+    } catch (finalError) {
+      console.error("❌ Final JSON parsing failed. Falling back to default.");
+      return getFallbackResponse();
+    }
+  }
+
+  if (!result.files || typeof result.files !== "object") {
+    throw new Error("Invalid files structure in API response.");
+  }
+
+  return result;
+
     } catch (e) {
       console.warn("Response parsing failed, using fallback:", e.message);
       return getFallbackResponse();
