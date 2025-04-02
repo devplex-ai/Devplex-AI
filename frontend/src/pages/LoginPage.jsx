@@ -45,12 +45,12 @@ const LoginPage = ({ onClose = () => {} }) => {
         if (response.token) {
           // Dispatch to Redux store
           dispatch(setUser({ user: response.user, token: response.token }));
-          toast.success("Google Login Successful!");
+          toast.success("Login Successful!");
           navigate("/");
         }
       } catch (error) {
         console.error("Google user info fetch failed:", error);
-        toast.error("Failed to fetch user info from Google.");
+        toast.error("Something went wrong! Please try again.");
       }
     },
     onError: (errorResponse) => {
@@ -72,37 +72,67 @@ const LoginPage = ({ onClose = () => {} }) => {
 
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    setIsLoading(true);
-    setError("");
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateEmail(email)) {
+  //     setError("Please enter a valid email address.");
+  //     return;
+  //   }
+  //   setIsLoading(true);
+  //   setError("");
 
-    try {
-      const response = await axios.post(`${apiURL}/auth/sign-in`, {
-        email,
-        password,
-      });
-      const { token, userId } = response.data;
-     toast.success("Login successful!");
-     localStorage.setItem("token", token);
-     localStorage.setItem("userId", userId); 
+  //   try {
+  //     const response = await axios.post(`${apiURL}/auth/sign-in`, {
+  //       email,
+  //       password,
+  //     });
+  //     const { token, userId } = response.data;
+  //    toast.success("Login successful!");
+  //    localStorage.setItem("token", token);
+  //    localStorage.setItem("userId", userId); 
     
-    } catch (error) {
-      setError(
-        error.response?.data?.message ||
-          "Invalid email or password. Please try again."
-      );
-      setPassword("");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   } catch (error) {
+  //     setError(
+  //       error.response?.data?.message ||
+  //         "Invalid email or password. Please try again."
+  //     );
+  //     setPassword("");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
+  if (!validateEmail(email)) {
+    setError("Please enter a valid email address.");
+    return;
+  }
+
+  setIsLoading(true);
+  setError("");
+
+  try {
+    const response = await axios.post(
+      `${apiURL}/auth/sign-in`,
+      { email, password },
+      { withCredentials: true } // Needed for sending cookies
+    );
+
+    const { token, userId, user } = response.data; 
+
+    dispatch(setUser({ user, token })); 
+    navigate("/");
+    toast.success("Login successful!");
+  } catch (error) {
+    console.error("Login error:", error);
+    setError(error.response?.data?.error || "Invalid email or password.");
+    setPassword("");
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="fixed inset-0 z-50 bg-black">
       <Navbar />
