@@ -1,10 +1,9 @@
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
+const axios = require("axios");
 const User = require("../models/User.js");
 require("dotenv").config();
 
-// GitHub Strategy
 passport.use(
   new GitHubStrategy(
     {
@@ -14,17 +13,40 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log("GitHub Profile:", profile); // Debugging
+        console.log("GitHub Profile:", profile);
+
+        // Fetch user's primary email manually
+        let email =
+          profile.emails?.[0]?.value || `no-email-${profile.id}@example.com`;
+        if (!profile.emails || profile.emails.length === 0) {
+          const emailResponse = await axios.get(
+            "https://api.github.com/user/emails",
+            {
+              headers: { Authorization: `token ${accessToken}` },
+            }
+          );
+
+          const primaryEmail = emailResponse.data.find(
+            (email) => email.primary && email.verified
+          );
+          if (primaryEmail) {
+            email = primaryEmail.email;
+          }
+        }
+
+        // Use GitHub username if displayName is missing
+        const name =
+          profile.displayName?.trim() ||
+          profile.username ||
+          `GitHub User ${profile.id}`;
 
         let user = await User.findOne({ githubId: profile.id });
 
         if (!user) {
           user = new User({
             githubId: profile.id,
-            name: profile.displayName?.trim() || `GitHub User ${profile.id}`,
-            email:
-              profile.emails?.[0]?.value ||
-              `no-email-${profile.id}@example.com`,
+            name,
+            email,
             avatar:
               profile.photos?.[0]?.value || "https://via.placeholder.com/150",
           });
@@ -40,12 +62,10 @@ passport.use(
   )
 );
 
-// Serialize user
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserialize user
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
