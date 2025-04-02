@@ -16,7 +16,8 @@ app.use(express.json());
 const allowedOrigins = [
   "https://devplex-ai-sigma.vercel.app",
   "https://www.devplex.in",
-  "https://devplex.in"
+  "https://devplex.in",
+  "http://localhost:5173",
 ];
 
 app.use(
