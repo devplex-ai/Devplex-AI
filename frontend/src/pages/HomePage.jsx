@@ -205,10 +205,10 @@ const handleGenerate = async () => {
                 <Link size={20} />
                 Import
               </h1>
-              <h1 className="px-4 py-2 flex cursor-pointer text-sm items-center gap-2 rounded-xl border border-white/10 ">
+              {/* <h1 className="px-4 py-2 flex cursor-pointer text-sm items-center gap-2 rounded-xl border border-white/10 ">
                 <FaFigma size={20} />
                 Figma
-              </h1>
+              </h1> */}
             </div>
 
             {/* Generate button */}

@@ -28,8 +28,6 @@ const generateCodeFromAI = async (userPrompt) => {
   const randomResponse =
     responses[Math.floor(Math.random() * responses.length)];
 
-  const winner = "X";
-  const xIsNext = "yes";
 
   const CODE_GEN_PROMPT = `
 # Two-Phase Response System
@@ -78,6 +76,9 @@ OUTPUT FORMAT REQUIREMENTS (strict JSON):
     },
     "/App.js": {
       "code": "// Complete main application code with all imports"
+    },
+    "/package.json": {
+      "code": "Install required Dependencies"
     }
   },
   "setupInstructions": "npm install && npm run dev"
@@ -108,6 +109,37 @@ EXAMPLE OUTPUT:
   "setupInstructions": "npm install prop-types lucide-react && npm run dev"
 }
 
+Dont make structure like this (src/components/Navbar.jsx)
+Structure format: (/components/Navbar.jsx)
+
+STYLING Guidelines:
+
+✅ **Beautiful UI/UX principles**  
+✅ **Modern typography and responsive layouts**  
+✅ **Vibrant colors, gradients, shadows, and smooth animations**  
+✅ **Proper padding, margins, and spacing for a professional look**  
+✅ **Interactive elements with hover, focus, and click animations**  
+
+🟢 **Mandatory Styling Enhancements:**  
+- Use **primary color palettes** (\`bg-gradient-to-r from-blue-500 to-indigo-600\`, \`text-white\`).  
+- Ensure **contrast & accessibility** (\`text-gray-800 dark:text-gray-100\`).  
+- Apply **drop shadows and smooth transitions** (\`shadow-lg hover:shadow-2xl transition-all duration-300\`).  
+- Use **rounded corners** for elements (\`rounded-xl\`).  
+- Implement **card-based layouts** where necessary (\`p-6 bg-white shadow-md rounded-lg\`).  
+- Forms should have **modern input fields** (\`border-gray-300 focus:ring-2 focus:ring-blue-500\`).  
+
+
+Ensure:
+- **Hover effects** (\`hover:bg-opacity-80 transition-all\`).  
+- **Button animations** (\`transform hover:scale-105\`).  
+- **Card animations** (\`hover:shadow-xl\`).  
+
+### 🚀 **Now Your Generated UI Will Always Be:**
+✅ **Modern & Attractive** (gradients, animations, proper spacing)  
+✅ **Highly Usable** (intuitive UI/UX principles)  
+✅ **Beautifully Styled** (no more dull designs)  
+✅ **Production-Ready** (no placeholder comments, only full logic)
+
 - Use Tailwind Classes for Adding styles to the elements.
 
 - If user want to develop the full website the create atleat 5 pages more than 5 components like(Navbar, Footer, HeroSection, Testimonials, Contact form ,etc.)
@@ -117,8 +149,6 @@ EXAMPLE OUTPUT:
 - Make better UI/UX. Apply UI/UX principals.
 
 - Add Proper Styling using Tailwind css classes
-
-- 
 
 - Dont leave comment like this (Eg: //write logic for handel reset) please write full code logics etc.
 
