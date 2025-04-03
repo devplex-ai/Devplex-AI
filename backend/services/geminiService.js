@@ -1,6 +1,9 @@
 const axios = require("axios");
 const dedent = require("dedent");
 
+const MAX_RETRIES = 2;
+
+
 const generateCodeFromAI = async (userPrompt) => {
   const API_KEY = process.env.GEMINI_API;
 
@@ -12,26 +15,23 @@ const generateCodeFromAI = async (userPrompt) => {
     };
   }
 
-
   const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
 
- 
-
-const responses = [
-  "Alright! Here's how we'll create your",
-  "Great! Let's build your",
-  "Okay! Here's the plan for your",
-  "Let's enhance this feature! We'll create your",
-  "No problem! Here's how we'll approach your",
-  "Let's get started! We'll create your",
+  const responses = [
+    "Alright! Here's how we'll create your",
+    "Great! Let's build your",
+    "Okay! Here's the plan for your",
+    "Let's enhance this feature! We'll create your",
+    "No problem! Here's how we'll approach your",
+    "Let's get started! We'll create your",
   ];
   const randomResponse =
     responses[Math.floor(Math.random() * responses.length)];
 
-  const winner = 'X';
-  const xIsNext = 'yes';
+  const winner = "X";
+  const xIsNext = "yes";
 
-const CODE_GEN_PROMPT = `
+  const CODE_GEN_PROMPT = `
 # Two-Phase Response System
 
  ## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
@@ -116,6 +116,10 @@ EXAMPLE OUTPUT:
 
 - Make better UI/UX. Apply UI/UX principals.
 
+- Add Proper Styling using Tailwind css classes
+
+- 
+
 - Dont leave comment like this (Eg: //write logic for handel reset) please write full code logics etc.
 
 - If you adding conditional rendering using turnary operator so please use backticks inside css or any logic.
@@ -132,7 +136,7 @@ EXAMPLE OUTPUT:
 
 - Use icons from lucide-react for logos.
 
-- Use stock photos from unsplash where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags.
+- Use stock photos from pexels where appropriate, only valid URLs you know exist. Do not download the images, only link to them in image tags. If you want to add api of pexels then add this (API : D1IxovArVb0qq9ujsq7pbO510mOoHNDCVl4nKwNp13s4MKEDrG0p3m0p) and use this (url:'https://api.pexels.com/v1/search?query=nature&per_page=12')
 
 RESPONSE FORMAT:
 - Your response must be valid JSON ONLY, beginning with { and ending with }.
@@ -141,107 +145,122 @@ RESPONSE FORMAT:
 
 
 `;
-  try {
-
+    try {
     const response = await axios.post(API_URL, {
-      contents: [
-        {
-          parts: [{ text: CODE_GEN_PROMPT }],
-        },
-      ],
+      contents: [{ parts: [{ text: CODE_GEN_PROMPT }] }],
     });
 
 
-    const responseText =
-      response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  
+
+    const responseText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!responseText) {
-      console.error("No response text found in API response");
-      return {
-        error: "No response text found",
-        details: "The API response did not contain the expected text",
-        fullResponse: response.data,
-      };
+      console.error("❌ No response text found in API response.");
+      return { error: "No response text", details: "AI response was empty", fullResponse: response.data };
     }
 
+    // Extract JSON from AI response
+    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/);
+    const jsonString = jsonMatch ? jsonMatch[1] : responseText;
 
     let jsonResponse;
     try {
-      
-      const cleanedResponse = responseText
-        .replace(/^```(json)?\n/, "")
-        .replace(/```$/, "")
-        .replace(/`/g, "")
-        .trim();
-
-      jsonResponse = JSON.parse(cleanedResponse);
+      jsonResponse = JSON.parse(jsonString);
     } catch (parseError) {
-      console.error("JSON Parsing Error:", parseError);
+      console.error("❌ JSON Parsing Error:", parseError);
 
-
-      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
+      // Attempt second parsing with raw JSON extraction
+      const jsonFallbackMatch = responseText.match(/\{[\s\S]*\}/);
+      if (jsonFallbackMatch) {
         try {
-          jsonResponse = JSON.parse(jsonMatch[0]);
+          jsonResponse = JSON.parse(jsonFallbackMatch[0]);
         } catch (secondAttemptError) {
-          console.error("Secondary parsing failed:", secondAttemptError);
-          return {
-            error: "Invalid JSON response from AI",
-            details: secondAttemptError.message,
-            rawResponse: responseText,
-          };
+          console.error("❌ Secondary parsing failed:", secondAttemptError);
+          return { error: "Invalid JSON response", details: secondAttemptError.message, rawResponse: responseText };
         }
       } else {
-        return {
-          error: "No valid JSON found in response",
-          details: parseError.message,
-          rawResponse: responseText,
-        };
+        return { error: "No valid JSON found", details: parseError.message, rawResponse: responseText };
       }
     }
 
-    // Validate the response structure
+    // Validate JSON response structure
     if (!jsonResponse.files || typeof jsonResponse.files !== "object") {
-      return {
-        error: "Invalid project structure",
-        details: "Response missing required 'files' object",
-        response: jsonResponse,
-      };
+      return { error: "Invalid project structure", details: "Response missing required 'files' object", response: jsonResponse };
     }
 
-    // Process file contents to ensure proper formatting
+    // Check for missing logic
+    let missingLogic = false;
+    let retryPrompt = `The following files are missing complete logic. Please generate the full code, ensuring that all logic is implemented:\n\n`;
+
     const processedFiles = {};
     for (const [path, file] of Object.entries(jsonResponse.files)) {
-      processedFiles[path] = {
-        code: file.code
-          ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"')
-          : "",
-      };
+      let codeContent = file.code ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"') : "";
+
+      if (!codeContent.trim() || /^\/\//.test(codeContent.trim())) {
+        console.warn(`🚨 Missing logic detected in ${path}`);
+        missingLogic = true;
+        retryPrompt += `- ${path}\n`;
+      } else {
+        processedFiles[path] = { code: codeContent };
+      }
     }
 
-    return {
-      ...jsonResponse,
-      files: processedFiles,
-    };
+    // Retry AI request with fix prompt if logic is missing
+    if (missingLogic && retryCount < MAX_RETRIES) {
+      console.log(`🔄 Requesting AI to fix missing logic (attempt ${retryCount + 1}/${MAX_RETRIES})...`);
+
+      const FIX_PROMPT = dedent(`
+        Your previous response had missing logic in some files. Please regenerate only the missing files with full code implementation.
+        ${retryPrompt}
+
+        USER REQUIREMENTS:
+        ${userPrompt || "No additional requirements provided"}
+
+        OUTPUT FORMAT (strict JSON):
+        {
+          "files": {
+            "/components/ComponentName.jsx": { "code": "// Full JSX component code" },
+            "/App.js": { "code": "// Full React app code" }
+          }
+        }
+      `);
+
+      try {
+        const fixResponse = await axios.post(API_URL, {
+          contents: [{ parts: [{ text: FIX_PROMPT }] }],
+        });
+
+        console.log("🔍 Fix AI Response:", JSON.stringify(fixResponse.data, null, 2));
+
+        const fixText = fixResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const fixJsonMatch = fixText.match(/```json\s*([\s\S]*?)\s*```/);
+        const fixJsonString = fixJsonMatch ? fixJsonMatch[1] : fixText;
+
+        let fixedResponse;
+        try {
+          fixedResponse = JSON.parse(fixJsonString);
+          console.log("✅ Fixed JSON Response:", fixedResponse);
+        } catch (parseError) {
+          console.error("❌ JSON Parsing Error in Fix Response:", parseError);
+          return { error: "Invalid fix JSON response", details: parseError.message, rawResponse: fixText };
+        }
+
+        // Merge fixed files into processedFiles
+        for (const [path, file] of Object.entries(fixedResponse.files || {})) {
+          processedFiles[path] = { code: file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"') };
+        }
+      } catch (fixError) {
+        console.error("❌ AI Service Error in Fix Request:", { message: fixError.message, stack: fixError.stack, response: fixError.response?.data });
+        return { error: "Failed to fix missing logic", details: fixError.message, code: "AI_FIX_ERROR" };
+      }
+    }
+
+    return { ...jsonResponse, files: processedFiles };
   } catch (error) {
-    console.error("AI Service Error:", {
-      message: error.message,
-      stack: error.stack,
-      response: error.response?.data,
-    });
+    console.error("❌ AI Service Error:", { message: error.message, stack: error.stack, response: error.response?.data });
 
-    return {
-      error: "Failed to process AI response",
-      details: error.message,
-      code: "AI_SERVICE_ERROR",
-    };
+    return { error: "Failed to process AI response", details: error.message, code: "AI_SERVICE_ERROR" };
   }
-
-
-  
-  
-
 };
 
 module.exports = generateCodeFromAI;
