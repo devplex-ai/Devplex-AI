@@ -6,5 +6,21 @@
     font-family: "Inter", sans-serif;
   }
 }
+@keyframes underline {
+  0% { transform: scaleX(0) }
+  100% { transform: scaleX(1) }
+}
 
+@keyframes typewriter {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.animate-underline {
+  animation: underline 1.5s ease-out forwards;
+}
+
+.animate-typewriter {
+  animation: typewriter 1s steps(20) forwards;
+}
 
