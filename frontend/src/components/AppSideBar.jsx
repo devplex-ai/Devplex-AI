@@ -131,7 +131,7 @@ const AppSideBar = () => {
               </div>
 
               {/* Chat List */}
-              <div className="flex-1 overflow-y-auto px-4">
+              <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent pr-2 px-4">
                 <div className="space-y-4">
                   {todayChats.length > 0 && (
                     <div className="space-y-2">

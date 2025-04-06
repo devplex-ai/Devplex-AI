@@ -15,88 +15,91 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Lookup from '../../Data/Lookup';
-const CodeEditor = ({sessionId}) => {
+const CodeEditor = ({ sessionId, refetch}) => {
   const [activeTab, setActiveTab] = useState("code");
   const [files, setFiles] = useState(Lookup?.DEFAULT_FILE);
   const [isMaximized, setIsMaximized] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
- const apiURL = import.meta.env.VITE_BASE_URL;
+  const apiURL = import.meta.env.VITE_BASE_URL;
 
+  const fetchProjectFiles = useCallback(async () => {
+    if (!sessionId) {
+      setFiles(Lookup.DEFAULT_FILE);
+      return;
+    }
 
+    try {
+      setLoading(true);
+      setError(null);
 
-   const fetchProjectFiles = useCallback(async () => {
-   
+      const response = await axios.get(`${apiURL}/api/projects/${sessionId}`);
 
-     if (!sessionId) {
-       setFiles(Lookup.DEFAULT_FILE);
-       return;
-     }
+      const { files: responseFiles } = response.data;
 
-     try {
-       setLoading(true);
-       setError(null);
+      if (!Array.isArray(responseFiles)) {
+        throw new Error("Server returned invalid files format");
+      }
 
-       const response = await axios.get(`${apiURL}/api/projects/${sessionId}`);
+      if (responseFiles.length === 0) {
+        setFiles(Lookup.DEFAULT_FILE);
+        setError("No files found in this project.");
+        return;
+      }
 
-     
-       const { files: responseFiles } = response.data;
+      const formattedFiles = {};
+      for (const file of responseFiles) {
+        if (!file || !file.filename) {
+          console.warn("Skipping invalid file:", file);
+          continue;
+        }
 
-       if (!Array.isArray(responseFiles)) {
-         throw new Error("Server returned invalid files format");
-       }
+        const safeFilename = file.filename.startsWith("/")
+          ? file.filename
+          : `/${file.filename}`;
 
-       if (responseFiles.length === 0) {
-         setFiles(Lookup.DEFAULT_FILE);
-         setError("No files found in this project.");
-         return;
-       }
+        formattedFiles[safeFilename] = {
+          code: typeof file.code === "string" ? file.code : "",
+          type: file.type || "tsx",
+        };
+      }
 
-       const formattedFiles = {};
-       for (const file of responseFiles) {
-         if (!file || !file.filename) {
-           console.warn("Skipping invalid file:", file);
-           continue;
-         }
+      const mergedFiles = { ...Lookup.DEFAULT_FILE, ...formattedFiles };
 
-         const safeFilename = file.filename.startsWith("/")
-           ? file.filename
-           : `/${file.filename}`;
-
-         formattedFiles[safeFilename] = {
-           code: typeof file.code === "string" ? file.code : "",
-           type: file.type || "tsx",
-         };
-       }
-
-       const mergedFiles = { ...Lookup.DEFAULT_FILE, ...formattedFiles };
-
-       setFiles(mergedFiles);
-           setTimeout(() => {
-             setActiveTab("preview");
-           }, 2000);
-
-     } catch (err) {
-       console.error("Fetch error:", err);
-       setError(
-         err.response?.data?.message ||
-           err.message ||
-           "Failed to load project files"
-       );
-       setFiles(Lookup.DEFAULT_FILE);
-     } finally {
-       setLoading(false);
-     }
-   }, [sessionId]);
+      setFiles(mergedFiles);
+      setTimeout(() => {
+        setActiveTab("preview");
+      }, 2000);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to load project files"
+      );
+      setFiles(Lookup.DEFAULT_FILE);
+    } finally {
+      setLoading(false);
+    }
+  }, [sessionId]);
 
   useEffect(() => {
     fetchProjectFiles();
-  }, [fetchProjectFiles]); 
+  }, [fetchProjectFiles]);
+
+  useEffect(() => {
+    if (refetch) {
+      fetchProjectFiles();
+      setActiveTab('code');
+    }
+  }, [refetch, fetchProjectFiles]);
 
   // Optional: Manually trigger file refresh
   const handleRefresh = () => {
     fetchProjectFiles();
+    
   };
+
 
   if (loading) return <p className="text-gray-300 p-4">Loading...</p>;
 
@@ -157,7 +160,7 @@ const CodeEditor = ({sessionId}) => {
           dependencies: {
             ...Lookup.DEPENDENCY,
           },
-          entry: "/index.js", 
+          entry: "/index.js",
         }}
       >
         <SandpackLayout>

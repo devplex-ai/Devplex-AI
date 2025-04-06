@@ -168,23 +168,27 @@
 // };
 
 // export default WorkspacePage;
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Avatar from 'react-avatar';
 import CodeEditor from "../components/CodeEditor";
 import AppSideBar from "../components/AppSideBar";
-import { FolderGit2, FolderInput, Rocket } from "lucide-react";
+import { Bot, CheckCircle, FolderGit2, FolderInput, Link, Rocket } from "lucide-react";
 import { Check } from "lucide-react";
 import axios from "axios";
+import { FaFigma } from "react-icons/fa";
 
 const WorkspacePage = () => {
   const { sessionId } = useParams();
   const { user } = useSelector((state) => state.auth);
+  const [newPrompt, setNewPrompt] = useState("");
+  const [refetch, setRefetch] = useState(false);
   
   const [chatHistory, setChatHistory] = useState([]);
   const [userPromt, setUserPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
   const [userAvatar, setUserAvatar] = useState(user?.avatar);
  const apiURL = import.meta.env.VITE_BASE_URL;
 
@@ -192,7 +196,7 @@ const WorkspacePage = () => {
 const fetchChatHistory = async () => {
   try {
     const response = await axios.get(`${apiURL}/api/chats/${sessionId}`);
-    const data = response.data; // ✅ Fix: Directly use response.data
+    const data = response.data; // 
 
     console.log(data);
     if (!data || !data.messages) {
@@ -219,6 +223,51 @@ const fetchChatHistory = async () => {
     fetchChatHistory();
   }, [sessionId]);
 
+  const enhanceProject = async (newPrompt, sessionId) => {
+    if (!newPrompt.trim()) return; 
+    if (refetch === true) {
+      setRefetch(false);
+    }
+
+      const userMessage = { role: "user", content: newPrompt };
+
+
+      setChatHistory((prev) => [...prev, userMessage]);
+      setNewPrompt("");
+    setLoading(true);
+    try {
+      const res = await axios.post(`${apiURL}/api/enhance-chat`, {
+        sessionId,
+        prompt: newPrompt,
+      });
+
+      if (res.data.success) {
+        const { updatedFiles, chat, project } = res.data;
+
+        setChatHistory(chat.messages);
+        setRefetch(true);
+        console.log("API response:", res.data);
+      } else {
+        console.error("Enhance failed:", res.data.error);
+      }
+    } catch (error) {
+      console.error(
+        "Error enhancing project:",
+        error.response?.data || error.message
+      );
+    } finally{
+       setLoading(false);
+    }
+  };
+
+  
+  const bottomRef = useRef(null);
+
+  // Auto-scroll to bottom when chatHistory updates
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
+
   return (
     <div className="w-full bg-black h-screen flex flex-col gap-2 overflow-hidden">
       {/* Navbar */}
@@ -243,25 +292,26 @@ const fetchChatHistory = async () => {
         </div>
       </div>
 
-      {/* Sidebar */}
       <AppSideBar />
 
-      {/* Main Content */}
       <div className="flex gap-4 px-8">
-        {/* Chat Panel */}
-        <div className="w-1/2 h-[90vh] flex flex-col justify-between gap-2 ml-14 border border-white/20 p-4 rounded">
+        <div className="w-1/2 h-[90vh] flex flex-col justify-between gap-4 ml-14 border border-white/20 p-6 rounded-lg bg-gray-900/50 backdrop-blur-sm">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col gap-2 h-[70vh] overflow-y-scroll scrollbar-none"
+            className="flex flex-col gap-4 h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent pr-2"
           >
             {chatHistory.map((chat, index) => (
               <div
                 key={index}
-                className="w-full bg-[#262626] text-white py-3 px-4 flex  items-start gap-3 rounded-md"
+                className={`w-full text-white py-4 px-5 rounded-lg ${
+                  chat.role === "user"
+                    ? "bg-gray-800/70 flex items-start gap-4"
+                    : "bg-gray-800/70"
+                } transition-all hover:bg-gray-700/90`}
               >
-                <div className="w-10">
+                <div className="flex-shrink-0">
                   {chat.role === "user" && (
                     <Avatar
                       src={userAvatar}
@@ -272,36 +322,118 @@ const fetchChatHistory = async () => {
                     />
                   )}
                 </div>
-                <div className=" mt-2 hover:scale-[1.02]">
-                  <h1 className="text-sm font-medium leading-loose break-words text-white">
+                <div className="flex-1">
+                  <p className="text-white leading-relaxed break-words whitespace-pre-wrap">
                     {chat.content}
-                  </h1>
+                  </p>
 
                   {chat.updates && chat.updates.length > 0 && (
-                    <ul className="mt-2 text-gray-400 text-xs bg-black p-2 space-y-1">
-                      {chat.updates.map((update, i) => (
-                        <li key={i} className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-green-400" />
-                          <span className="text-white">{update.operation}</span>
-                          <span className="text-blue-400">{update.file}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="mt-3 bg-black rounded-lg p-2">
+                      <div className="text-xs text-gray-400 mb-1">
+                        File updates:
+                      </div>
+                      <ul className="space-y-2">
+                        {chat.updates.map((update, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-400" />
+                            <div>
+                              <span className="text-white">
+                                {update.operation}
+                              </span>
+                              <span className="text-blue-300 ml-2 font-mono text-xs">
+                                {update.file}
+                              </span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
                 </div>
               </div>
             ))}
+
+            {/* Show Loading Indicator ONLY ONCE at the bottom */}
+            {loading && (
+              <div className="w-full bg-gray-800/70 text-white py-3 px-4 flex items-center gap-3 rounded-md animate-pulse">
+                <video autoPlay loop muted className="w-12 rounded-full">
+                  <source src="/assets/codevideo.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <span>Generating response...</span>
+              </div>
+            )}
+
+            <div ref={bottomRef} className="h-0" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className=" flex flex-col items-center w-full max-w-md sm:max-w-xl  rounded-xl  shadow-lg "
+          >
+            {/* Input Field */}
+            <textarea
+              type="text"
+              placeholder="How can Devplex help you today?"
+              value={newPrompt}
+              rows={4}
+              onChange={(e) => setNewPrompt(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-gray-500 focus:outline-none focus:ring-1 focus:ring-[#608dff] placeholder-gray-400 text-white bg-transparent resize-none text-sm sm:text-base"
+              autoFocus
+            />
+
+            {/* Generate Button */}
+            <div className="flex justify-between items-center mt-2 w-full">
+              {/* Group Import and Figma buttons together */}
+              <div className="flex gap-2">
+                <h1 className="px-2 py-1 text-white cursor-pointer text-sm rounded-lg border flex items-center gap-2 border-white ">
+                  <Link size={15} />
+                  Import
+                </h1>
+                {/* <h1 className="px-2 py-1 text-white flex cursor-pointer text-sm items-center gap-2 rounded-lg border border-white ">
+                  <FaFigma size={15} />
+                  Figma
+                </h1> */}
+              </div>
+
+              {/* Generate button */}
+              <button
+                onClick={() => {
+                  enhanceProject(newPrompt, sessionId);
+                }}
+                className="px-4 py-2 text-sm  font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Send
+              </button>
+            </div>
           </motion.div>
         </div>
-
         {/* Code Editor */}
         <motion.div
-          className="w-full max-w-[65%] h-[85vh]"
+          className="w-full relative max-w-[65%] h-[89vh]"
           initial={{ x: 100, opacity: 0, scale: 0.95 }}
           animate={{ x: 0, opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
         >
-          <CodeEditor sessionId={sessionId} />
+          {loading && (
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gray-800/70 text-white">
+              <div className="relative flex flex-col items-center bg-black border border-white/20 px-2 py-10 rounded-lg shadow-lg w-full max-w-xs text-center">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  className="w-24 h-24 rounded-full mb-2"
+                >
+                  <source src="/assets/codevideo.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <span className="text-sm tracking-wide ">Working On...</span>
+              </div>
+            </div>
+          )}
+
+          <CodeEditor sessionId={sessionId} refetch={refetch} />
         </motion.div>
       </div>
     </div>

@@ -4,7 +4,7 @@ const dedent = require("dedent");
 const MAX_RETRIES = 2;
 
 
-const generateCodeFromAI = async (userPrompt) => {
+const generateCodeFromAI = async (userPrompt, retryCount=0) => {
   const API_KEY = process.env.GEMINI_API;
 
   if (!API_KEY) {
@@ -27,7 +27,6 @@ const generateCodeFromAI = async (userPrompt) => {
   ];
   const randomResponse =
     responses[Math.floor(Math.random() * responses.length)];
-
 
   const CODE_GEN_PROMPT = `
 # Two-Phase Response System
@@ -109,34 +108,6 @@ EXAMPLE OUTPUT:
   "setupInstructions": "npm install prop-types lucide-react && npm run dev"
 }
 
-STYLING Guidelines:
-
-✅ **Beautiful UI/UX principles**  
-✅ **Modern typography and responsive layouts**  
-✅ **Vibrant colors, gradients, shadows, and smooth animations**  
-✅ **Proper padding, margins, and spacing for a professional look**  
-✅ **Interactive elements with hover, focus, and click animations**  
-
-🟢 **Mandatory Styling Enhancements:**  
-- Use **primary color palettes** (\`bg-gradient-to-r from-blue-500 to-indigo-600\`, \`text-white\`).  
-- Ensure **contrast & accessibility** (\`text-gray-800 dark:text-gray-100\`).  
-- Apply **drop shadows and smooth transitions** (\`shadow-lg hover:shadow-2xl transition-all duration-300\`).  
-- Use **rounded corners** for elements (\`rounded-xl\`).  
-- Implement **card-based layouts** where necessary (\`p-6 bg-white shadow-md rounded-lg\`).  
-- Forms should have **modern input fields** (\`border-gray-300 focus:ring-2 focus:ring-blue-500\`).  
-
-
-Ensure:
-- **Hover effects** (\`hover:bg-opacity-80 transition-all\`).  
-- **Button animations** (\`transform hover:scale-105\`).  
-- **Card animations** (\`hover:shadow-xl\`).  
-
-### 🚀 **Now Your Generated UI Will Always Be:**
-✅ **Modern & Attractive** (gradients, animations, proper spacing)  
-✅ **Highly Usable** (intuitive UI/UX principles)  
-✅ **Beautifully Styled** (no more dull designs)  
-✅ **Production-Ready** (no placeholder comments, only full logic)
-
 Dont make structure like this (src/components/Navbar.jsx)
 Structure format: (/components/Navbar.jsx)
 
@@ -203,18 +174,28 @@ RESPONSE FORMAT:
 
 
 `;
-    try {
+  const CHAT_PROMPT = `
+  'You are a AI Assistant and experience in React Development.
+  GUIDELINES:
+  - Tell user what your are building
+  - response less than 15 lines. 
+  - Skip code examples and commentary'
+`;
+  try {
     const response = await axios.post(API_URL, {
       contents: [{ parts: [{ text: CODE_GEN_PROMPT }] }],
     });
 
-
-
-    const responseText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const responseText =
+      response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!responseText) {
       console.error("❌ No response text found in API response.");
-      return { error: "No response text", details: "AI response was empty", fullResponse: response.data };
+      return {
+        error: "No response text",
+        details: "AI response was empty",
+        fullResponse: response.data,
+      };
     }
 
     // Extract JSON from AI response
@@ -234,16 +215,28 @@ RESPONSE FORMAT:
           jsonResponse = JSON.parse(jsonFallbackMatch[0]);
         } catch (secondAttemptError) {
           console.error("❌ Secondary parsing failed:", secondAttemptError);
-          return { error: "Invalid JSON response", details: secondAttemptError.message, rawResponse: responseText };
+          return {
+            error: "Invalid JSON response",
+            details: secondAttemptError.message,
+            rawResponse: responseText,
+          };
         }
       } else {
-        return { error: "No valid JSON found", details: parseError.message, rawResponse: responseText };
+        return {
+          error: "No valid JSON found",
+          details: parseError.message,
+          rawResponse: responseText,
+        };
       }
     }
 
     // Validate JSON response structure
     if (!jsonResponse.files || typeof jsonResponse.files !== "object") {
-      return { error: "Invalid project structure", details: "Response missing required 'files' object", response: jsonResponse };
+      return {
+        error: "Invalid project structure",
+        details: "Response missing required 'files' object",
+        response: jsonResponse,
+      };
     }
 
     // Check for missing logic
@@ -252,7 +245,9 @@ RESPONSE FORMAT:
 
     const processedFiles = {};
     for (const [path, file] of Object.entries(jsonResponse.files)) {
-      let codeContent = file.code ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"') : "";
+      let codeContent = file.code
+        ? file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"')
+        : "";
 
       if (!codeContent.trim() || /^\/\//.test(codeContent.trim())) {
         console.warn(`🚨 Missing logic detected in ${path}`);
@@ -265,7 +260,11 @@ RESPONSE FORMAT:
 
     // Retry AI request with fix prompt if logic is missing
     if (missingLogic && retryCount < MAX_RETRIES) {
-      console.log(`🔄 Requesting AI to fix missing logic (attempt ${retryCount + 1}/${MAX_RETRIES})...`);
+      console.log(
+        `🔄 Requesting AI to fix missing logic (attempt ${
+          retryCount + 1
+        }/${MAX_RETRIES})...`
+      );
 
       const FIX_PROMPT = dedent(`
         Your previous response had missing logic in some files. Please regenerate only the missing files with full code implementation.
@@ -288,9 +287,13 @@ RESPONSE FORMAT:
           contents: [{ parts: [{ text: FIX_PROMPT }] }],
         });
 
-        console.log("🔍 Fix AI Response:", JSON.stringify(fixResponse.data, null, 2));
+        console.log(
+          "🔍 Fix AI Response:",
+          JSON.stringify(fixResponse.data, null, 2)
+        );
 
-        const fixText = fixResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const fixText =
+          fixResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text;
         const fixJsonMatch = fixText.match(/```json\s*([\s\S]*?)\s*```/);
         const fixJsonString = fixJsonMatch ? fixJsonMatch[1] : fixText;
 
@@ -300,24 +303,46 @@ RESPONSE FORMAT:
           console.log("✅ Fixed JSON Response:", fixedResponse);
         } catch (parseError) {
           console.error("❌ JSON Parsing Error in Fix Response:", parseError);
-          return { error: "Invalid fix JSON response", details: parseError.message, rawResponse: fixText };
+          return {
+            error: "Invalid fix JSON response",
+            details: parseError.message,
+            rawResponse: fixText,
+          };
         }
 
         // Merge fixed files into processedFiles
         for (const [path, file] of Object.entries(fixedResponse.files || {})) {
-          processedFiles[path] = { code: file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"') };
+          processedFiles[path] = {
+            code: file.code.replace(/\\n/g, "\n").replace(/\\"/g, '"'),
+          };
         }
       } catch (fixError) {
-        console.error("❌ AI Service Error in Fix Request:", { message: fixError.message, stack: fixError.stack, response: fixError.response?.data });
-        return { error: "Failed to fix missing logic", details: fixError.message, code: "AI_FIX_ERROR" };
+        console.error("❌ AI Service Error in Fix Request:", {
+          message: fixError.message,
+          stack: fixError.stack,
+          response: fixError.response?.data,
+        });
+        return {
+          error: "Failed to fix missing logic",
+          details: fixError.message,
+          code: "AI_FIX_ERROR",
+        };
       }
     }
 
     return { ...jsonResponse, files: processedFiles };
   } catch (error) {
-    console.error("❌ AI Service Error:", { message: error.message, stack: error.stack, response: error.response?.data });
+    console.error("❌ AI Service Error:", {
+      message: error.message,
+      stack: error.stack,
+      response: error.response?.data,
+    });
 
-    return { error: "Failed to process AI response", details: error.message, code: "AI_SERVICE_ERROR" };
+    return {
+      error: "Failed to process AI response",
+      details: error.message,
+      code: "AI_SERVICE_ERROR",
+    };
   }
 };
 
