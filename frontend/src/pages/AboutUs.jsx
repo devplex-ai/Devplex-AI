@@ -414,7 +414,7 @@ function AboutUs() {
       </motion.section>
 
       {/* Leadership */}
-      <motion.section
+      {/* <motion.section
         initial="hidden"
         whileInView="visible"
         variants={sectionVariants}
@@ -486,7 +486,7 @@ function AboutUs() {
             ))}
           </div>
         </div>
-      </motion.section>
+      </motion.section> */}
 
       {/* CTA */}
       <motion.section
