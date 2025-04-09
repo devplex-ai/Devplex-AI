@@ -87,7 +87,7 @@ const handleGenerate = async () => {
       <div className="hidden md:block"><AppSideBar /></div>
       {/* <Navbar /> */}
 
-      <div className="relative overflow-hidden  min-h-screen h-full pt-32  flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black text-white">
+      <div className="relative overflow-hidden  min-h-screen h-full pt-26  flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black text-white">
         {/* <div
           className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2
  bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm
