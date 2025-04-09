@@ -188,7 +188,7 @@ const handleGenerate = async () => {
       <Feature />
 
       <Testimonials />
-
+      
       <Pricing />
       <FAQ />
       <Footer />
