@@ -31,7 +31,7 @@ const testimonials = [
 
 function Testimonials() {
   return (
-    <div className="min-h-screen bg-black bg-[url('/assets/herobg.jpg')] bg-cover bg-center bg-no-repeat text-white py-8 md:py-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black bg-[url('/assets/herobg.png')] bg-cover bg-center bg-no-repeat text-white py-8 md:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-4">
         <div className="text-center mb-4 md:mb-16">
           <h1 className="text-3xl md:text-5xl  font-bold mb-2 md:mb-4 bg-gray-600 bg-clip-text text-transparent">
