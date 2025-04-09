@@ -15,6 +15,7 @@ import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonials";
 import { SmoothScrollHero } from "../components/ParalexEffect";
 import HeroBottom from "../components/heroBottom";
+import Feature from "../components/Features";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -83,37 +84,29 @@ const handleGenerate = async () => {
 
 
   return (
-    <div className={`bg-black h-full min-h-screen ${user && 'ml-0 md:ml-12'}`}>
-      <div className="hidden md:block"><AppSideBar /></div>
-      {/* <Navbar /> */}
+    <div className={`bg-black h-full min-h-screen ${user && "ml-0 md:ml-12"}`}>
+      <div className="hidden md:block">
+        <AppSideBar />
+      </div>
 
-      <div className="relative overflow-hidden  min-h-screen h-full pt-26  flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black text-white">
-        {/* <div
-          className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2
- bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm
- top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
-        ></div> */}
-
+      <div className="relative overflow-hidden  min-h-screen h-full pt-26  flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-gradient-to-bl from-black via-gray-900 to-black text-white">
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold  bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
         >
-          What do you want to build?
+          "Build faster. Launch smarter." <br /> With Devplex.
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 1 }}
-          className="mt-4 text-xs sm:text-sm max-w-3xl text-gray-300 px-2"
+          className="mt-2 md:mt-4 text-xs sm:text-lg max-w-3xl text-gray-300 px-2"
         >
-          Devplex AI – Build Faster, Grow Smarter.
-          <span className="text-[#00BFFF]">
-            {" "}
-            Focus on growth, let AI handle the code.
-          </span>
+          Devplex is your instant
+          <span className="text-[#00BFFF]"> MVP machine.</span>
         </motion.p>
 
         <motion.div
@@ -188,15 +181,16 @@ const handleGenerate = async () => {
           transition={{ delay: 1, duration: 1 }}
           className="mt-8 sm:mt-12  text-gray-300 z-20 w-full px-2"
         >
-         <HeroBottom/>
-          <Process />
+          <HeroBottom />
         </motion.div>
       </div>
-      <SmoothScrollHero />
+      <Process />
+      <Feature />
+
       <Testimonials />
 
-      <FAQ />
       <Pricing />
+      <FAQ />
       <Footer />
 
       {isModalOpen && (

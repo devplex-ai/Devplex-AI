@@ -7,6 +7,7 @@ import Avatar from "react-avatar";
 import { toast } from "react-toastify";
 import { fetchUserData } from "../../redux/authActions";
 import { Link } from "react-router-dom";
+import { DropdownMenu } from "./Dropdown";
 
 
 const Navbar = () => {
@@ -85,7 +86,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`w-full  text-white py-4 px-4 sm:px-6 lg:px-40 flex items-center justify-between  sticky top-0 z-50 transition-all duration-300 ${
+        className={`w-full  text-white py-4 px-4 sm:px-6 md:px-10 flex items-center justify-between  sticky top-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "py-3 bg-[#18181B] border-b border-white/10 backdrop-blur-sm"
             : "bg-black"
@@ -119,7 +120,7 @@ const Navbar = () => {
         </ul>
 
         {/* Right Section */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           {user ? (
             <>
               <div className="hidden md:flex items-center gap-4">
@@ -127,15 +128,11 @@ const Navbar = () => {
                   src={`${userAvatar}`}
                   name={!user?.name ? user?.email : user?.name}
                   alt="User Avatar"
-                  size={40}
+                  size={35}
                   className="h-10 w-10 rounded-full"
                 />
-                <button
-                  onClick={handleLogout}
-                  className="text-white flex gap-2 bg-gray-900 px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-800 cursor-pointer transition"
-                >
-                  Sign Out <LogOut size={20} />
-                </button>
+                <DropdownMenu username={user?.name} />
+               
               </div>
             </>
           ) : (
@@ -158,15 +155,17 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Toggle */}
-          {user &&
+          <div className="md:hidden">
+            {user &&
             <Avatar
             src={`${userAvatar}`}
             name={!user?.name ? user?.email : user?.name}
             alt="User Avatar"
             size={35}
-            className=" md:hidden rounded-full"
+            className="rounded-full"
             />
-          }
+          }</div>
+        
           
           <button
             className="md:hidden focus:outline-none"

@@ -79,7 +79,7 @@ function FAQ() {
             Frequently Asked Questions
           </h1>
           <p className="text-gray-400 text-sm md:text-lg">
-            Everything you need to know about Blok
+            Everything you need to know about Devplex
           </p>
         </div>
         <div className="space-y-2  md:space-y-4">

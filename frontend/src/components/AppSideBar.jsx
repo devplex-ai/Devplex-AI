@@ -97,7 +97,7 @@ const AppSideBar = () => {
                 src={user?.avatar}
                 alt="User Avatar"
                 name={!user?.name ? user?.email : user?.name}
-                size={40}
+                size={35}
                 className="h-10 w-10 rounded-full"
               />
               <PanelLeftOpen />
@@ -202,7 +202,7 @@ const AppSideBar = () => {
                     src={user?.avatar}
                     name={!user?.name ? user?.email : user?.name}
                     alt="User Avatar"
-                    size={40}
+                    size={35}
                     className="h-10 w-10 rounded-full"
                   />
                   <div>
