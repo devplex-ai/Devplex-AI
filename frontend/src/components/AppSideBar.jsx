@@ -156,7 +156,7 @@ const AppSideBar = () => {
 
                   {olderChats.length > 0 && (
                     <div className="space-y-2">
-                      <h3 className="text-gray-400 px-2">Previous months</h3>
+                      <h3 className="text-gray-400 px-2">Last 30 days</h3>
                       {olderChats.reverse().map((chat) => (
                         <button
                           key={chat._id}

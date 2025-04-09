@@ -5,13 +5,13 @@ import {Link} from "react-router-dom"
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white pt-8 px-10 border-t border-white/30">
+    <footer className="bg-black text-white pt-4 md:pt-8 px-4 md:px-10 border-t border-white/30">
       <div className="container mx-auto px-6 md:px-20">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Social Links */}
-          <div className="col-span-2 flex flex-col justify-between">
+          <div className="col-span-2 flex flex-col items-center md:items-start justify-between">
             <div>
-              <div className="flex items-center gap-1 mb-6">
+              <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 mb-2 md:mb-6">
                 <img
                   src="/assets/logo.png"
                   alt="Devplex AI Logo"
@@ -19,7 +19,7 @@ const Footer = () => {
                 />
                 <span className="text-xl font-semibold">Devplex</span>
               </div>
-              <p className="text-md text-gray-300 mb-4">
+              <p className="text-md text-gray-300 mb-2 md:mb-4">
                 Build AI-powered websites effortlessly.
               </p>
             </div>
@@ -73,7 +73,7 @@ const Footer = () => {
                 <li key={item.label}>
                   <Link
                     to={item.link}
-                    className="hover:text-gray-400 transition-colors"
+                    className="hover:text-gray-400 text-sm md:text-base transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -109,7 +109,7 @@ const Footer = () => {
                 <li key={item.label}>
                   <Link
                     to={item.link}
-                    className="hover:text-gray-400 transition-colors"
+                    className="hover:text-gray-400 text-sm md:text-base transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -120,7 +120,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright Section */}
-        <div className="mt-8 border-t border-white/20 p-4 text-center text-gray-300 text-lg">
+        <div className="mt-4 md:mt-8 border-t border-white/20 p-4 text-center text-gray-300 text-sm md:text-lg">
           &copy; {new Date().getFullYear()} Devplex. All rights reserved.
         </div>
       </div>

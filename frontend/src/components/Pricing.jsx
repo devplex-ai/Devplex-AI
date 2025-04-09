@@ -72,37 +72,37 @@ function Pricing() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#0A0B14] text-white py-16 px-4">
+      <div className="min-h-screen pt-8 md:pt-16 h-full bg-[#0A0B14] text-white py-6 md:py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <div className="text-center mb-4 md:mb-16">
+            <h1 className=" text-3xl sm:text-3xl md:text-4xl lg:text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               Build Smarter,
               <br /> Pay Your Way – The AI Website <br /> Builder for Every Need
             </h1>
-            <p className="text-gray-400 mb-8">
+            <p className="text-gray-400 md:mb-8 text-sm md:text-base">
               Consolidate your projects into a uniformed and centralised
               <br />
               control center. No credit card required.
             </p>
 
             {/* Toggle */}
-        
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid px-4 grid-col-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`rounded-3xl p-8 ${
+                className={`rounded-xl md:rounded-3xl p-4 md:p-8 ${
                   plan.primary
                     ? "bg-gradient-to-b from-blue-600/20 to-blue-600/5 border border-blue-500/20"
                     : "bg-[#12141F]"
                 }`}
               >
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-                <p className="text-gray-400 text-sm mb-8">{plan.description}</p>
+                <p className="text-gray-400 text-sm mb-4 md:mb-8">
+                  {plan.description}
+                </p>
 
                 <div className="mb-8">
                   <div className="flex items-start">
@@ -113,9 +113,8 @@ function Pricing() {
                         <span className="text-4xl font-bold">
                           ₹{plan.price}
                         </span>
-                     
-                      <span className="text-gray-400 ml-2">/ month</span>
-                       
+
+                        <span className="text-gray-400 ml-2">/ month</span>
                       </>
                     )}
                   </div>
@@ -127,22 +126,22 @@ function Pricing() {
                 </div>
 
                 <button
-                  className={`w-full py-3 rounded-lg mb-8 ${
+                  className={`w-full py-3 rounded-lg mb-4 md:mb-8 ${
                     plan.primary
                       ? "bg-blue-600 hover:bg-blue-700"
                       : "border border-gray-600 hover:border-gray-500"
-                  }`}
+                  } ${plan.buttonText === "Active" ? "cursor-not-allowed":"cursor-pointer"}`}
                 >
                   {plan.buttonText}
                 </button>
 
-                <ul className="space-y-4">
+                <ul className="space-y-2 md:space-y-4">
                   {plan.features.map((feature) => (
                     <li
                       key={feature}
-                      className="flex items-center gap-3 text-gray-300"
+                      className="flex text-sm  md:text-base items-center gap-3 text-gray-300"
                     >
-                      <Check className="w-5 h-5 text-blue-500" />
+                      <Check className="w-3 h-3 md:w-5 md:h-5 text-blue-500" />
                       {feature}
                     </li>
                   ))}

@@ -93,7 +93,7 @@ function VisionMissionCard({ title, description }) {
 function AboutUs() {
   return (
     <div className="min-h-screen bg-slate-900">
-      <Navbar />
+    
 {/* Hero Section */}
 <motion.section 
   initial="hidden"

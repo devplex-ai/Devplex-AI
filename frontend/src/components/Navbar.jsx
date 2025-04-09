@@ -85,8 +85,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`w-full bg-black text-white py-4 px-4 sm:px-6 lg:px-40 flex items-center justify-between border-b border-white/10 sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled ? "py-3 bg-black/90 backdrop-blur-sm" : ""
+        className={`w-full  text-white py-4 px-4 sm:px-6 lg:px-40 flex items-center justify-between  sticky top-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "py-3 bg-[#18181B] border-b border-white/10 backdrop-blur-sm"
+            : "bg-black"
         }`}
       >
         {/* Logo + Name */}
@@ -105,11 +107,11 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center space-x-6 text-gray-400 text-sm">
+        <ul className="hidden md:flex items-center space-x-6 text-white  text-sm">
           {menuItems.map((item, index) => (
             <li
               key={index}
-              className="hover:text-white transition cursor-pointer"
+              className="hover:text-gray-300 transition cursor-pointer"
             >
               <Link to={item.link}>{item.name}</Link>
             </li>
@@ -141,21 +143,28 @@ const Navbar = () => {
               <div className="hidden md:flex items-center gap-4">
                 <button
                   onClick={() => navigate("/login")}
-                  className="text-white bg-gray-900 px-3 py-1 rounded-md text-sm font-medium hover:bg-gray-800 cursor-pointer transition"
+                  className="text-black bg-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800 cursor-pointer transition"
                 >
                   Sign in
                 </button>
                 <button
                   onClick={() => navigate("/signup")}
-                  className="bg-blue-500 px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-600 transition"
+                  className="bg-blue-500 px-3 py-2 cursor-pointer rounded-md text-sm font-medium hover:bg-blue-600 transition"
                 >
-                  Get Started
+                  Sign up
                 </button>
               </div>
             </>
           )}
 
           {/* Mobile Menu Toggle */}
+          <Avatar
+            src={`${userAvatar}`}
+            name={!user?.name ? user?.email : user?.name}
+            alt="User Avatar"
+            size={35}
+            className=" md:hidden rounded-full"
+          />
           <button
             className="md:hidden focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}

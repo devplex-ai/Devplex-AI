@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 const PricingPage = () => {
   return (
     <div>
-      <Navbar />
+    
       <Pricing />
       <Footer/>
     </div>

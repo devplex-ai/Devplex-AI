@@ -39,18 +39,20 @@ function FAQItem({ question, answer, isOpen, onClick }) {
   return (
     <div className="bg-black">
       <button
-        className="w-full flex items-center justify-between p-6 bg-gray-900/80 backdrop-blur-xl rounded-2xl text-left border border-gray-800/50 shadow-lg"
+        className="w-full flex items-center justify-between p-4 md:p-6 bg-gray-900/80 backdrop-blur-xl rounded-2xl text-left border border-gray-800/50 shadow-lg"
         onClick={onClick}
       >
-        <span className="text-xl text-gray-100 font-medium">{question}</span>
+        <span className="text-lg md:text-xl text-gray-100 font-medium">
+          {question}
+        </span>
         {isOpen ? (
-          <ChevronUp className="w-6 h-6 text-blue-400" />
+          <ChevronUp className="w-4 h-4 md:w-6 md:h-6 text-blue-400" />
         ) : (
-          <ChevronDown className="w-6 h-6 text-blue-400" />
+          <ChevronDown className="w-4 h-4 md:w-6 md:h-6 text-blue-400" />
         )}
       </button>
       {isOpen && (
-        <div className="p-6 mt-2 bg-gray-800/60 backdrop-blur-xl rounded-2xl border border-gray-700/50">
+        <div className="p-4 md:p-6 mt-2 bg-gray-800/60 backdrop-blur-xl rounded-2xl border border-gray-700/50">
           <p className="text-gray-300 leading-relaxed">{answer}</p>
         </div>
       )}
@@ -63,7 +65,7 @@ function FAQ() {
 
   return (
     <div
-      className="min-h-screen bg-black p-6 md:p-12"
+      className="h-fit md:min-h-screen  bg-black p-6 md:p-16"
       style={{
         backgroundImage: `linear-gradient(to bottom right, rgba(29, 78, 216, 0.15), rgba(30, 41, 59, 0.15)), url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=2940&q=80')`,
         backgroundSize: "cover",
@@ -72,15 +74,15 @@ function FAQ() {
       }}
     >
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-16">
-          <h1  className="text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+        <div className="text-center mb-4 md:mb-16">
+          <h1  className="text-3xl md:text-5xl pt-8 md:pt-0 font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
             Frequently Asked Questions
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-400 text-sm md:text-lg">
             Everything you need to know about Blok
           </p>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-2  md:space-y-4">
           {faqs.map((faq, index) => (
             <FAQItem
               key={index}

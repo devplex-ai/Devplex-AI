@@ -5,10 +5,10 @@ import Footer from "../components/Footer";
 const Security = () => {
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-16">
+      
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-6 md:py-16">
         <div className="max-w-3xl">
-          <h1 className="text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
             Security at Devplex AI
           </h1>
           <p className="text-gray-300 mb-6">Last Updated: 1 April 2025</p>

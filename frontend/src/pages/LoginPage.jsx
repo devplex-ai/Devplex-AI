@@ -143,7 +143,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black">
-      <Navbar />
+    
       <div
         className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2 
  bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm

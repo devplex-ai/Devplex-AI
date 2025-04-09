@@ -3,10 +3,8 @@ import { motion } from "framer-motion";
 import { FaRocket, FaBrain, FaServer, FaFigma } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import { UserDetailContext } from "../context/UserDetailContext";
 import { useSelector } from "react-redux";
 import FAQ from "../components/FaqSection";
-import PricingPage from "./PricingPage";
 import Pricing from "../components/Pricing";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
@@ -15,7 +13,8 @@ import { AlertCircle, ArrowRight, CheckCircle, CircleCheck, Figma, Link, X } fro
 import Process from "../components/Process";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonials";
-import Hero from "../components/Hero";
+import { SmoothScrollHero } from "../components/ParalexEffect";
+import HeroBottom from "../components/heroBottom";
 const Home = () => {
 
  const apiURL = import.meta.env.VITE_BASE_URL;
@@ -24,54 +23,12 @@ const Home = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [progress, setProgress] = useState(0); // Track API progress
+  const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState("idel"); 
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
 
-// const handleGenerate = async () => {
-//   if (!user) {
-//     navigate("/login");
-//     return;
-//   }
-
-//   if (!prompt.trim()) {
-//     setError("Please describe your idea.");
-//     return;
-//   }
-
-//     setTimeout(() => {
-//       setIsModalOpen(true);
-//     }, 2000);
-
-  
-
-//   setError("");
-//   setLoading(true);
-
-//   try {
-//     const response = await axios.post(`${apiURL}/api/start-chat`, {
-//       userId: user._id,
-//       prompt,
-//     });
-
-//     if (response.data.sessionId) {
-//       setPrompt(""); 
-//       setTimeout(() => {
-//         setIsModalOpen(false); // Close modal after API call
-//         navigate(`/workspace/${response.data.sessionId}`);
-//       }, 500);
-//     } else {
-//       setError("Failed to start session. Please try again.");
-//     }
-//   } catch (error) {
-//     console.error("Error starting chat:", error);
-//     setError("Something went wrong. Please try again.");
-//   } finally {
-//     setLoading(false);
-//   }
-// };
 const handleGenerate = async () => {
   if (!user) {
     navigate("/login");
@@ -85,9 +42,9 @@ const handleGenerate = async () => {
 
   setError("");
   setLoading(true);
-  setProgress(0); // Reset progress
+  setProgress(0); 
   setStatus("loading");
-  setIsModalOpen(true); // Open modal immediately
+  setIsModalOpen(true); 
 
   try {
     const response = await axios.post(
@@ -109,7 +66,7 @@ const handleGenerate = async () => {
       setPrompt("");
 
       setTimeout(() => {
-        setIsModalOpen(false); // Close modal after success animation
+        setIsModalOpen(false); 
         navigate(`/workspace/${response.data.sessionId}`);
       }, 1000);
     } else {
@@ -126,16 +83,16 @@ const handleGenerate = async () => {
 
 
   return (
-    <div className="bg-black h-full min-h-screen">
-      <AppSideBar />
-      <Navbar />
-      <div className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black text-white">
-        {/* Background Glow Effect - Adjusted for mobile */}
-        <div
-          className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2 
+    <div className={`bg-black h-full min-h-screen ${user && 'ml-0 md:ml-12'}`}>
+      <div className="hidden md:block"><AppSideBar /></div>
+      {/* <Navbar /> */}
+
+      <div className="relative overflow-hidden  min-h-screen h-full pt-32  flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black text-white">
+        {/* <div
+          className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2
  bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm
  top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
-        ></div>
+        ></div> */}
 
         <motion.h1
           initial={{ opacity: 0, y: -30 }}
@@ -159,25 +116,22 @@ const handleGenerate = async () => {
           </span>
         </motion.p>
 
-        {/* Input Section */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-6 flex flex-col items-center w-full max-w-md sm:max-w-xl bg-white/10 backdrop-blur-lg p-2 sm:p-6 rounded-xl border border-white/20 shadow-lg mx-2"
+          className="mt-6 flex flex-col items-center w-full bg-[#27272A] max-w-2xl border border-gray-500 rounded-xl shadow-lg mx-2"
         >
-          {/* Input Field */}
           <textarea
             type="text"
             placeholder="How can Devplex help you today?"
             value={prompt}
-            rows={4}
+            rows={3}
             onChange={(e) => setPrompt(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-gray-500 focus:outline-none focus:ring-1 focus:ring-[#608dff] placeholder-gray-400 text-white bg-transparent resize-none text-sm sm:text-base"
+            className="w-full px-4 py-3 rounded-xl   focus:outline-none placeholder-gray-300 text-white  resize-none text-sm sm:text-base"
             autoFocus
           />
 
-          {/* Error and Success Messages */}
           {error && (
             <motion.p
               initial={{ opacity: 0 }}
@@ -197,32 +151,29 @@ const handleGenerate = async () => {
             </motion.p>
           )}
 
-          {/* Generate Button */}
-          <div className="flex justify-between items-center mt-2 w-full">
-            {/* Group Import and Figma buttons together */}
-            <div className="flex gap-2">
-              <h1 className="px-4 py-2 cursor-pointer rounded-xl border flex items-center gap-2 border-white/10 ">
-                <Link size={20} />
+          <div className="flex justify-between p-2 items-center mt-2 w-full">
+            <div className="flex gap-1">
+              <h1 className="px-2 hover:bg-blue-500 py-1 text-sm cursor-pointer rounded flex items-center gap-1 ">
+                <Link size={15} />
+                Attach
+              </h1>
+              <h1 className="px-2 py-1 hover:bg-blue-500 flex cursor-pointer text-sm items-center gap-1 rounded   ">
+                <FaFigma size={15} />
                 Import
               </h1>
-              {/* <h1 className="px-4 py-2 flex cursor-pointer text-sm items-center gap-2 rounded-xl border border-white/10 ">
-                <FaFigma size={20} />
-                Figma
-              </h1> */}
             </div>
 
-            {/* Generate button */}
             <button
               onClick={() => {
                 handleGenerate();
               }}
               disabled={loading}
-              className="px-4 py-2 text-sm sm:px-6 sm:py-3 font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 text-md font-semibold bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 "Generating..."
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   Generate <ArrowRight />
                 </div>
               )}
@@ -237,16 +188,17 @@ const handleGenerate = async () => {
           transition={{ delay: 1, duration: 1 }}
           className="mt-8 sm:mt-12  text-gray-300 z-20 w-full px-2"
         >
+         <HeroBottom/>
           <Process />
         </motion.div>
       </div>
-      <Hero/>
-      <Testimonials/>
-     
+      <SmoothScrollHero />
+      <Testimonials />
+
       <FAQ />
       <Pricing />
       <Footer />
-      
+
       {isModalOpen && (
         <VideoModal
           isOpen={isModalOpen}
