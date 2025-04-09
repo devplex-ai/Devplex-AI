@@ -158,13 +158,16 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Toggle */}
-          <Avatar
+          {user &&
+            <Avatar
             src={`${userAvatar}`}
             name={!user?.name ? user?.email : user?.name}
             alt="User Avatar"
             size={35}
             className=" md:hidden rounded-full"
-          />
+            />
+          }
+          
           <button
             className="md:hidden focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
