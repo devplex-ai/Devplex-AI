@@ -22,15 +22,15 @@ function Feature() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-3xl bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent md:text-5xl font-bold mb-6">
             Supercharge Your Workflow with{" "}
             <span className="text-indigo-500">Devplex AI</span>
           </h1>
-          <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-6">
+          <p className="text-gray-400 text-sm sm:text-lg md:text-xl max-w-3xl mx-auto mb-6">
             Devplex AI helps you design, develop, and deploy web apps at
             lightning speed using powerful AI-driven tools and automation.
           </p>
-          <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-12">
+          <p className="text-gray-400 text-sm sm:text-lg md:text-xl max-w-3xl mx-auto mb-12">
             Reduce time-to-market by 90% with our expert workflows, smart
             templates, and 24/7 AI co-pilot built for modern developers and
             teams.
@@ -131,7 +131,9 @@ function Feature() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => { navigate("/") }}
+              onClick={() => {
+                navigate("/");
+              }}
               className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
             >
               Start Now
@@ -139,7 +141,9 @@ function Feature() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => { navigate("/pricing") }}
+              onClick={() => {
+                navigate("/pricing");
+              }}
               className="bg-white/10 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/20 transition-colors border border-white/20"
             >
               Upgrade
