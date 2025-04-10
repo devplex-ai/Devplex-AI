@@ -128,16 +128,14 @@ function Feature() {
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <motion.button
+            <motion.a
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                navigate("/");
-              }}
+             href="#"
               className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
             >
               Start Now
-            </motion.button>
+            </motion.a>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

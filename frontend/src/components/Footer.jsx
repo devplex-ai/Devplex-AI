@@ -19,20 +19,13 @@ const Footer = () => {
                 />
                 <span className="text-xl font-semibold">Devplex</span>
               </div>
-              <p className="text-md text-gray-300 mb-2 md:mb-4">
+              <p className="text-md text-center md:text-start text-gray-300 mb-2 md:mb-4">
                 Build AI-powered websites effortlessly.
               </p>
             </div>
             <div className="flex gap-4">
               <a
-                href="#"
-                className="hover:text-gray-400 transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="#"
+                href="https://www.linkedin.com/company/devplexai/"
                 className="hover:text-gray-400 transition-colors"
                 aria-label="LinkedIn"
               >
