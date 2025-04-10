@@ -74,7 +74,10 @@ const AppContent = () => {
   const location = useLocation();
 
   // Check if path matches /workspace/:sessionId
-  const isWorkspacePage = location.pathname.startsWith("/workspace/" && "/login" && "/signup");
+const isWorkspacePage =
+  location.pathname.startsWith("/workspace/") ||
+  location.pathname.startsWith("/login") ||
+  location.pathname.startsWith("/signup");
 
   return (
     <>
