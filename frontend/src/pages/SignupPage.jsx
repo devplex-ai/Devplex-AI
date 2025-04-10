@@ -421,7 +421,7 @@ const SignupPage = ({ onClose = () => {} }) => {
               <img
                 src="/assets/logo.png"
                 alt="Devplex AI Logo"
-                className="h-16 w-auto mb-2"
+                className="h-14 md:h-16 w-auto mb-2"
               />
               <h2 className="text-white text-3xl font-bold mb-2">
                 Start Building with <br />
