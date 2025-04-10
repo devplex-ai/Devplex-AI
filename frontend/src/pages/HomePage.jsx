@@ -10,7 +10,7 @@ import Contact_form from "../components/ContactForm";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
-import { AlertCircle, ArrowRight, CheckCircle, CircleCheck, Figma, Link, X } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle, CircleCheck, Figma, Link, Send, SendHorizontal, X } from "lucide-react";
 import Process from "../components/Process";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonials";
@@ -147,10 +147,15 @@ const handleGenerate = async () => {
 
           <div className="flex justify-between p-2 items-center mt-2 w-full">
             <div className="flex gap-1">
-              <h1 className="px-2 hover:bg-blue-500 py-1 text-sm cursor-pointer rounded flex items-center gap-1 ">
+              <label
+                htmlFor="file-upload"
+                className="px-2 hover:bg-blue-500 py-1 text-sm cursor-pointer rounded flex items-center gap-1"
+              >
                 <Link size={15} />
                 Attach
-              </h1>
+                <input id="file-upload" type="file" className="hidden" />
+              </label>
+
               <h1 className="px-2 py-1 hover:bg-blue-500 flex cursor-pointer text-sm items-center gap-1 rounded   ">
                 <FaFigma size={15} />
                 Import
@@ -168,7 +173,7 @@ const handleGenerate = async () => {
                 "Generating..."
               ) : (
                 <div className="flex items-center gap-1">
-                  Generate <ArrowRight />
+                  <SendHorizontal />
                 </div>
               )}
             </button>
@@ -227,31 +232,6 @@ const messages = [
   "Launching project...",
 ];
 
-// const VideoModal = () => {
-  
-
-//   return (
-//     <>
-//       <div className="fixed inset-0 z-50 flex justify-center items-center">
-//         <div className="flex flex-col items-center gap-3 bg-black p-6 rounded-lg shadow-lg w-full max-w-lg text-center">
-//           <h2 className="text-xl font-semibold mb-3 text-white animate-pulse">
-//             {currentMessage}
-//           </h2>
-
-//           <video autoPlay loop muted className="w-40 rounded-full">
-//             <source src="/assets/codevideo.mp4" type="video/mp4" />
-//             Your browser does not support the video tag.
-//           </video>
-
-//           <p className="mt-2 text-white">
-//             Please wait while we process your request.
-//           </p>
-//         </div>
-//       </div>
-//       <div className="fixed inset-0 z-40 bg-gray-900 opacity-50"></div>
-//     </>
-//   );
-// };
 const VideoModal = ({ isOpen,progress, status, onClose }) => {
 
   const [currentMessage, setCurrentMessage] = useState(messages[0]);

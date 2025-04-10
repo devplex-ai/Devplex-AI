@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { X, Menu, LogOut } from "lucide-react";
+import { X, Menu, LogOut, Linkedin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, setUser } from "../../redux/authSlice";
@@ -124,6 +124,13 @@ const Navbar = () => {
           {user ? (
             <>
               <div className="hidden md:flex items-center gap-4">
+                <a
+                  href="https://www.linkedin.com/company/devplexai/"
+                  className="hover:text-gray-400 transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </a>
                 <Avatar
                   src={`${userAvatar}`}
                   name={!user?.name ? user?.email : user?.name}
@@ -132,12 +139,18 @@ const Navbar = () => {
                   className="h-10 w-10 rounded-full"
                 />
                 <DropdownMenu username={user?.name} />
-               
               </div>
             </>
           ) : (
             <>
               <div className="hidden md:flex items-center gap-4">
+                <a
+                  href="https://www.linkedin.com/company/devplexai/"
+                  className="hover:text-gray-400 transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </a>
                 <button
                   onClick={() => navigate("/login")}
                   className="text-black bg-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800 cursor-pointer transition"
@@ -155,18 +168,25 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
-            {user &&
-            <Avatar
-            src={`${userAvatar}`}
-            name={!user?.name ? user?.email : user?.name}
-            alt="User Avatar"
-            size={35}
-            className="rounded-full"
-            />
-          }</div>
-        
-          
+          <div className="flex items-center gap-2 md:hidden">
+              <a
+                            href="https://www.linkedin.com/company/devplexai/"
+                            className="hover:text-gray-400 transition-colors"
+                            aria-label="LinkedIn"
+                          >
+                            <Linkedin size={20} />
+                          </a>
+            {user && (
+              <Avatar
+                src={`${userAvatar}`}
+                name={!user?.name ? user?.email : user?.name}
+                alt="User Avatar"
+                size={35}
+                className="rounded-full"
+              />
+            )}
+          </div>
+
           <button
             className="md:hidden focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}

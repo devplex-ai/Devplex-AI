@@ -403,32 +403,33 @@ const SignupPage = ({ onClose = () => {} }) => {
     });
 
   return (
-    <div className="fixed inset-0 z-50 bg-black">
-     
-      <div
-        className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2 
- bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm
- top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
-      ></div>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0, duration: 1 }}
-        className=" flex items-center justify-center mt-10"
-      >
-        <div className="w-[60%] flex gap-8  bg-gray-900 p-4 rounded-2xl shadow-2xl border border-gray-700 z-20">
-          <div className="w-1/2">
+    <div className=" h-screen bg-black overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen p-0 md:px-4 py-10">
+        <div className="w-full max-w-5xl bg-black rounded-2xl flex flex-col md:flex-row gap-4 md:gap-8 p-2 md:p-10 z-20">
+          {/* Left Side Image */}
+          <div className="hidden md:block md:w-1/2">
             <img
               src="/assets/signup.jpg"
-              alt=""
-              className="w-90% h-full rounded-xl"
+              alt="Signup"
+              className="w-full h-full object-cover rounded-xl"
             />
           </div>
 
-          <div className="w-1/2 p-4">
-            <div className="text-center mb-8">
-              <h2 className="text-white text-3xl font-bold mb-2">Welcome</h2>
-              <p className="text-gray-400">Sign up to create your account</p>
+          {/* Right Side Form */}
+          <div className="w-full md:w-1/2 p-4">
+            <div className="flex flex-col items-center text-center mb-6">
+              <img
+                src="/assets/logo.png"
+                alt="Devplex AI Logo"
+                className="h-14 md:h-16 w-auto mb-2"
+              />
+              <h2 className="text-white text-3xl font-bold mb-2">
+                Start Building with <br />
+                <span className="text-indigo-500">Devplex</span>
+              </h2>
+              <p className="text-gray-400">
+                Join the next-gen platform for creators and developers
+              </p>
             </div>
 
             {error && (
@@ -445,17 +446,17 @@ const SignupPage = ({ onClose = () => {} }) => {
               <div className="flex-grow border-t border-gray-600"></div>
             </div>
 
-            <div className="flex gap-3 mb-6">
+            <div className="flex flex-row gap-3 mb-6">
               <button
                 onClick={() => googleLogin()}
                 disabled={isSocialLoading}
                 aria-label="Sign in with Google"
-                className="flex-1 gap-1 bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"
+                className="flex-1 gap-2 bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"
               >
                 <img
                   src="/assets/google.png"
                   className="w-6 h-6"
-                  alt="Google logo"
+                  alt="Google"
                 />
                 Google
               </button>
@@ -463,9 +464,9 @@ const SignupPage = ({ onClose = () => {} }) => {
                 onClick={handleGitHubLogin}
                 disabled={isSocialLoading}
                 aria-label="Sign in with GitHub"
-                className="flex-1 gap-1  text-black bg-white font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"
+                className="flex-1 gap-2 text-black bg-white font-medium py-3 px-4 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow disabled:opacity-70"
               >
-                <IoLogoGithub className="text-3xl" />
+                <IoLogoGithub className="text-2xl" />
                 GitHub
               </button>
             </div>
@@ -481,7 +482,7 @@ const SignupPage = ({ onClose = () => {} }) => {
             <form onSubmit={handleSubmit}>
               <div className="mb-5 relative">
                 <input
-                  className="peer w-full px-4 py-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
+                  className="peer w-full px-4 py-3 bg-gray-900 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
                   id="email"
                   type="email"
                   placeholder="Email"
@@ -491,7 +492,7 @@ const SignupPage = ({ onClose = () => {} }) => {
                 />
                 <label
                   htmlFor="email"
-                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-800 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
+                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-900 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
                 >
                   Email
                 </label>
@@ -499,7 +500,7 @@ const SignupPage = ({ onClose = () => {} }) => {
 
               <div className="mb-6 relative">
                 <input
-                  className="peer w-full px-4 py-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
+                  className="peer w-full px-4 py-3 bg-gray-900 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
                   id="password"
                   type="password"
                   placeholder="Password"
@@ -509,7 +510,7 @@ const SignupPage = ({ onClose = () => {} }) => {
                 />
                 <label
                   htmlFor="password"
-                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-800 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
+                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-900 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
                 >
                   Password
                 </label>
@@ -524,15 +525,14 @@ const SignupPage = ({ onClose = () => {} }) => {
                   />
                   <label
                     htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-300"
+                    className="ml-2 text-sm text-gray-300"
                   >
                     Remember me
                   </label>
                 </div>
-
                 <a
                   href="#"
-                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                  className="text-sm text-blue-400 hover:text-blue-300"
                 >
                   Forgot password?
                 </a>
@@ -541,7 +541,7 @@ const SignupPage = ({ onClose = () => {} }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline transition-all duration-300 flex items-center justify-center disabled:opacity-70"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl focus:outline-none transition-all duration-300 flex items-center justify-center disabled:opacity-70"
               >
                 {isLoading ? (
                   <>
@@ -571,10 +571,20 @@ const SignupPage = ({ onClose = () => {} }) => {
                   "Sign Up"
                 )}
               </button>
+
+              <p className="text-center mt-8 text-sm text-gray-400">
+                Already have an account?{" "}
+                <span
+                  onClick={() => navigate("/login")}
+                  className="text-blue-400 cursor-pointer hover:text-blue-300 font-medium"
+                >
+                  Signin
+                </span>
+              </p>
             </form>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

@@ -268,6 +268,11 @@ const fetchChatHistory = async () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatHistory]);
 
+  const deployProject = async (sessionId) => {
+    const res = await axios.post(`/api/deploy/${sessionId}`);
+    console.log("Deployed at:", res.data.siteUrl);
+  };
+
   return (
     <div className="w-full bg-black h-screen flex flex-col gap-2 overflow-hidden">
       {/* Navbar */}
@@ -286,7 +291,9 @@ const fetchChatHistory = async () => {
           <h2 className="text-sm flex gap-1 items-center text-gray-300 cursor-pointer bg-gray-900 hover:bg-gray-800 py-1 px-2 rounded">
             Export <FolderInput size={20} />
           </h2>
-          <h2 className="text-sm flex gap-1 items-center text-white cursor-pointer bg-blue-600 hover:bg-blue-700 py-1 px-2 rounded">
+          <h2 onClick={() => {
+            deployProject(sessionId);
+          }} className="text-sm flex gap-1 items-center text-white cursor-pointer bg-blue-600 hover:bg-blue-700 py-1 px-2 rounded">
             Deploy <Rocket size={20} />
           </h2>
         </div>

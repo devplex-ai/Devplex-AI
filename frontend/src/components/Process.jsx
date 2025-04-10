@@ -118,11 +118,11 @@ function Process() {
         <h2 className=" text-3xl sm:text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
           How Devplex Works
         </h2>
-        <p className="text-gray-400 mb-4 md:mb-16 text-sm md:text-base text-center ">
+        <p className="text-gray-400 mb-8 md:mb-16 text-sm md:text-base text-center ">
           Devplex crafts your product from concept to code in four bold steps.
         </p>
 
-        <div className="space-y-24">
+        <div className="space-y-12 md:space-y-24">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -135,21 +135,21 @@ function Process() {
               <div
                 className={`flex flex-col md:flex-row items-center ${
                   index % 2 !== 0 ? "md:flex-row-reverse" : ""
-                } gap-12`}
+                } gap-6 md:gap-12`}
               >
                 {/* Text Content */}
-                <div className="md:w-1/2">
-                  <div className="flex items-center mb-4">
+                <div className="w-full md:w-1/2">
+                  <div className="flex  gap-2 md:gap-0 items-center mb-4 w-full">
                     <div
                       className={`w-12 h-12 rounded-full ${step.color} flex items-center justify-center shadow-lg`}
                     >
                       <step.icon className="w-6 h-6" />
                     </div>
-                    <h3 className="text-2xl font-semibold text-white ml-4">
+                    <h3 className="text-xl md:text-2xl w-[75%] md:w-full font-semibold text-white ml-2 md:ml-4">
                       {step.title}
                     </h3>
                   </div>
-                  <p className="text-gray-300 text-lg leading-relaxed">
+                  <p className="text-gray-300 text-sm  md:text-lg leading-relaxed">
                     {step.description}
                   </p>
                 </div>
