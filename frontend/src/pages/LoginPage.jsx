@@ -143,22 +143,27 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black">
-    
-      <div
-        className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2 
- bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm
- top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
-      ></div>
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0, duration: 1 }}
         className="mt-10 flex items-center justify-center"
       >
-        <div className="w-full max-w-md bg-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-700 z-20">
-          <div className="text-center mb-8">
-            <h2 className="text-white text-3xl font-bold mb-2">Welcome Back</h2>
-            <p className="text-gray-400">Sign in to continue to your account</p>
+        <div className="w-full max-w-md bg-black p-8 rounded-2xl z-20">
+          <div className="flex flex-col items-center text-center mb-8">
+            <img
+              src="/assets/logo.png"
+              alt="Devplex AI Logo"
+              className="h-16 w-auto mb-2"
+            />
+            <h2 className="text-white text-3xl font-bold mb-2">
+              Welcome Back to <br />{" "}
+              <span className="text-indigo-500">Devplex</span>
+            </h2>
+            <p className="text-gray-400">
+              Continue building, deploying, and collaborating with AI-powered
+              supertools
+            </p>
           </div>
 
           {error && (
@@ -209,7 +214,7 @@ const handleSubmit = async (e) => {
           <form onSubmit={handleSubmit}>
             <div className="mb-5 relative">
               <input
-                className="peer w-full px-4 py-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
+                className="peer w-full px-4 py-3 bg-gray-900 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
                 id="email"
                 type="email"
                 placeholder="Email"
@@ -219,7 +224,7 @@ const handleSubmit = async (e) => {
               />
               <label
                 htmlFor="email"
-                className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-800 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
+                className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-900 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
               >
                 Email
               </label>
@@ -227,7 +232,7 @@ const handleSubmit = async (e) => {
 
             <div className="mb-6 relative">
               <input
-                className="peer w-full px-4 py-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
+                className="peer w-full px-4 py-3 bg-gray-900 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
                 id="password"
                 type="password"
                 placeholder="Password"
@@ -237,7 +242,7 @@ const handleSubmit = async (e) => {
               />
               <label
                 htmlFor="password"
-                className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-800 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
+                className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-900 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
               >
                 Password
               </label>

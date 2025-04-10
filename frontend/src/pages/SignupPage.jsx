@@ -403,21 +403,15 @@ const SignupPage = ({ onClose = () => {} }) => {
     });
 
   return (
-    <div className="fixed inset-0 z-50 bg-black">
-     
-      <div
-        className="absolute w-[2600px] h-[800px] rounded-[50%] left-1/2 -translate-x-1/2 
- bg-[radial-gradient(closest-side,#000_70%,#1E90FF_90%,#00BFFF_100%)] blur-sm
- top-[450px] border-2 border-[#8CD6DE]/30 opacity-70"
-      ></div>
+    <div className="fixed h-screen inset-0 z-50 bg-black">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0, duration: 1 }}
-        className=" flex items-center justify-center mt-10"
+        className=" flex items-center justify-center md:mt-25 mt-10"
       >
-        <div className="w-[60%] flex gap-8  bg-gray-900 p-4 rounded-2xl shadow-2xl border border-gray-700 z-20">
-          <div className="w-1/2">
+        <div className="w-full sm:w-[80%] md:w-[70%] lg:[60%] flex gap-8 bg-black p-4 rounded-2xl  z-20">
+          <div className="hidden md:block w-1/2">
             <img
               src="/assets/signup.jpg"
               alt=""
@@ -425,10 +419,21 @@ const SignupPage = ({ onClose = () => {} }) => {
             />
           </div>
 
-          <div className="w-1/2 p-4">
-            <div className="text-center mb-8">
-              <h2 className="text-white text-3xl font-bold mb-2">Welcome</h2>
-              <p className="text-gray-400">Sign up to create your account</p>
+          <div className="w-full  md:w-1/2 p-4">
+            <div className="flex flex-col items-center">
+              <img
+                src="/assets/logo.png"
+                alt="Devplex AI Logo"
+                className="h-16 w-auto mb-2"
+              />
+              <h2 className="text-white text-center text-3xl font-bold mb-2">
+                Start Building with
+                <br />
+                <span className="text-indigo-500">Devplex</span>
+              </h2>
+              <p className="text-gray-400 text-center">
+                Join the next-gen platform for creators and developers
+              </p>
             </div>
 
             {error && (
@@ -481,7 +486,7 @@ const SignupPage = ({ onClose = () => {} }) => {
             <form onSubmit={handleSubmit}>
               <div className="mb-5 relative">
                 <input
-                  className="peer w-full px-4 py-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
+                  className="peer w-full px-4 py-3 bg-gray-900 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
                   id="email"
                   type="email"
                   placeholder="Email"
@@ -491,7 +496,7 @@ const SignupPage = ({ onClose = () => {} }) => {
                 />
                 <label
                   htmlFor="email"
-                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-800 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
+                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-900 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
                 >
                   Email
                 </label>
@@ -499,7 +504,7 @@ const SignupPage = ({ onClose = () => {} }) => {
 
               <div className="mb-6 relative">
                 <input
-                  className="peer w-full px-4 py-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
+                  className="peer w-full px-4 py-3 bg-gray-900 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent border border-gray-600/50"
                   id="password"
                   type="password"
                   placeholder="Password"
@@ -509,7 +514,7 @@ const SignupPage = ({ onClose = () => {} }) => {
                 />
                 <label
                   htmlFor="password"
-                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-800 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
+                  className="absolute left-4 -top-2.5 text-sm text-gray-400 bg-gray-900 px-1 transition-all peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-400"
                 >
                   Password
                 </label>
@@ -571,6 +576,17 @@ const SignupPage = ({ onClose = () => {} }) => {
                   "Sign Up"
                 )}
               </button>
+              <p className="text-center mt-8 text-sm text-gray-400">
+                Already have an account?{" "}
+                <a
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  className="text-blue-400 cursor-pointer hover:text-blue-300 font-medium transition-colors"
+                >
+                  Signin
+                </a>
+              </p>
             </form>
           </div>
         </div>

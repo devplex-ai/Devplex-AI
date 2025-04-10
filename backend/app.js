@@ -6,6 +6,7 @@ const session =require ("express-session");
 const passport = require("passport");
 const authRoute = require("./routes/auth")
 const chatRoute = require("./routes/Chat");
+const deployRoute = require("./routes/deploy")
 
 
 const app = express()
@@ -48,6 +49,7 @@ app.use(passport.session());
 
 app.use("/auth", authRoute);
 app.use("/api", chatRoute);
+app.use("/api", deployRoute);
 
 
 app.get('/', (req, res) => {
