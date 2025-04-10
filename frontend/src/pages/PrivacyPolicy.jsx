@@ -5,8 +5,6 @@ import Footer from "../components/Footer";
 const PrivacyPolicy = () => {
     return (
       <>
-     
-
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-6 md:py-16">
           <div className="max-w-3xl ">
             <h1 className="text-4xl md:text-5xl  font-bold mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
@@ -60,10 +58,10 @@ const PrivacyPolicy = () => {
                 If you have any questions about this Privacy Policy, please
                 contact us at{" "}
                 <a
-                  href="mailto:support@devplexai.com"
+                  href="mailto:devplexai@yahoo.com"
                   className="text-blue-400 hover:underline"
                 >
-                  support@devplexai.com
+                  devplexai@yahoo.com
                 </a>
                 .
               </p>

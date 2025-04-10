@@ -14,10 +14,10 @@ function ReportAbuse() {
             security concerns, or violations, please report them to us at{" "}
           </p>{" "}
           <a
-            href="mailto:support@Devplex.com"
+            href="mailto:devplexai@yahoo.com"
             className="underline  text-3xl sm:text-4xl md:text-6xl  font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent mb-10 hover:text-white transition-colors"
           >
-            support@Devplex.com
+            devplexai@yahoo.com
           </a>
           <h2 className="text-2xl text-gray-500 font-bold mb-8">
             Our Commitment

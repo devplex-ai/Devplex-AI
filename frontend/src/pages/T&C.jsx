@@ -98,10 +98,10 @@ const TermsConditions = () => {
               <p className="text-gray-300 ml-4">
                 For any questions or concerns, please contact us at{" "}
                 <a
-                  href="mailto:support@devplexai.com"
+                  href="mailto:devplexai@yahoo.com"
                   className="text-blue-400 hover:underline"
                 >
-                  support@devplexai.com
+                  devplexai@yahoo.com
                 </a>
                 .
               </p>
