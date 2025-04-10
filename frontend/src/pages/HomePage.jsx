@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import FAQ from "../components/FaqSection";
 import Pricing from "../components/Pricing";
-import ContactForm from "../components/ContactForm";
+import Contact_form from "../components/ContactForm";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
@@ -191,6 +191,7 @@ const handleGenerate = async () => {
       <Testimonials />
 
       <Pricing />
+      <Contact_form/>
       <FAQ />
       <Footer />
 
