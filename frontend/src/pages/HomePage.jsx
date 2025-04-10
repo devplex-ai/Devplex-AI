@@ -9,7 +9,7 @@ import Pricing from "../components/Pricing";
 import axios from "axios";
 import AppSideBar from "../components/AppSideBar";
 import { v4 as uuidv4 } from "uuid";
-import { AlertCircle, ArrowRight, CheckCircle, CircleCheck, Figma, Link, Send, SendHorizontal, X } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle, CircleCheck, Figma, Link, Send, SendHorizontal, X, Zap } from "lucide-react";
 import Process from "../components/Process";
 import Footer from "../components/Footer";
 import Testimonials from "../components/Testimonials";
@@ -113,7 +113,7 @@ const handleGenerate = async () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-6 flex flex-col items-center w-full bg-[#27272A] max-w-2xl border border-gray-500 rounded-xl shadow-lg mx-2"
+          className="mt-6 flex flex-col items-center w-full bg-[#27272a6a] max-w-2xl border border-gray-500 rounded-xl shadow-lg mx-2"
         >
           <textarea
             type="text"
@@ -179,12 +179,20 @@ const handleGenerate = async () => {
           </div>
         </motion.div>
 
+        <div className="bg-[#27272abd] text-sm md:text-base mt-6 rounded-lg p-4 flex items-center justify-center gap-3 max-w-md w-fit hover:bg-[#242424] transition-colors cursor-pointer">
+          <img src="/assets/claude.png" alt="" className="w-8 h-8 rounded-md" />
+          <span className="text-white font-medium">
+            Claude 3.7 Sonnet is now available!
+          </span>
+         
+        </div>
+
         {/* Additional Features Section */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 1 }}
-          className="mt-8 sm:mt-12  text-gray-300 z-20 w-full px-2"
+          className="mt-4  text-gray-300 z-20 w-full px-2"
         >
           <HeroBottom />
         </motion.div>
@@ -195,6 +203,7 @@ const handleGenerate = async () => {
       <Testimonials />
 
       <Pricing />
+
       <FAQ />
       <Footer />
 

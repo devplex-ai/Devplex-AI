@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Project = require("../models/Project");
+const Project = require("../models/ProjectSchema");
 const JSZip = require("jszip");
 const axios = require("axios");
 const FormData = require("form-data");
