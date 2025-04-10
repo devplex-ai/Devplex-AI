@@ -50,7 +50,7 @@ function Testimonials() {
     <div className="h-fit md:min-h-screen bg-black bg-[url('/assets/herobg.png')] bg-cover bg-center bg-no-repeat text-white py-12 md:py-20 px-0  overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-5xl  font-bold mb-2 md:mb-4 bg-gray-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-5xl mx-10  font-bold mb-2 md:mb-4 bg-gray-600 bg-clip-text text-transparent">
             Developer Love's Devplex{" "}
           </h1>{" "}
           <p className="text-gray-500 text-lg">
