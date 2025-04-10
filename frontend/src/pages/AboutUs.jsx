@@ -121,6 +121,7 @@ function AboutUs() {
         variants={sectionVariants}
         className="pt-32 pb-8 relative overflow-hidden"
       >
+        {/* Animated Background */}
         <div className="absolute inset-0 -z-10 opacity-20">
           {[...Array(15)].map((_, i) => (
             <motion.div
@@ -144,7 +145,8 @@ function AboutUs() {
           ))}
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 text-center">
+        {/* Hero Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             className="relative inline-block"
             initial={{ scale: 0.95, opacity: 0 }}
@@ -152,7 +154,7 @@ function AboutUs() {
             transition={{ duration: 0.8 }}
           >
             <motion.h1
-              className="text-6xl md:text-7xl font-bold text-slate-100 mb-8 leading-tight mt-2"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-8 leading-tight mt-2"
               variants={{
                 visible: {
                   transition: {
@@ -172,13 +174,13 @@ function AboutUs() {
                   {word.split("").map((letter, i) => (
                     <motion.span
                       key={i}
-                      className="inline-block hover:-translate-y-1 transition-transform"
+                      className="inline-block text-base sm:text-xl md:text-3xl hover:-translate-y-1 transition-transform"
                       whileHover={{ scale: 1.1 }}
                     >
                       {letter}
                     </motion.span>
                   ))}
-                  <span className="ml-4 inline-block w-3 h-3 bg-cyan-400 rounded-full animate-pulse" />
+                  <span className="ml-1 md:ml-4 inline-block w-2 h-2 md:w-3 md:h-3 bg-cyan-400 rounded-full animate-pulse" />
                 </motion.span>
               ))}
 
@@ -187,83 +189,78 @@ function AboutUs() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent relative">
+                <span className="text-2xl sm:text-4xl md:text-6xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent relative">
                   Software Development
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-cyan-500 animate-underline" />
                 </span>
               </motion.div>
             </motion.h1>
           </motion.div>
 
           <motion.div
-            className="relative inline-block max-w-3xl mx-auto"
+            className="relative inline-block max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            <motion.p
-              className="text-xl text-slate-400 mb-12 font-mono relative"
-              variants={{
-                hidden: { width: 0 },
-                visible: {
-                  width: "100%",
-                  transition: { duration: 2, ease: "circOut" },
-                },
-              }}
+            <p
+              className="text-lg sm:text-xl text-slate-400 mb-12 font-mono relative max-w-prose mx-auto"
+            
             >
               Empowering the future with AI-driven automation
               <span className="text-cyan-400 ml-2 border-b-2 border-cyan-400/30 animate-typewriter">
                 transforming the way software is built, faster and smarter than
-                ever. 🚀
+                ever. 
               </span>
-            </motion.p>
+            </p>
           </motion.div>
 
+          {/* Mission Statement */}
           <motion.div
             className="relative z-10 w-full"
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <div className="inline-block p-1 rounded-2xl bg-gradient-to-r from-teal-500/30 to-cyan-600/30 backdrop-blur-lg">
-              <div className="bg-gray-950 rounded-xl p-4">
-                <h1 className="text-white text-xl">
+              <div className="bg-gray-950 rounded-xl p-4 sm:p-6 lg:p-8 text-left">
+                <p className="text-white text-base sm:text-lg lg:text-xl">
                   At Devplex AI, we are redefining how software is built,
                   deployed, and scaled. Founded by a team of ambitious
                   university graduates with a bold vision, we’re on a mission to
                   empower creators, developers, and innovators worldwide with
                   cutting-edge AI-powered tools.
-                </h1>
-                <h1 className="text-white text-xl mt-4">
+                </p>
+                <p className="text-white text-base sm:text-lg lg:text-xl mt-4">
                   Our platform leverages advanced AI agents to automate coding,
-                  UI design, DevOps, testing, security, and optimization,
-                  allowing individuals and businesses to turn ideas into fully
-                  functional products at lightning speed.
-                </h1>
+                  UI design, DevOps, testing, security, and
+                  optimization—allowing individuals and businesses to turn ideas
+                  into fully functional products at lightning speed.
+                </p>
               </div>
             </div>
           </motion.div>
         </div>
       </motion.section>
 
+      {/* Philosophy Section */}
       <motion.section
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="py-8 relative overflow-hidden"
+        className="py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
-        <div className="max-w-6xl mx-auto px-1">
+        <div className="max-w-6xl mx-auto">
           <motion.h2
-            className="text-3xl font-bold text-slate-100 text-center mb-13"
+            className="text-3xl md:text-5xl font-bold text-slate-100 text-center mb-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <span className=" text-3xl md:text-5xl bg-gradient-to-r from-teal-400 to-cyan-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-teal-400 to-cyan-500 bg-clip-text text-transparent">
               Our Philosophy
             </span>
           </motion.h2>
 
-          <div className=" max-w-6xl mx-auto">
+          <div className="space-y-16">
             {steps.map((step, index) => (
               <motion.div
                 key={index}
@@ -274,11 +271,11 @@ function AboutUs() {
                 className="relative"
               >
                 <div
-                  className={`flex flex-col md:flex-row items-center ${
+                  className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 ${
                     index % 2 !== 0 ? "md:flex-row-reverse" : ""
-                  } gap-12`}
+                  }`}
                 >
-                  {/* Text Content */}
+                  {/* Text */}
                   <div className="md:w-1/2">
                     <div className="flex items-center mb-4">
                       <div
@@ -290,49 +287,46 @@ function AboutUs() {
                         {step.title}
                       </h3>
                     </div>
-                    <p className="text-gray-300 text-lg leading-relaxed">
+                    <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
                       {step.description}
                     </p>
                   </div>
 
-                  {/* Image Content */}
+                  {/* Image */}
                   <motion.div
                     className="md:w-1/2"
                     initial={{ opacity: 0, x: index % 2 === 0 ? 40 : -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    <div className="relative rounded-xl overflow-hidden shadow-2xl">
+                    <div className="relative rounded-xl overflow-hidden shadow-2xl bg-white">
                       <img
                         src={step.image}
                         alt={step.title}
-                        className="w-full h-72 object-contain bg-white"
+                        className="w-full h-64 sm:h-72 md:h-80 object-contain"
                       />
                     </div>
                   </motion.div>
                 </div>
-
-                {index < steps.length - 1 && (
-                  <div className="absolute left-1/2 transform -translate-x-1/2 mt-16 h-16 w-px bg-gray-700" />
-                )}
               </motion.div>
             ))}
           </div>
         </div>
       </motion.section>
+
       {/* Metrics */}
       <motion.section
         initial="hidden"
         whileInView="visible"
         variants={sectionVariants}
         viewport={{ once: true }}
-        className="py-20 bg-slate-800/30"
+        className="py-20 bg-slate-800/30 px-4"
       >
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-slate-100 text-center mb-12">
             Industry Leadership
           </h2>
-          <div className="grid md:grid-cols-3 gap-6 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center">
             {[
               { icon: Rocket, value: "10x", label: "Faster Deployment" },
               { icon: Code, value: "98%", label: "Code Accuracy" },
@@ -341,7 +335,6 @@ function AboutUs() {
               <motion.div
                 key={index}
                 className="p-6 bg-slate-800/50 rounded-xl border border-slate-700 backdrop-blur-lg"
-                custom={index}
               >
                 <item.icon className="w-10 h-10 text-teal-400 mx-auto mb-4" />
                 <div className="text-3xl font-bold text-slate-100 mb-2">
@@ -360,13 +353,13 @@ function AboutUs() {
         whileInView="visible"
         variants={sectionVariants}
         viewport={{ once: true }}
-        className="py-20"
+        className="py-20 px-4"
       >
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-slate-100 text-center mb-12">
             Why Choose Devplex AI?
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <FeatureCard
               icon={Zap}
               title="Speed"
@@ -391,34 +384,34 @@ function AboutUs() {
         </div>
       </motion.section>
 
-      {/* CTA */}
+      {/* CTA Section */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="py-20"
+        className="py-20 px-4"
       >
-        <div className="max-w-3xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <div className="bg-gradient-to-br from-teal-600/30 to-cyan-700/30 p-1 rounded-xl backdrop-blur-lg">
             <div className="bg-slate-900/80 rounded-xl p-8">
               <h3 className="text-2xl font-bold text-slate-100 mb-6">
                 Start Your AI-Powered Journey
               </h3>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <div className="flex flex-col sm:flex-row justify-center items-stretch gap-4">
                 <motion.a
                   href="/signup"
                   whileHover={{ scale: 1.03 }}
-                  className="bg-gradient-to-br from-teal-500 to-cyan-600 text-white px-6 py-3 rounded-lg font-medium"
+                  className="bg-gradient-to-br from-teal-500 to-cyan-600 text-white px-6 py-3 rounded-lg font-medium w-full sm:w-auto text-center"
                 >
                   Start Free Trial
                 </motion.a>
-                <div className="flex items-center gap-2 text-slate-400">
+                <div className="flex items-center justify-center gap-2 text-slate-400">
                   <span className="hidden sm:inline">or</span>
                   <motion.a
                     href="/login"
                     whileHover={{ scale: 1.03 }}
-                    className="border border-slate-600 hover:border-teal-400/50 px-6 py-3 rounded-lg font-medium transition-colors"
+                    className="border border-slate-600 hover:border-teal-400/50 px-6 py-3 rounded-lg font-medium transition-colors w-full sm:w-auto text-center"
                   >
                     Existing Account? Sign In
                   </motion.a>
