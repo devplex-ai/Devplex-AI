@@ -47,7 +47,7 @@ const repeatedTestimonials = [...testimonials, ...testimonials];
 
 function Testimonials() {
   return (
-    <div className="h-fit md:min-h-screen bg-black bg-[url('/assets/herobg.png')] bg-cover bg-center bg-no-repeat text-white py-12 md:py-20 px-0 sm:px-6 lg:px-0 overflow-hidden">
+    <div className="h-fit md:min-h-screen bg-black bg-[url('/assets/herobg.png')] bg-cover bg-center bg-no-repeat text-white py-12 md:py-20 px-0  overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <div className="text-center mb-12 md:mb-16">
           <h1 className="text-3xl md:text-5xl  font-bold mb-2 md:mb-4 bg-gray-600 bg-clip-text text-transparent">
@@ -83,7 +83,7 @@ function Testimonials() {
                       <img
                         src={testimonial.avatar}
                         alt={testimonial.author}
-                        className="w-[35px] h-[35px] rounded-full object-cover"
+                        className="w-[35px] h-[35px] md:w-[50px] md:h-[50px] rounded-full object-cover"
                       />
                       <footer className="text-gray-300 font-medium text-sm md:text-lg">
                         {testimonial.author}
@@ -120,7 +120,7 @@ function Testimonials() {
                       <img
                         src={testimonial.avatar}
                         alt={testimonial.author}
-                        className="w-[35px] h-[35px] rounded-full object-cover"
+                        className="w-[35px] h-[35px] md:w-[50px] md:h-[50px] rounded-full object-cover"
                       />
                       <footer className="text-gray-300 font-medium text-sm md:text-lg">
                         {testimonial.author}
