@@ -27,49 +27,86 @@ const generateCodeFromAI = async (userPrompt, retryCount = 0) => {
   const randomResponse =
     responses[Math.floor(Math.random() * responses.length)];
 
-  const CODE_GEN_PROMPT = dedent(`
-     # Two-Phase Response System
- 
-     ## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
-     Respond conversationally to the user's request first, then proceed with the structured output.
- 
-     Example Response Format:
-     "${randomResponse} [Project Type]: [Brief 2-3 sentence explanation of the approach]. 
-     I'll generate a complete React project with [Key Features]."
- 
-     USER REQUIREMENTS:
-     ${userPrompt || "No additional requirements provided"}
- 
-     OUTPUT FORMAT REQUIREMENTS (strict JSON):
-     {
-       "response": "Conversational Introduction",
-       "updates": [
-         {
-           "operation": "creating",
-           "file": "App.js"
-         },
-         {
-           "operation": "creating",
-           "file": "components/Navbar.jsx"
-         }
-       ],
-       "projectTitle": "Descriptive project title",
-       "explanation": "Detailed description of the project",
-       "files": {
-         "/components/ComponentName.jsx": {
-           "code": "// Complete JavaScript component code with all imports",
-           "styles": "Tailwind classes used (text-blue-500, p-4, etc.)"
-         },
-         "/App.js": {
-           "code": "// Complete main application code with all imports"
-         },
-         "/package.json": {
-           "code": "Install required Dependencies"
-         }
-       },
-       "setupInstructions": "npm install && npm run dev"
-     }
-   `);
+ const CODE_GEN_PROMPT = `
+# Two-Phase Response System
+
+## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
+Respond conversationally to the user's request first, then proceed with the structured output.
+
+Example Response Format:
+"${randomResponse} [Project Type]: [Brief 2-3 sentence explanation of the approach]. 
+I'll generate a complete React project with [Key Features]."
+
+Provide step-by-step updates on file operations in a structured and natural format.
+Each update should mention the operation (Creating, Updating, Deleting) and the file name.
+Keep it concise, clear, and human-readable without JSON formatting.
+
+---
+## Phase 2: Structured Output (After conversational intro)
+Generate a programming code structure for a React project using Vite. Create multiple components, organizing them in the components folder at the root level. DO NOT use a src folder structure - all files should be at root level or in the components folder directly at root level.
+
+IMPORTANT FILE STRUCTURE: 
+- Root folder
+  - components/
+    - YourComponent.jsx
+  - App.jsx (at root level)
+  - index.js (at root level)
+
+USER REQUIREMENTS:
+${userPrompt || "No additional requirements provided"}
+
+Return the response in JSON format with the following schema:
+
+OUTPUT FORMAT REQUIREMENTS (strict JSON):
+{
+  "response": "Conversational Introduction",
+  "updates": [
+    {
+      "operation": "creating",
+      "file": "App.jsx"
+    },
+    {
+      "operation": "creating",
+      "file": "components/Navbar.jsx"
+    }
+  ],
+  "projectTitle": "Descriptive project title",
+  "explanation": "Detailed description of the project",
+  
+  "files": {
+    "components/ComponentName.jsx": {
+      "code": "// Complete JavaScript component code with all imports",
+      "styles": "Tailwind classes used (text-blue-500, p-4, etc.)"
+    },
+    "App.jsx": {
+      "code": "// Complete main application code with all imports"
+    }
+  },
+  "setupInstructions": "npm install && npm run dev"
+}
+
+IMPORTANT NOTES:
+1. DO NOT use src/ folder structure - all files are at root level or in root/components/
+2. Your response MUST be valid JSON without backticks in your JSON response
+3. For filepaths, do not include a leading slash (use "components/File.jsx" NOT "/components/File.jsx")
+4. Replace backticks with single quotes or escaped double quotes in code sections
+5. All components should use .jsx extension, not .js
+
+STYLING Guidelines:
+- Use beautiful UI/UX principles
+- Use modern typography and responsive layouts
+- Use proper padding, margins, and spacing
+- Add interactive elements with hover, focus animations
+- Use primary color palettes
+- Ensure contrast & accessibility
+- Apply drop shadows and smooth transitions
+- Use rounded corners for elements
+- Implement card-based layouts where necessary
+- Create modern input fields for forms
+
+Your response must be valid JSON ONLY, beginning with { and ending with }.
+Do not wrap the response in markdown or add any extraneous text.
+`;
 
   try {
     const response = await axios.post(
