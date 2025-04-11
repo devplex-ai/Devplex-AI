@@ -6,18 +6,18 @@ function HeroBottom() {
     <div className="h-fit bg-transparent pb-36 flex items-center justify-center p-4">
       <div className="text-white flex flex-col items-center max-w-xl">
         <h2 className="text-xl text-gray-300 font-semibold mb-4">
-          1000+ founders are building with Devplex
+          100+ founders are building with Devplex
         </h2>
 
         <div className="flex items-center gap-4">
           {/* Profile Images Stack */}
           <div className="flex -space-x-3">
             {[
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-              "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop",
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+              "/assets/img1.jpg",
+              "/assets/img2.jpg",
+              "/assets/img3.jpg",
+              "/assets/img4.jpg",
+              "/assets/img5.jpg",
             ].map((src, index) => (
               <div
                 key={index}
