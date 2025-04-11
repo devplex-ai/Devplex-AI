@@ -86,8 +86,8 @@ const generateCodeFromAI = async (userPrompt, retryCount = 0) => {
       {
         headers: {
           Authorization: `Bearer ${API_KEY}`,
-          "HTTP-Referer": "https://your-site-url.com",
-          "X-Title": "Your Site Name",
+          "HTTP-Referer": "https://www.devplex.in",
+          "X-Title": "Devplex",
           "Content-Type": "application/json",
         },
       }
