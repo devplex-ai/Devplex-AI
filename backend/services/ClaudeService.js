@@ -49,7 +49,7 @@ IMPORTANT FILE STRUCTURE:
 - Root folder
   - components/
     - YourComponent.jsx
-  - App.jsx (at root level)
+  - App.js (at root level)
   - index.js (at root level)
 
 USER REQUIREMENTS:
