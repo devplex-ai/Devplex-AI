@@ -235,6 +235,9 @@ Keep it concise, clear, and human-readable without JSON formatting.
 ## Phase 2: Structured Output (After conversational intro)
 Generate a programming code structure for a React project using Vite. Create multiple components, organizing them in the components folder at the root level. DO NOT use a src folder structure - all files should be at root level or in the components folder directly at root level.
 
+USER REQUIREMENTS:
+${userPrompt || "No additional requirements provided"}
+
 IMPORTANT FILE STRUCTURE: 
 - Root folder
   - components/
@@ -242,8 +245,7 @@ IMPORTANT FILE STRUCTURE:
   - App.js (at root level)
   - index.js (at root level)
 
-USER REQUIREMENTS:
-${userPrompt || "No additional requirements provided"}
+
 
 Return the response in JSON format with the following schema:
 
@@ -253,7 +255,7 @@ OUTPUT FORMAT REQUIREMENTS (strict JSON):
   "updates": [
     {
       "operation": "creating",
-      "file": "App.jsx"
+      "file": "App.js"
     },
     {
       "operation": "creating",
@@ -279,8 +281,8 @@ IMPORTANT NOTES:
 1. DO NOT use src/ folder structure - all files are at root level or in root/components/
 2. Your response MUST be valid JSON without backticks in your JSON response
 3. For filepaths, do not include a leading slash (use "components/File.jsx" NOT "/components/File.jsx")
-4. Replace backticks with single quotes or escaped double quotes in code sections
-5. All components should use .jsx extension, not .js
+4. App.js is already in root folder dont make App.jsx.
+5. All components should use .jsx extension, not .js accept App.js, index.js.
 6. CRITICAL: All quotes within code strings must be properly escaped with backslashes
 7. DO NOT use any special characters that would break JSON formatting
 8. DO NOT include any comments outside of the JSON structure
