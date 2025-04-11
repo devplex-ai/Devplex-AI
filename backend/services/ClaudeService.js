@@ -268,7 +268,7 @@ OUTPUT FORMAT REQUIREMENTS (strict JSON):
       "code": "// Complete JavaScript component code with all imports",
       "styles": "Tailwind classes used (text-blue-500, p-4, etc.)"
     },
-    "App.jsx": {
+    "App.js": {
       "code": "// Complete main application code with all imports"
     }
   },
