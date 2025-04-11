@@ -85,7 +85,7 @@ const AppSideBar = () => {
   return (
     <>
       {user && (
-        <div className="fixed top-0 left-0 h-screen w-16 group z-30">
+        <div className="fixed hidden md:block top-0 left-0 h-screen w-16 group z-30">
           <div className="w-16 h-full flex flex-col items-center justify-between bg-black bg-opacity-25 border border-gray-800 overflow-hidden">
             <img
               src="/assets/logo.png"

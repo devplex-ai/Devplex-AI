@@ -216,8 +216,7 @@ const generateCodeFromAI = async (userPrompt, retryCount = 0) => {
   const randomResponse =
     responses[Math.floor(Math.random() * responses.length)];
 
-  // Improved prompt with clearer JSON formatting instructions
-  const CODE_GEN_PROMPT = `
+const CODE_GEN_PROMPT = `
 # Two-Phase Response System
 
 ## Phase 1: Conversational Introduction (ALWAYS START WITH THIS)
@@ -235,17 +234,15 @@ Keep it concise, clear, and human-readable without JSON formatting.
 ## Phase 2: Structured Output (After conversational intro)
 Generate a programming code structure for a React project using Vite. Create multiple components, organizing them in the components folder at the root level. DO NOT use a src folder structure - all files should be at root level or in the components folder directly at root level.
 
-USER REQUIREMENTS:
-${userPrompt || "No additional requirements provided"}
-
-IMPORTANT FILE STRUCTURE: 
+IMPORTANT FILE STRUCTURE REQUIREMENTS: 
 - Root folder
   - components/
     - YourComponent.jsx
-  - App.js (at root level)
+  - App.js (IMPORTANT: use .js extension, NOT .jsx)
   - index.js (at root level)
 
-
+USER REQUIREMENTS:
+${userPrompt || "No additional requirements provided"}
 
 Return the response in JSON format with the following schema:
 
@@ -277,15 +274,54 @@ OUTPUT FORMAT REQUIREMENTS (strict JSON):
   "setupInstructions": "npm install && npm run dev"
 }
 
-IMPORTANT NOTES:
+MOST CRITICAL FILE EXTENSION REQUIREMENTS:
+1. ALWAYS use "App.js" (with .js extension) for the main App file in the root folder
+2. Use .jsx extension for component files in the components folder
+3. All examples and references must use "App.js", NOT "App.jsx"
+
+MOST CRITICAL JSX SYNTAX GUIDELINES:
+1. Use proper JSX syntax with closing brackets and tags
+2. When using complex className strings, ensure proper string syntax:
+   - For string concatenation in JSX, use template literals or string concatenation
+   - CORRECT: className={\`fixed w-full z-50 \${isScrolled ? 'bg-white shadow-md' : ''}\`}
+   - CORRECT: className={'fixed w-full z-50 ' + (isScrolled ? 'bg-white shadow-md' : '')}
+   - INCORRECT: className={'fixed w-full z-50 \${
+     isScrolled ? "bg-white shadow-md" : ""
+   }'}
+3. Ensure quote matching in JSX attributes - never mix single and double quotes incorrectly
+4. Properly escape quotes in JSON code strings:
+   - Double quotes in JSON should be escaped with backslash: \\"
+   - Use single quotes for JSX attributes: className='example'
+   - Or use escaped double quotes: className=\\"example\\"
+5. Every opening JSX tag must have a corresponding closing tag
+6. Self-closing tags must end with />
+
+CRITICAL JSON FORMATTING RULES:
 1. DO NOT use src/ folder structure - all files are at root level or in root/components/
 2. Your response MUST be valid JSON without backticks in your JSON response
 3. For filepaths, do not include a leading slash (use "components/File.jsx" NOT "/components/File.jsx")
-4. App.js is already in root folder dont make App.jsx.
-5. All components should use .jsx extension, not .js accept App.js, index.js.
+4. Replace all backticks with single quotes or escaped double quotes in code sections
+5. Use .jsx extension for component files but .js for App.js
 6. CRITICAL: All quotes within code strings must be properly escaped with backslashes
-7. DO NOT use any special characters that would break JSON formatting
-8. DO NOT include any comments outside of the JSON structure
+7. CRITICAL: All control characters (newlines, tabs, etc.) in code must be properly escaped:
+   - Use '\\n' for newlines (not literal newlines)
+   - Use '\\t' for tabs (not literal tabs)
+   - Use '\\r' for carriage returns
+8. CRITICAL: Do not include any invisible or special characters in the JSON
+9. Use JSON.stringify() logic for all strings containing code
+
+TAILWIND CSS GUIDELINES:
+1. Use proper Tailwind class syntax with correct spacing
+2. Do not invent custom Tailwind classes
+3. Avoid arbitrary values in square brackets - use standard Tailwind classes instead
+4. Common Tailwind classes to use:
+   - Layout: container, flex, grid, block, hidden
+   - Spacing: p-4, m-2, py-4, mx-auto
+   - Sizing: w-full, h-screen, max-w-md
+   - Typography: text-lg, font-bold, text-center
+   - Colors: text-blue-500, bg-gray-100, border-red-200
+   - Effects: shadow-md, rounded-lg, opacity-80
+   - States: hover:text-blue-600, focus:ring-2
 
 STYLING Guidelines:
 - Use beautiful UI/UX principles
